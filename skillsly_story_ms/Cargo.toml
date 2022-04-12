@@ -17,8 +17,6 @@ chrono = { version = "0.4", features = ["serde"] }
 uuid = { version = "0.8", features = ["serde", "v4"] }
 derive_more = "0.99"
 rocket = { version = "0.5.0-rc.1", features = ["json"] }
-structopt = "0.3"
-dotenv = "0.15"
 
 [dependencies.sqlx]
 version = "0.5.1"

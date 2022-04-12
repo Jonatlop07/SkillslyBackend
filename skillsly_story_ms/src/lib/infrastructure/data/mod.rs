@@ -1,9 +1,12 @@
 pub mod db_id;
 pub mod story;
 
+use std::env;
+
 pub type DatabasePool = sqlx::postgres::PgPool;
 
-pub async fn configure(connection_str: &str) -> DatabasePool {
+pub async fn configure() -> DatabasePool {
+    let connection_str = env::var("DATABASE_URL").expect("DATABASE_URL env var needs to be set");
     eprintln!("{:?}", connection_str);
     configure_with_connection_str(&connection_str).await
 }

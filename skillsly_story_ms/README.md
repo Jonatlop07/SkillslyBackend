@@ -19,3 +19,8 @@ Once the service is running, these are the currently available requests:
 - **Query story:** `GET to http://localhost:8000/stories/<story_id>`
 - **Query stories of user:** `GET to http://localhost:8000/user/<user_id>/stories`
 - **Delete story:** `DELETE to http://localhost:8000/stories/<story_id>`
+
+## Docker
+
+- Build with: `docker build -t skillsly_story_ms .`
+- Run with: `docker run -p 8000:8000 -e DATABASE_URL=postgresql://skillsly:story@172.17.0.2/skillsly_story_db skillsly_story_ms`
