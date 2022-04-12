@@ -5,13 +5,13 @@ use crate::domain::story::StoryError;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Content {
-    description: Description,
-    media_locator: MediaLocator
+    pub description: Description,
+    pub media_locator: MediaLocator
 }
 
 impl Content {
     pub fn new(description: &str, media_locator: &str) -> Result<Self, StoryError> {
-        if !description.trim().is_empty() && !media_locator.trim().is_empty() {
+        if !description.trim().is_empty() || !media_locator.trim().is_empty() {
             return Ok(Self {
                 description: Description::new(description),
                 media_locator: MediaLocator::new(media_locator)

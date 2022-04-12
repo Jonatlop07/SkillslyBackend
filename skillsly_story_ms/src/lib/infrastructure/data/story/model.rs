@@ -13,7 +13,7 @@ pub struct Story {
     pub(in crate::infrastructure::data) created_at: DateTime<Utc>
 }
 
-impl TryFrom<Story> for crate::domain::Story {
+impl TryFrom<Story> for crate::Story {
     type Error = StoryError;
 
     fn try_from(story: Story) -> Result<Self, Self::Error> {
@@ -73,14 +73,14 @@ pub struct CreateStory {
     pub(in crate::infrastructure::data) created_at: DateTime<Utc>
 }
 
-impl From<crate::service::ask::create::CreateStory> for CreateStory {
-    fn from(req: crate::service::ask::create::CreateStory) -> Self {
+impl From<crate::Story> for CreateStory {
+    fn from(story: crate::Story) -> Self {
         Self {
-            story_id: DbId::new().into(),
-            owner_id: req.owner_id.into_inner().into(),
-            description: Some(req.description.into_inner()),
-            media_locator: Some(req.media_locator.into_inner()),
-            created_at: Utc::now()
+            story_id: story.story_id.into_inner().into(),
+            owner_id: story.owner_id.into_inner().into(),
+            description: Some(story.content.description.into_inner()),
+            media_locator: Some(story.content.media_locator.into_inner()),
+            created_at: story.created_at.into_inner().into_inner()
         }
     }
 }

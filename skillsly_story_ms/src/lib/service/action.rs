@@ -17,10 +17,11 @@ impl<G> StoryService for StoryServiceImpl<G>
         G: StoryRepository + Send + Sync
 {
     async fn create_story(&self, req: CreateStory) -> Result<Story, ServiceError> {
-        Ok(self.gateway.save(req).await?.try_into()?)
+        Ok(self.gateway.save(Story::try_from(req)?).await?.try_into()?)
     }
 
     async fn query_story(&self, req: QueryStory) -> Result<Story, ServiceError> {
+        
         Ok(self.gateway.query(req).await?.try_into()?)
     }
 
