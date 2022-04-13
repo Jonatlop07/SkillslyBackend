@@ -5,7 +5,7 @@ fn main() {
     let rt = tokio::runtime::Runtime::new()
         .expect("failed to spawn tokio runtime");
     let database = rt.block_on(async move {
-        configure(/*&opt.connection_string*/).await
+        configure().await
     });
     let config = skillsly_story_ms::RocketConfig {
         database
