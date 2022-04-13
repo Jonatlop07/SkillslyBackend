@@ -10,17 +10,39 @@ Follow these steps to get the microservice running locally, on your computer:
 4. Set `$env:DATABASE_URL='postgresql://user:password@host/db_name'`
 5. Run `cargo run --bin httpd`
 
+## Docker
+
+### PostgreSQL database:
+
+- Download postgres image and run with: `docker run --name skillsly_story_db -e POSTGRES_DB=skillsly_story_db -e POSTGRES_USER=skillsly -e POSTGRES_PASSWORD=story -p 5432:5432 -d postgres`
+- Execute with: `docker exec -it skillsly_story_db psql -d skillsly_story_db -U skillsly`
+
+- Setup:
+  - `CREATE SCHEMA skillsly_story;`
+  - `SHOW search_path;`
+  - `SET search_path TO skillsly_story;`
+  - `CREATE TABLE skillsly_story.story
+    (
+    story_id        TEXT PRIMARY KEY NOT NULL,
+    owner_id        TEXT NOT NULL,
+    description     TEXT,
+    media_locator   TEXT,
+    created_at      TIMESTAMPTZ NOT NULL
+    );`
+  - `\q` to close the CLI
+  - `docker inspect skillsly_story_db` to query container's ip address
+
+- Build with: `docker build -t skillsly_story_ms .`
+- Run with: `docker run -p 8000:8000 -e DATABASE_URL=postgresql://skillsly:story@172.17.0.2/skillsly_story_db skillsly_story_ms`
+
 ## Available requests
 
 Once the service is running, these are the currently available requests:
+
+Depending on whether the service is running locally or in docker, PORT is 3000 or 8003, respectively.
 
 - **Create story:** `POST to http://localhost:8000/stories`
   - *Body:* `{ "owner_id": "...UUIDv4...", "description": "...", "media_locator": "..." }`
 - **Query story:** `GET to http://localhost:8000/stories/<story_id>`
 - **Query stories of user:** `GET to http://localhost:8000/user/<user_id>/stories`
 - **Delete story:** `DELETE to http://localhost:8000/stories/<story_id>`
-
-## Docker
-
-- Build with: `docker build -t skillsly_story_ms .`
-- Run with: `docker run -p 8000:8000 -e DATABASE_URL=postgresql://skillsly:story@172.17.0.2/skillsly_story_db skillsly_story_ms`

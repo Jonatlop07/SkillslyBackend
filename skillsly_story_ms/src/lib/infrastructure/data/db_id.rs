@@ -14,6 +14,10 @@ impl DbId {
     pub fn nil() -> DbId {
         Self(Uuid::nil())
     }
+    
+    pub fn into_inner(self) -> Uuid {
+        self.0
+    }
 }
 
 impl From<DbId> for String {
