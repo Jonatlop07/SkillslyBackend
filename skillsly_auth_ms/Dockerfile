@@ -1,0 +1,20 @@
+FROM node:16.14-alpine
+
+WORKDIR /usr/src/skillsly_auth_ms
+COPY package*.json ./
+
+RUN npm install glob rimraf
+RUN npm install
+
+COPY . .
+
+ENV API_HOST=0.0.0.0
+ENV API_PORT=3000
+ENV MS_HOST=0.0.0.0
+ENV MS_PORT=3001
+ENV API_ENABLE_LOG=true
+
+RUN npm run build
+
+EXPOSE 8000
+CMD ["node", "dist/main"]
