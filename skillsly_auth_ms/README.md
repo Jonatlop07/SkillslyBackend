@@ -19,10 +19,10 @@ Once the service is running, these are the currently available requests:
 
 Depending on whether the service is running locally or in docker, PORT is 3000 or 8000, respectively.
 
-- **Create user:** `POST to http://localhost:PORT/auth/user`
-  - *Body:* `{ "email": "...", "password": "..." }`
-- **Login:** `POST to http://localhost:PORT/auth/login`
-- - *Body:* `{ "email": "...", "password": "..." }`
-- **Update credentials:** `PUT to http://localhost:PORT/auth/user/<user_id>`
-  - *Body:* `{ "id": "...UUIDv4...", "email": "...", "password": "..." }`
+- **Create user:** `POST to http://localhost:PORT/auth/user`  
+*Body:* `{ "email": "...", "password": "..." }`
+- **Login:** `POST to http://localhost:PORT/auth/login`  
+*Body:* `{ "email": "...", "password": "..." }`
+- **Update credentials:** `PUT to http://localhost:PORT/auth/user/<user_id>`  
+*Body:* `{ "id": "...UUIDv4...", "email": "...", "password": "..." }`
 - **Delete user:** `DELETE to http://localhost:PORT/auth/user/<user_id>`

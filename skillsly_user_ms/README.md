@@ -1,4 +1,4 @@
-# Auth microservice
+# User microservice
 
 ## Windows setup
 
