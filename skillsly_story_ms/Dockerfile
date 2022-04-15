@@ -6,7 +6,6 @@ COPY . .
 RUN cargo install sqlx-cli
 
 ARG DATABASE_URL=postgres://skillsly:story@172.17.0.2:5432/skillsly_story_db
-
 RUN sqlx database setup --database-url $DATABASE_URL
 RUN cargo install --bin skillsly_story_ms --path .
 

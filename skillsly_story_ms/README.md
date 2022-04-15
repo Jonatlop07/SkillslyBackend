@@ -14,10 +14,9 @@ Follow these steps to get the microservice running locally, on your computer:
 
 ### PostgreSQL database:
 
-- Download postgres image and run with: `docker run --name skillsly_story_db -e POSTGRES_DB=skillsly_story_db -e POSTGRES_USER=skillsly -e POSTGRES_PASSWORD=story -p 35003:5432 -d postgres`
+- Download postgres image and run with: `docker run -d --name skillsly_story_db -e POSTGRES_DB=skillsly_story_db -e POSTGRES_USER=skillsly -e POSTGRES_PASSWORD=story -p 35003:5432 postgres`
 - Execute with: `docker exec -it skillsly_story_db psql -d skillsly_story_db -U skillsly`
-
-- Setup:
+- Type:
   - `CREATE SCHEMA skillsly_story;`
   - `SHOW search_path;`
   - `SET search_path TO skillsly_story;`
@@ -32,8 +31,11 @@ Follow these steps to get the microservice running locally, on your computer:
   - `\q` to close the CLI
   - `docker inspect skillsly_story_db` to query container's ip address
 
+### Microservice container
+
 - Build with: `docker build -t skillsly_story_ms .`
-- Run with: `docker run -p 8003:3000 -e DATABASE_URL=postgresql://skillsly:story@172.17.0.2/skillsly_story_db skillsly_story_ms`
+- Run with: `docker run -d -p 8003:3000 -e DATABASE_URL=postgresql://skillsly:story@172.17.0.2/skillsly_story_db skillsly_story_ms`
+- To see logs: `docker logs -f <container_id>`. Use `docker ps` to get the container id
 
 ## Available requests
 

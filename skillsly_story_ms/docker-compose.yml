@@ -1,4 +1,4 @@
-version: "3.6"
+version: "3.7"
 
 services:
   skillsly_story_db:
@@ -19,7 +19,7 @@ services:
     depends_on:
       - skillsly_story_db
     environment:
-      DATABASE_URL: postgres://skillsly:story@0.0.0.0:5432/skillsly_story_db
+      DATABASE_URL: postgres://skillsly:story@skillsly_story_db:5432/skillsly_story_db
       ROCKET_ADDRESS: 0.0.0.0
       ROCKET_PORT: 3000
     ports:
