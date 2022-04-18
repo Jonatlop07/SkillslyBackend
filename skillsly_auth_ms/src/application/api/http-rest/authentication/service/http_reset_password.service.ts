@@ -68,6 +68,7 @@ export class HttpResetPasswordService {
     if (!resulting_user_dto) {
       throw new UserNotFoundException();
     }
+    resulting_user_dto.password = password;
     const resulting_user = UserMapper.toUser(resulting_user_dto);
     if (!resulting_user.hasValidPassword()) {
       throw new InvalidCredentialsFormatException ();

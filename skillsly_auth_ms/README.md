@@ -19,10 +19,21 @@ Once the service is running, these are the currently available requests:
 
 Depending on whether the service is running locally or in docker, PORT is 3000 or 8000, respectively.
 
+### Without auth token
 - **Create user:** `POST to http://localhost:PORT/auth/user`  
 *Body:* `{ "email": "...", "password": "..." }`
 - **Login:** `POST to http://localhost:PORT/auth/login`  
 *Body:* `{ "email": "...", "password": "..." }`
-- **Update credentials:** `PUT to http://localhost:PORT/auth/user/<user_id>`  
+- **Request password reset:** `PATCH to http://localhost:PORT/auth/request-reset-password`  
+*Body:* `{ "email": "..." }`
+- **Reset password:** `PATCH to http://localhost:PORT/auth/reset-password/<token>`  
+*Body:* `{ "password": "..." }`
+### Auth token needed
+- **Update credentials:** `PATCH to http://localhost:PORT/auth/user/<user_id>`  
 *Body:* `{ "id": "...UUIDv4...", "email": "...", "password": "..." }`
-- **Delete user:** `DELETE to http://localhost:PORT/auth/user/<user_id>`
+- **Delete user:** `DELETE to http://localhost:PORT/auth/user/<user_id>?password=<password>`
+- **Generate Two Factor Auth QR code:** `POST to http://localhost:PORT/2fa/generate`
+- **Turn on Two Factor Auth:** `POST to http://localhost:PORT/2fa/turn-on`  
+*Body:* `{ "code": "..." }`
+- **Authenticate with Two Factor:** `POST to http://localhost:8000/2fa/authenticate`  
+*Body:* `{ "code": "..." }`

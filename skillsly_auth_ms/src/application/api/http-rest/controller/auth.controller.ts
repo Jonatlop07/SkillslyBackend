@@ -5,7 +5,7 @@ import {
   HttpStatus,
   Inject,
   Logger, Param, Patch,
-  Post, Put, Query,
+  Post, Query,
   Req,
   UseGuards,
   ValidationPipe,
@@ -99,7 +99,7 @@ export class AuthController {
     return await this.authentication_service.login(request.user);
   }
 
-  @Put('user/:user_id')
+  @Patch('user/:user_id')
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'User login credentials successfully updated' })
