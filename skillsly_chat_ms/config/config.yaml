@@ -1,4 +1,4 @@
-port: 8000
+port: 8002
 
 mongo:
   uri: "mongodb://mongodb:27017"
