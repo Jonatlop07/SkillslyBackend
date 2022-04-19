@@ -1,12 +1,12 @@
 use std::str::FromStr;
 use serde::{Serialize, Deserialize};
-use crate::domain::story::field::{StoryId};
+use crate::domain::story::field::Id;
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct DeleteStory(StoryId);
+pub struct DeleteStory(Id);
 
 impl DeleteStory {
-    fn into_inner(self) -> StoryId {
+    fn into_inner(self) -> Id {
         self.0
     }
 }
@@ -21,6 +21,6 @@ impl FromStr for DeleteStory {
     type Err = uuid::Error;
 
     fn from_str(id: &str) -> Result<Self, Self::Err> {
-        Ok(Self(StoryId::from_str(id)?))
+        Ok(Self(Id::from_str(id)?))
     }
 }

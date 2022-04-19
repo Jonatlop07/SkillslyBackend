@@ -21,6 +21,6 @@ services:
     environment:
       DATABASE_URL: postgres://skillsly:story@skillsly_story_db:5432/skillsly_story_db
       ROCKET_ADDRESS: 0.0.0.0
-      ROCKET_PORT: 3000
+      ROCKET_PORT: 8000
     ports:
-      - "8003:3000"
+      - "8003:8000"

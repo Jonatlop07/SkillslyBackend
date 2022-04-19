@@ -3,7 +3,7 @@ use async_trait::async_trait;
 
 use crate::DatabasePool;
 use crate::infrastructure::data::story::{StoryRepository};
-use crate::infrastructure::data::story::model::{CreateStory, DeleteStory, QueryStory, QueryStoryCollection, Story};
+use crate::infrastructure::data::story::model::{CreateStory, DeleteStory, QueryStory, AddStoryView, QueryStoryCollection, Story, StoryView};
 use crate::infrastructure::data::story::Result;
 
 pub struct PostgresStoryRepositoryImpl {
@@ -48,6 +48,43 @@ impl StoryRepository for PostgresStoryRepositoryImpl {
                 .fetch_one(&*self.db_pool)
                 .await?
         )
+    }
+
+    async fn query_story_views<M: Into<QueryStory> + Send>(&self, model: M) -> Result<Vec<StoryView>> {
+        let model = model.into();
+        let story_id = model.story_id;
+        Ok(
+            sqlx::query_as!(
+                StoryView,
+                "SELECT * FROM skillsly_story.story_view WHERE story_id = $1",
+                story_id
+            )
+                .fetch_all(&*self.db_pool)
+                .await?
+        )
+    }
+
+    async fn add_story_view<M: Into<AddStoryView> + Send>(&self, model: M) -> Result<()> {
+        let model = model.into();
+        let story_id = model.story_id;
+        let viewer_id = model.viewer_id;
+        let viewed_at = model.viewed_at;
+        sqlx::query(
+            r#"
+                INSERT INTO skillsly_story.story_view (
+                    story_id,
+                    viewer_id,
+                    viewed_at
+                )
+                VALUES ($1, $2, $3)
+            "#
+        )
+            .bind(story_id)
+            .bind(viewer_id)
+            .bind(viewed_at)
+            .fetch_all(&*self.db_pool)
+            .await?;
+        Ok(())
     }
 
     async fn query_collection<M: Into<QueryStoryCollection> + Send>(&self, model: M) -> Result<Vec<Story>> {

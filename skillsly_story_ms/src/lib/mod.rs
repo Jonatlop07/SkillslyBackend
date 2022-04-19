@@ -7,7 +7,7 @@ use std::sync::Arc;
 use rocket::{Build, Rocket};
 use rocket::fairing::AdHoc;
 
-pub use domain::story::{Story, StoryError};
+pub use domain::story::{Story, StoryView, StoryError};
 
 use crate::application::web::api::configure_routes;
 use crate::infrastructure::data::DatabasePool;

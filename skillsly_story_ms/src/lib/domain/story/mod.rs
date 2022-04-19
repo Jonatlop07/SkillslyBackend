@@ -1,5 +1,6 @@
 pub mod field;
 
+use std::cell::RefCell;
 use serde::{Serialize, Deserialize};
 
 #[derive(Debug, thiserror::Error)]
@@ -16,8 +17,16 @@ pub enum StoryError {
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Story {
-    pub story_id: field::StoryId,
-    pub owner_id: field::OwnerId,
+    pub story_id: field::Id,
+    pub owner_id: field::Id,
     pub content: field::Content,
-    pub created_at: field::CreatedAt
+    pub created_at: field::CreatedAt,
+    pub views: RefCell<Vec<StoryView>>
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct StoryView {
+    pub story_id: field::Id,
+    pub viewer_id: field::Id,
+    pub viewed_at: field::ViewedAt
 }

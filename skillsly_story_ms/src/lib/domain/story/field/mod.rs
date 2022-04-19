@@ -1,8 +1,5 @@
-mod story_id;
-pub use story_id::StoryId;
-
-mod owner_id;
-pub use owner_id::OwnerId;
+mod id;
+pub use id::Id;
 
 mod description;
 pub use description::Description;
@@ -15,3 +12,6 @@ pub use content::Content;
 
 mod created_at;
 pub use created_at::CreatedAt;
+
+mod viewed_at;
+pub use viewed_at::ViewedAt;

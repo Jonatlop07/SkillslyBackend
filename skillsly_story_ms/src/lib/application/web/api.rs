@@ -4,7 +4,8 @@ use rocket::{routes, Route, State};
 use rocket::Responder;
 
 use crate::service::ServiceError;
-use crate::{service, StoryService};
+use crate::{service, StoryError, StoryService};
+use crate::domain::story::field::Id;
 
 #[derive(Responder, Debug, thiserror::Error)]
 pub enum ApiError {
@@ -47,15 +48,29 @@ pub async fn create_story(
     Ok(Json(story))
 }
 
-#[rocket::get("/stories/<story_id>")]
+#[rocket::get("/stories/<story_id>?<viewer_id>")]
 pub async fn query_story(
     story_id: &str,
+    viewer_id: &str,
     service: &State<Box<dyn StoryService>>
 ) -> Result<Json<crate::Story>, ApiError> {
-    use service::ask::query::QueryStory;
-    let req = QueryStory::from_str(story_id).unwrap();
-    let story = service.query_story(req).await?;
-    Ok(Json(story))
+    use service::ask::query::QueryStoryWithViews;
+    let story_id = Id::from_str(story_id);
+    match story_id {
+        Ok(story_id) =>
+            return match Id::from_str(viewer_id) {
+                Ok(viewer_id) => {
+                    let req = QueryStoryWithViews::new(
+                        story_id,
+                        viewer_id
+                    );
+                    let story = service.query_story(req).await?;
+                    Ok(Json(story))
+                },
+                Err(e) => Err(ApiError::from(ServiceError::from(StoryError::Id(e))))
+            },
+        Err(e) => Err(ApiError::from(ServiceError::from(StoryError::Id(e))))
+    }
 }
 
 #[rocket::get("/user/<user_id>/stories")]
@@ -64,9 +79,13 @@ pub async fn query_story_collection(
     service: &State<Box<dyn StoryService>>
 ) -> Result<Json<Vec<crate::Story>>, ApiError> {
     use service::ask::query::QueryStoryCollection;
-    let req = QueryStoryCollection::from_str(user_id).unwrap();
-    let stories = service.query_story_collection(req).await?;
-    Ok(Json(stories))
+    match QueryStoryCollection::from_str(user_id) {
+        Ok(req) => {
+            let stories = service.query_story_collection(req).await?;
+            return Ok(Json(stories));
+        },
+        Err(e) => Err(ApiError::from(ServiceError::from(StoryError::Id(e))))
+    }
 }
 
 #[rocket::delete("/stories/<story_id>")]
@@ -75,9 +94,13 @@ pub async fn delete_story(
     service: &State<Box<dyn StoryService>>
 ) -> Result<Json<crate::Story>, ApiError> {
     use service::ask::query::QueryStory;
-    let req = QueryStory::from_str(story_id).unwrap();
-    let story = service.delete_story(req).await?;
-    Ok(Json(story))
+    match QueryStory::from_str(story_id) {
+        Ok(req) => {
+            let story = service.delete_story(req).await?;
+            return Ok(Json(story));
+        },
+        Err(e) => Err(ApiError::from(ServiceError::from(StoryError::Id(e))))
+    }
 }
 
 pub mod catcher {

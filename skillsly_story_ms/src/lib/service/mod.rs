@@ -9,6 +9,7 @@ use ask::query::{QueryStory, QueryStoryCollection};
 use crate::domain::Story;
 use crate::domain::story::StoryError;
 use crate::infrastructure::data::DataError;
+use crate::service::ask::query::{QueryStoryWithViews};
 
 #[derive(Debug, thiserror::Error)]
 pub enum ServiceError {
@@ -44,7 +45,7 @@ impl From<Error> for ServiceError {
 #[async_trait]
 pub trait StoryService: Send + Sync {
     async fn create_story(&self, req: CreateStory) -> Result<Story, ServiceError>;
-    async fn query_story(&self, req: QueryStory) -> Result<Story, ServiceError>;
+    async fn query_story(&self, req: QueryStoryWithViews) -> Result<Story, ServiceError>;
     async fn query_story_collection(&self, req: QueryStoryCollection) -> Result<Vec<Story>, ServiceError>;
     async fn delete_story(&self, req: QueryStory) -> Result<Story, ServiceError>;
 }
