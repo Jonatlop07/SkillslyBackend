@@ -4,6 +4,8 @@ const {
 } = require("../../utils/validators");
 const { customException } = require("../../utils/exception");
 const comments = require("./comments.mongo");
+const inner_coments = require("../inner-comments/inner_comments.mongo");
+const { default: mongoose } = require("mongoose");
 
 async function getAllComments(post_id, skip, limit) {
   return await comments
@@ -50,6 +52,9 @@ async function updateComment(comment) {
 
 async function deleteComment(comment_id) {
   const deleted = await comments.findByIdAndDelete(comment_id);
+  await inner_coments.deleteMany({
+    comment_id: mongoose.Types.ObjectId(comment_id),
+  });
   if (!deleted) {
     throw customException(
       "Could not delete inner comment",
