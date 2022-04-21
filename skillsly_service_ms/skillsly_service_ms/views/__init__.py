@@ -4,5 +4,6 @@ from .ApplicationRegistView import *
 from .ServiceApplicationsListView import *
 from .ServiceRUDView import *
 from .ServicePhaseUpdateView import *
-from .ServiceStatusSerializer import *
+from .ServiceStatusUpdateView import *
 from .ApplicationRUDView import *
+from .ServiceProviderUpdateView import *

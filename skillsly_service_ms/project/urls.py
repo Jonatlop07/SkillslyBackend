@@ -25,6 +25,7 @@ urlpatterns = [
     path('serviceapplications/', ServiceApplicationsListView.as_view()),
     path('service/RUD/<int:pk>', ServiceRUDView.as_view()),
     path('serviceupdatephase/<int:pk>', ServicePhaseUpdateView.as_view()),
+    path('serviceupdateprovider/<int:pk>', ServiceProviderUpdateView.as_view()),
     path('serviceupdatestatus/<int:pk>', ServiceStatusUpdateView.as_view()),
     path('application/RUD/<int:pk>', ApplicationRUDView.as_view())
 ]
