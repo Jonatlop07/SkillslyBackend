@@ -17,7 +17,7 @@ export class SearchUsersService implements SearchUsersInteractor {
 
   public async execute(input: SearchUsersInputModel): Promise<SearchUsersOutputModel> {
     const { email, name } = input;
-    const users: Array<UserDTO> = await this.gateway.findAll({ email, name });
+    const users: Array<UserDTO> = await this.gateway.findAll({ email, name }, input.pagination);
     return { users: users.map((user: UserDTO) => user as SearchedUserDTO) };
   }
 }

@@ -2,6 +2,11 @@ import { IsDate, IsEmail, IsNotEmpty, IsString } from 'class-validator'
 import { ApiModelProperty } from '@nestjs/swagger/dist/decorators/api-model-property.decorator'
 
 export class CreateUserAccountDTO {
+  @IsString()
+  @IsNotEmpty()
+  @ApiModelProperty()
+  public id: string;
+
   @IsEmail()
   @IsNotEmpty()
   @ApiModelProperty()
@@ -12,10 +17,10 @@ export class CreateUserAccountDTO {
   @ApiModelProperty()
   public name: string;
 
-  @IsDate()
+  @IsString()
   @IsNotEmpty()
   @ApiModelProperty()
-  public date_of_birth: Date;
+  public date_of_birth: string;
 
   @IsString()
   @IsNotEmpty()

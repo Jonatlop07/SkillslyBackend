@@ -68,7 +68,7 @@ export class TypeOrmUserRelationshipRepositoryAdapter implements UserRelationshi
       where: {
         follower_id: params.user_that_requests_id,
         following_id: params.user_to_follow_id,
-        status: FollowRequestStatus.Following,
+        status: FollowRequestStatus.Following
       },
     });
     return !!relationship;
@@ -79,7 +79,7 @@ export class TypeOrmUserRelationshipRepositoryAdapter implements UserRelationshi
       where: {
         follower_id: params.user_that_requests_id,
         following_id: params.user_to_follow_id,
-        status: FollowRequestStatus.Pending,
+        status: FollowRequestStatus.Pending
       },
     });
     return !!relationship;
@@ -91,31 +91,34 @@ export class TypeOrmUserRelationshipRepositoryAdapter implements UserRelationshi
         following_id: id,
         status: FollowRequestStatus.Pending,
       },
+      relations: ['follower']
     });
     const pending_users_to_follow: Array<TypeOrmUserRelationship> = await this.relationship_repository.find({
       where: {
         follower_id: id,
         status: FollowRequestStatus.Pending,
       },
+      relations: ['following']
     });
     const followers: Array<TypeOrmUserRelationship> = await this.relationship_repository.find({
       where: {
         following_id: id,
         status: FollowRequestStatus.Following,
       },
+      relations: ['follower']
     });
     const following_users: Array<TypeOrmUserRelationship> = await this.relationship_repository.find({
       where: {
         follower_id: id,
         status: FollowRequestStatus.Following,
       },
+      relations: ['following']
     });
     return {
-      pending_followers: pending_followers
-        .map(
-          (user_relationship: TypeOrmUserRelationship) =>
-            TypeOrmUserMapper.toDTO(user_relationship.follower) as SearchedUserDTO,
-        ),
+      pending_followers: pending_followers.map(
+        (user_relationship: TypeOrmUserRelationship) =>
+          TypeOrmUserMapper.toDTO(user_relationship.follower) as SearchedUserDTO,
+      ),
       pending_users_to_follow: pending_users_to_follow.map(
         (user_relationship: TypeOrmUserRelationship) =>
           TypeOrmUserMapper.toDTO(user_relationship.following) as SearchedUserDTO,

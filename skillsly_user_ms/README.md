@@ -20,14 +20,14 @@ Once the service is running, these are the currently available requests:
 Depending on whether the service is running locally or in docker, PORT is 3000 or 8000, respectively.
 
 - **Create user account:** `POST to http://localhost:PORT/user/account`  
-*Body:* `{ "email": "...", "name": "...", "date_of_birth": "...", "gender": "..." }`
+*Body:* `{ "id": "...", "email": "...", "name": "...", "date_of_birth": "...", "gender": "..." }`
 - **Query user account:** `GET to http://localhost:PORT/user/account/<user_id>`
-- **Update user account:** `PUT to http://localhost:PORT/user/account/<user_id>`  
+- **Update user account:** `PATCH to http://localhost:PORT/user/account/<user_id>`  
 *Body:* `{ "email": "...", "name": "...", "date_of_birth": "...", "gender": "..." }`
 - **Delete user account:** `DELETE to http://localhost:PORT/user/account/<user_id>`
 - **Search users:** `GET to http://localhost:PORT/user?email=email&name=name&limit=limit&offset=offset`
 - **Create follow user request:** `POST to http://localhost:PORT/user/<user_id>/follow/<user_to_follow_id>`
-- **Update follow user request:** `PUT to http://localhost:PORT/user/<user_id>/follow/<user_that_requests_id>`  
+- **Update follow user request:** `PATCH to http://localhost:PORT/user/<user_id>/follow/<user_that_requests_id>`  
 *Body:* `{ "accept": boolean }`
-- **Delete follow user request:** `DELETE to http://localhost:PORT/user/<user_id>/follow/<user_to_follow_id>`
-- **Query follow user request collection:** `GET to http://localhost:PORT/user/:user_id/follow`
+- **Delete follow user request:** `DELETE to http://localhost:PORT/user/<user_id>/follow/<user_to_follow_id>?is_follow_request=<boolean>`
+- **Query follow user request collection:** `GET to http://localhost:PORT/user/:user_id/follow?limit=limit&offset=offset`

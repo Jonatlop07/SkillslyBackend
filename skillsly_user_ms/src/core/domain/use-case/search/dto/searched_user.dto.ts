@@ -5,6 +5,6 @@ export interface SearchedUserDTO {
   id: Id,
   email: string,
   name: string,
-  date_of_birth: Date,
+  date_of_birth: string,
   gender: Gender
 }

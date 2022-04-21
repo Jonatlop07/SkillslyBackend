@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { FollowRequestStatus } from '@infrastructure/adapter/persistence/typeorm/entity/follow_request_status.enum'
 import { TypeOrmUser } from '@infrastructure/adapter/persistence/typeorm/entity/typeorm_user'
 
@@ -37,11 +37,11 @@ export class TypeOrmUserRelationship {
   })
   public accepted_at: Date;
 
-  @OneToOne(() => TypeOrmUser)
+  @ManyToOne(() => TypeOrmUser, user => user.followers)
   @JoinColumn({ name: 'follower_id' })
   public follower: TypeOrmUser;
 
-  @OneToOne(() => TypeOrmUser)
+  @ManyToOne(() => TypeOrmUser, user => user.following_users)
   @JoinColumn({ name: 'following_id' })
   public following: TypeOrmUser;
 }
