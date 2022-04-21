@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  server:
+    image: skillsly_chat_ms
+    container_name: "skillsly_chat_ms"
+    build: ./
+    command: ./app
+    ports:
+      - 8000:8000
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    container_name: "skillsly_chat_db"
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+      - MONGODB_DATABASE=skillsly_chat_db
+    volumes:
+      - ./.data/db:/datas/db
+    ports:
+      - 27017:27017
+    command: mongod --logpath=/dev/null

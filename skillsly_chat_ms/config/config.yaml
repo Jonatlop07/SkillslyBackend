@@ -1,0 +1,7 @@
+port: 8002
+
+mongo:
+  uri: "mongodb://mongodb:27017"
+  name: "skillsly_chat_db"
+  conversations_collection: "conversations"
+  messages_collection: "messages"
