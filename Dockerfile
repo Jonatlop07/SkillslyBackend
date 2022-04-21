@@ -6,6 +6,6 @@ WORKDIR /code
 COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 COPY . /code/
-ARG URL=0.0.0.0:4000
+ARG URL=0.0.0.0:7000
 
 CMD ["sh", "-c", "python manage.py makemigrations skillsly_service_ms && python manage.py migrate && python manage.py runserver $URL"]
