@@ -11,7 +11,6 @@ import CreateUserAccountInputModel from '@core/domain/use-case/account/input-mod
 import CreateUserAccountOutputModel from '@core/domain/use-case/account/output-model/create_user_account.output_model';
 import { User } from '@core/domain/entity/user';
 import { UserMapper } from '@core/domain/use-case/common/mapper/user.mapper';
-import { uuid } from 'uuidv4';
 
 export class CreateUserAccountService implements CreateUserAccountInteractor {
   private readonly logger: Logger = new Logger(CreateUserAccountService.name);
@@ -23,9 +22,9 @@ export class CreateUserAccountService implements CreateUserAccountInteractor {
   }
 
   public async execute(input: CreateUserAccountInputModel): Promise<CreateUserAccountOutputModel> {
-    const { email, name, date_of_birth, gender } = input;
+    const { id, email, name, date_of_birth, gender } = input;
     const user_to_create = new User({
-      id: uuid(),
+      id,
       email,
       name,
       date_of_birth,

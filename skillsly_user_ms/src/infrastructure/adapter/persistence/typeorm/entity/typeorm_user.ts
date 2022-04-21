@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { Gender } from '@core/domain/entity/type/gender.enum'
+import { TypeOrmUserRelationship } from '@infrastructure/adapter/persistence/typeorm/entity/typeorm_user_relationship'
 
 @Entity({
   schema: 'skillsly_user',
@@ -34,7 +35,7 @@ export class TypeOrmUser {
     type: 'text',
     nullable: false
   })
-  public date_of_birth: Date;
+  public date_of_birth: string;
 
   @Column({
     name: 'gender',
@@ -56,4 +57,17 @@ export class TypeOrmUser {
     nullable: true
   })
   public updated_at: Date;
+
+  @OneToMany(
+    () => TypeOrmUserRelationship,
+    (user_relationship) => user_relationship.follower_id
+  )
+  public followers: Array<TypeOrmUserRelationship>;
+
+  @OneToMany(
+    () => TypeOrmUserRelationship,
+    (user_relationship) => user_relationship.follower_id
+  )
+  public following_users: Array<TypeOrmUserRelationship>;
+
 }

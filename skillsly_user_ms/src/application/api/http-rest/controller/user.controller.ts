@@ -7,9 +7,8 @@ import {
   HttpStatus,
   Inject,
   Logger,
-  Param,
+  Param, Patch,
   Post,
-  Put,
   Query,
   ValidationPipe,
 } from '@nestjs/common';
@@ -100,7 +99,7 @@ export class UserController {
     }
   }
 
-  @Put('account/:user_id')
+  @Patch('account/:user_id')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'User account successfully updated' })
   @ApiForbiddenResponse({ description: 'Invalid update data format' })
@@ -143,10 +142,15 @@ export class UserController {
   public async searchUsers(
     @Query('email') email: string,
     @Query('name') name: string,
+    @Query('limit') limit?: number,
+    @Query('offset') offset?: number
   ) {
     try {
       return await this.search_users_interactor.execute(
-        await SearchUsersMapper.toInputModel(email, name)
+        await SearchUsersMapper.toInputModel(email, name, {
+          limit: limit ? limit : 100,
+          offset: offset ? offset : 0
+        })
       );
     } catch (e) {
       throw HttpExceptionMapper.toHttpException(e);
@@ -195,7 +199,7 @@ export class UserController {
     }
   }
 
-  @Put(':user_id/follow/:user_that_requests_id')
+  @Patch(':user_id/follow/:user_that_requests_id')
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({ description: 'Follow Request has been successfully updated' })
   @ApiBadRequestResponse({ description: 'Invalid data format' })

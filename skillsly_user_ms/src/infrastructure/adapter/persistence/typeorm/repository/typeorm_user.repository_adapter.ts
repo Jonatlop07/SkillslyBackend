@@ -57,13 +57,18 @@ export class TypeOrmUserRepositoryAdapter implements UserRepository {
     });
   }
 
-  public async findAll(params: UserQueryModel, pagination?: PaginationDTO): Promise<UserDTO[]> {
-    const users: Array<TypeOrmUser> = await this.repository.find({
-      where: {
-        ...params,
-        take: pagination.limit,
-        skip: pagination.offset
-      }
+  public async findAll(params: UserQueryModel, pagination: PaginationDTO): Promise<UserDTO[]> {
+    let where = {};
+    if (params.name) {
+      where['name'] = params.name;
+    }
+    if (params.email) {
+      where['email'] = params.email;
+    }
+    const [users]: [Array<TypeOrmUser>, number] = await this.repository.findAndCount({
+      where,
+      take: pagination.limit,
+      skip: pagination.offset
     });
     return users.map(TypeOrmUserMapper.toDTO);
   }

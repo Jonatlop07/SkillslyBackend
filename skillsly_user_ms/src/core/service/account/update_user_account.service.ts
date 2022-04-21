@@ -35,10 +35,11 @@ export class UpdateUserAccountService implements UpdateUserAccountInteractor {
       ...await this.gateway.findOne({ id: user_id }),
       ...updates
     });
-    const is_a_valid_update = user_to_update.hasValidEmail()
-      && user_to_update.hasValidName()
-      && user_to_update.hasValidDateOfBirth()
-      && user_to_update.hasValidGender();
+    const is_a_valid_update = (updates.email || updates.name || updates.date_of_birth || updates.gender)
+      && (updates.email === undefined || user_to_update.hasValidEmail())
+      && (updates.name === undefined || user_to_update.hasValidName())
+      && (updates.date_of_birth === undefined || user_to_update.hasValidDateOfBirth())
+      && (updates.gender === undefined || user_to_update.hasValidGender());
     if (!is_a_valid_update)
       throw new UserAccountInvalidDataFormatException();
   }

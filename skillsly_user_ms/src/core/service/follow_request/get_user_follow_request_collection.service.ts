@@ -15,15 +15,15 @@ export class GetFollowUserRequestCollectionService implements GetFollowUserReque
 
   constructor(
     @Inject(UserDITokens.UserRepository)
-    private user_gateway: GetFollowUserRequestCollectionGateway,
+    private gateway: GetFollowUserRequestCollectionGateway,
   ) { }
 
   public async execute(input: GetFollowUserRequestCollectionInputModel): Promise<GetFollowUserRequestCollectionOutputModel> {
     const { id } = input;
-    const exists_user = await this.user_gateway.exists({ id });
+    const exists_user = await this.gateway.exists({ id });
     if (!exists_user)
       throw new UserAccountNotFoundException();
-    const follow_request_collection: FollowRequestCollectionDTO = await this.user_gateway.getFollowUserRequestCollection(id);
+    const follow_request_collection: FollowRequestCollectionDTO = await this.gateway.getFollowUserRequestCollection(id);
     return {
       follow_request_collection
     };

@@ -36,12 +36,15 @@ export class DeleteFollowUserRequestService implements DeleteFollowUserRequestIn
     if (!user_to_follow)
       throw new UserAccountNotFoundException();
     const follow_request: FollowRequestDTO = { user_that_requests_id, user_to_follow_id };
-    const exists_follow_user_request = await this.gateway.existsFollowUserRequest(follow_request);
-    if (!exists_follow_user_request && is_follow_request)
-      throw new FollowUserRequestNotFoundException();
-    const exists_follow_user_relationship = await this.gateway.existsFollowUserRelationship(follow_request);
-    if (!exists_follow_user_relationship && !is_follow_request)
-      throw new FollowUserRelationshipNotFoundException();
+    if (is_follow_request) {
+      const exists_follow_user_request = await this.gateway.existsFollowUserRequest(follow_request);
+      if (!exists_follow_user_request && is_follow_request)
+        throw new FollowUserRequestNotFoundException();
+    } else {
+      const exists_follow_user_relationship = await this.gateway.existsFollowUserRelationship(follow_request);
+      if (!exists_follow_user_relationship && !is_follow_request)
+        throw new FollowUserRelationshipNotFoundException();
+    }
     await this.gateway.deleteUserRelationship(follow_request);
     return {
       user_details: requesting_user as UserRequestDetailsDTO

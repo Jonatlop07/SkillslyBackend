@@ -7,6 +7,7 @@ import CreateUserAccountResponseDTO from '@application/api/http-rest/http-dto/ht
 export class CreateUserAccountMapper {
   public static toInputModel(payload: CreateUserAccountDTO): CreateUserAccountInputModel {
     return {
+      id: payload.id,
       email: payload.email,
       name: payload.name,
       date_of_birth: payload.date_of_birth,

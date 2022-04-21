@@ -5,7 +5,7 @@ import { Gender } from '@core/domain/entity/type/gender.enum'
     id: Id,
     email: string,
     name: string,
-    date_of_birth: Date,
+    date_of_birth: string,
     gender: Gender,
     created_at: Nullable<Date>,
     updated_at: Nullable<Date>

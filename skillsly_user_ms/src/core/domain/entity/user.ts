@@ -6,7 +6,7 @@ import { Gender } from '@core/domain/entity/type/gender.enum'
 export class User extends Entity {
   private readonly _email: string;
   private readonly _name: string;
-  private readonly _date_of_birth: Date;
+  private readonly _date_of_birth: string;
   private readonly _gender: Gender;
   private readonly _created_at: Nullable<Date>;
   private readonly _updated_at: Nullable<Date>;
@@ -36,11 +36,12 @@ export class User extends Entity {
     return this._name && this._name !== '' && this._name.length <= MAX_NAME_LENGTH;
   }
 
-  public hasValidDateOfBirth() {
-    return this._date_of_birth && this._date_of_birth.getUTCDate() < Date.now();
+  public hasValidDateOfBirth(): boolean {
+    return this._date_of_birth && /^(0[1-9]|[12][0-9]|3[01])[\/](0[1-9]|1[012])[\/]\d{4}$/
+      .test(this._date_of_birth);
   }
 
-  public hasValidGender() {
+  public hasValidGender(): boolean {
     return this._gender && Object.values(Gender).includes(this._gender as Gender);
   }
 
@@ -52,7 +53,7 @@ export class User extends Entity {
     return this._name;
   }
 
-  get date_of_birth(): Date {
+  get date_of_birth(): string {
     return this._date_of_birth;
   }
 
