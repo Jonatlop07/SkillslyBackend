@@ -43,7 +43,7 @@ class Service(models.Model):
     )
 
     provider_id = models.IntegerField(
-        "provider_id", null=False, blank=False, unique=False
+        "provider_id", null=True, blank=True
     )
 
     canceled = models.BooleanField(

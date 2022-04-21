@@ -6,3 +6,4 @@ from .ServiceRUDSerializer import *
 from .ServicePhaseSerializer import *
 from .ServiceStatusSerializer import *
 from .ApplicationUpdateSerializer import *
+from .ServiceUpdateProviderSerializer import *
