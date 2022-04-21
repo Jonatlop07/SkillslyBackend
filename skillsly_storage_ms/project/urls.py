@@ -14,18 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf.urls import url, include
+from upload.views import UploadImageView, UploadVideoView
 from django.urls import path
-from skillsly_service_ms.views import *
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('createservice/', ServiceRegistView.as_view()),
-    path('listservices/', ServiceListView.as_view()),
-    path('createapplication/', ApplicationRegistView.as_view()),
-    path('serviceapplications/', ServiceApplicationsListView.as_view()),
-    path('service/RUD/<int:pk>', ServiceRUDView.as_view()),
-    path('serviceupdatephase/<int:pk>', ServicePhaseUpdateView.as_view()),
-    path('serviceupdateprovider/<int:pk>', ServiceProviderUpdateView.as_view()),
-    path('serviceupdatestatus/<int:pk>', ServiceStatusUpdateView.as_view()),
-    path('application/RUD/<int:pk>', ApplicationRUDView.as_view())
+    url(r'^admin/', admin.site.urls),
+    path('upload-image/', UploadImageView.as_view()),
+    path('upload-video/', UploadVideoView.as_view())
+
 ]

@@ -5,4 +5,4 @@ class ServiceRegistSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Service
-        fields = ["requester_id", "title", "description", "contact_info", "category", "provider_id"]
+        fields = ["requester_id", "title", "description", "contact_info", "category"]
