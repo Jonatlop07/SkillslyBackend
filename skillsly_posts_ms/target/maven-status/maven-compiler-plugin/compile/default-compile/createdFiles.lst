@@ -1,6 +1,0 @@
-com\skillsly\rest\controller\PostController.class
-com\skillsly\rest\SkillslyPostsMsApplication.class
-com\skillsly\rest\model\PostModel.class
-com\skillsly\rest\model\ContentElementModel.class
-com\skillsly\rest\service\PostService.class
-com\skillsly\rest\repository\PostRepository.class
