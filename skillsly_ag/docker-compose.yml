@@ -12,3 +12,13 @@ services:
       - "8081:8081"
     depends_on:
       - redis
+  skillsly_ag:
+    build: .
+    container_name: skillsly_ag
+    environment:
+      REDIS_HOST: redis
+    depends_on:
+      - redis
+    ports:
+      - "8010:3000"
+      - "9232:9229"
