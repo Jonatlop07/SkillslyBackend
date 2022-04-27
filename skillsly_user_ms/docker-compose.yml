@@ -22,4 +22,4 @@ services:
       DATABASE_URL: postgres://skillsly:user@skillsly_user_db:5432/skillsly_user_db
     ports:
       - "8001:3000"
-      - "9229:9229"
+      - "9230:9229"

@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { INestApplication, Logger, NestApplicationOptions } from '@nestjs/common';
+import { INestApplication, Logger, NestApplicationOptions, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import { RootModule } from '@application/module/.root.module';
 import { APIServerConfiguration } from '@application/config/api_server.config';
@@ -25,6 +25,7 @@ export class ServerApplication {
         origin: this.origin
       });
       app.setGlobalPrefix('api/v1');
+      app.useGlobalPipes(new ValidationPipe());
 
       this.buildAPIDocumentation(app);
 

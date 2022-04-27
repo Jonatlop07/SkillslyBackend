@@ -1,0 +1,30 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""Defines the information of a user's account"""
+type User {
+  id: ID!
+  email: String!
+  name: String!
+  date_of_birth: String!
+  gender: String!
+  created_at: String!
+  updated_at: String
+}
+
+type Query {
+  queryUser(id: String!): User!
+}
+
+type Mutation {
+  createUserAccount(account_details: NewUser!): User!
+}
+
+input NewUser {
+  email: String!
+  password: String!
+  name: String!
+  date_of_birth: String!
+  gender: String!
+}
