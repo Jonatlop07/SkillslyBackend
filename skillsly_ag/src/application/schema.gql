@@ -15,10 +15,20 @@ type User {
 
 type Query {
   queryUser(id: String!): User!
+  searchUsers(search_params: SearchParams!): [User!]!
+}
+
+input SearchParams {
+  email: String!
+  name: String!
+  limit: Int
+  offset: Int
 }
 
 type Mutation {
   createUserAccount(account_details: NewUser!): User!
+  updateUserAccount(user_id: ID!, updates: UserAccountUpdates!): User!
+  deleteUserAccount(user_id: ID!, password: String): User!
 }
 
 input NewUser {
@@ -27,4 +37,11 @@ input NewUser {
   name: String!
   date_of_birth: String!
   gender: String!
+}
+
+input UserAccountUpdates {
+  email: String
+  name: String
+  date_of_birth: String
+  gender: String
 }
