@@ -36,7 +36,7 @@ export class AccountResolver {
     private readonly delete_account_service: DeleteAccountService
   ) {}
 
-  @Mutation(returns => User)
+  @Mutation(() => User)
   public async createUserAccount(
     @Args({
       name: 'account_details',
@@ -59,7 +59,7 @@ export class AccountResolver {
   }
 
   @Query(() => User)
-  public async queryUser(@Args({ name: 'id' }) id: Id) {
+  public async user(@Args({ name: 'id' }) id: Id) {
     const { account_details } = await this.query_user_service.execute({ id });
     return UserMapper.toGraphQLModel(account_details);
   }

@@ -14,6 +14,10 @@ import { DeleteUserService } from '@application/service/auth/requester/delete_us
 import { DeleteAccountService } from '@application/service/user/requester/delete_account.service'
 import { SearchUsersService } from '@application/service/user/requester/search_users.service'
 import { SocialResolver } from '@application/api/graphql/resolver/social.resolver'
+import { QueryFollowRelationshipsService } from '@application/service/user/requester/query_follow_relationships.service'
+import { CreateFollowUserRequestService } from '@application/service/user/requester/create_follow_user_request.service'
+import { UpdateFollowUserRequestService } from '@application/service/user/requester/update_follow_user_request.service'
+import { DeleteFollowUserRequestService } from '@application/service/user/requester/delete_follow_user_request.service'
 
 const request_providers = [
   {
@@ -65,6 +69,26 @@ const user_providers: Array<Provider> = [
     provide: UserDITokens.SearchUsersService,
     useFactory: (request) => new SearchUsersService(request),
     inject: [RequestDITokens.Request]
+  },
+  {
+    provide: UserDITokens.QueryFollowRelationshipsService,
+    useFactory: (request) => new QueryFollowRelationshipsService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: UserDITokens.CreateFollowUserRequestService,
+    useFactory: (request) => new CreateFollowUserRequestService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: UserDITokens.UpdateFollowUserRequestService,
+    useFactory: (request) => new UpdateFollowUserRequestService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: UserDITokens.DeleteFollowUserRequestService,
+    useFactory: (request) => new DeleteFollowUserRequestService(request),
+    inject: [RequestDITokens.Request]
   }
 ];
 
@@ -87,6 +111,4 @@ const resolvers: Array<Provider> = [
     ...resolvers
   ]
 })
-export class AppModule {
-
-}
+export class AppModule {}

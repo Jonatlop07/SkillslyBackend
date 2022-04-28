@@ -1,8 +1,8 @@
 import { UserModel } from '@application/common/model/user.model'
-import { Id } from '@application/common/type/common_types'
+import { User } from '@application/api/graphql/model/user/user'
 
 export class UserMapper {
-  public static toGraphQLModel(user: UserModel) {
+  public static toGraphQLModel(user: UserModel): User {
     const {
       id,
       email,
