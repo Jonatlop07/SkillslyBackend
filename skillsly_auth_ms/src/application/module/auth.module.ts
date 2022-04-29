@@ -109,10 +109,6 @@ const use_case_providers: Array<Provider> = [
     HttpLocalStrategy,
     HttpJwtStrategy,
     HttpJwtTwoFactorAuthStrategy,
-    {
-      provide: APP_GUARD,
-      useClass: HttpJwtTwoFactorAuthGuard,
-    },
     ...persistence_providers,
     ...use_case_providers,
   ],

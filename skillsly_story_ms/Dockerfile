@@ -5,12 +5,12 @@ COPY . .
 
 RUN cargo install sqlx-cli
 
-ARG DATABASE_URL=postgres://skillsly:story@172.17.0.2:5432/skillsly_story_db
+ARG DATABASE_URL=postgres://skillsly:story@172.17.0.3:5432/skillsly_story_db
 RUN sqlx database setup --database-url $DATABASE_URL
 
 ENV ROCKET_ADDRESS=0.0.0.0
 ENV ROCKET_PORT=8000
-    
+
 RUN cargo install --bin skillsly_story_ms --path .
 
 FROM debian:buster-slim

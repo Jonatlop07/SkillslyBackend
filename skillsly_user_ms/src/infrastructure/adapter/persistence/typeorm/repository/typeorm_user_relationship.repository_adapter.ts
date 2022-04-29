@@ -68,7 +68,7 @@ export class TypeOrmUserRelationshipRepositoryAdapter implements UserRelationshi
       where: {
         follower_id: params.user_that_requests_id,
         following_id: params.user_to_follow_id,
-        status: FollowRequestStatus.Following
+        status: FollowRequestStatus.Following as string
       },
     });
     return !!relationship;
@@ -79,7 +79,7 @@ export class TypeOrmUserRelationshipRepositoryAdapter implements UserRelationshi
       where: {
         follower_id: params.user_that_requests_id,
         following_id: params.user_to_follow_id,
-        status: FollowRequestStatus.Pending
+        status: FollowRequestStatus.Pending as string
       },
     });
     return !!relationship;
@@ -89,28 +89,28 @@ export class TypeOrmUserRelationshipRepositoryAdapter implements UserRelationshi
     const pending_followers: Array<TypeOrmUserRelationship> = await this.relationship_repository.find({
       where: {
         following_id: id,
-        status: FollowRequestStatus.Pending,
+        status: FollowRequestStatus.Pending as string,
       },
       relations: ['follower']
     });
     const pending_users_to_follow: Array<TypeOrmUserRelationship> = await this.relationship_repository.find({
       where: {
         follower_id: id,
-        status: FollowRequestStatus.Pending,
+        status: FollowRequestStatus.Pending as string,
       },
       relations: ['following']
     });
     const followers: Array<TypeOrmUserRelationship> = await this.relationship_repository.find({
       where: {
         following_id: id,
-        status: FollowRequestStatus.Following,
+        status: FollowRequestStatus.Following as string,
       },
       relations: ['follower']
     });
     const following_users: Array<TypeOrmUserRelationship> = await this.relationship_repository.find({
       where: {
         follower_id: id,
-        status: FollowRequestStatus.Following,
+        status: FollowRequestStatus.Following as string,
       },
       relations: ['following']
     });
@@ -140,7 +140,7 @@ export class TypeOrmUserRelationshipRepositoryAdapter implements UserRelationshi
 
   public async findOne(params: UserQueryModel): Promise<Optional<UserDTO>> {
     const existing_user: TypeOrmUser = await this.user_repository.findOne({
-      where: params,
+      where: { ...params },
     });
     if (existing_user)
       return TypeOrmUserMapper.toDTO(existing_user);

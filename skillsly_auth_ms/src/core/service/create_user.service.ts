@@ -11,8 +11,8 @@ import { User } from '@core/domain/entity/user';
 import { UserMapper } from '@core/domain/use-case/mapper/user.mapper';
 import CreateUserInputModel from '@core/domain/use-case/input-model/create_user.input_model';
 import CreateUserOutputModel from '@core/domain/use-case/output-model/create_user.output_model';
-import { uuid } from 'uuidv4';
 import generateHashedPassword from '@core/common/util/validator/generate_hashed_password';
+import { v4 as uuid } from 'uuid';
 
 export class CreateUserService implements CreateUserInteractor {
   private readonly logger: Logger = new Logger(CreateUserService.name);

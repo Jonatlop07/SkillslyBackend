@@ -26,7 +26,6 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { Public } from '@application/api/http-rest/authentication/decorator/public';
 import {
   CreateUserAdapter,
 } from '@application/api/http-rest/http-adapter/create_user.adapter';
@@ -65,7 +64,6 @@ export class AuthController {
   ) {
   }
 
-  @Public()
   @Post('user')
   @ApiCreatedResponse({
     description: 'User account has been successfully created',
@@ -91,7 +89,6 @@ export class AuthController {
     }
   }
 
-  @Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @UseGuards(HttpLocalAuthenticationGuard)
@@ -101,26 +98,15 @@ export class AuthController {
 
   @Patch('user/:user_id')
   @HttpCode(HttpStatus.OK)
-  @ApiBearerAuth()
   @ApiOkResponse({ description: 'User login credentials successfully updated' })
   @ApiUnauthorizedResponse({
     description:
       'Cannot update the credentials of an account that does not belong to the user',
   })
   public async updateCredentials(
-    @HttpUser() http_user: HttpUserPayload,
     @Param('user_id') user_id: string,
-    @Body(new ValidationPipe())
-      update_credentials_details: UpdateCredentialsDTO,
+    @Body(new ValidationPipe()) update_credentials_details: UpdateCredentialsDTO,
   ): Promise<UpdateCredentialsResponseDTO> {
-    if (user_id !== http_user.id)
-      throw new HttpException(
-        {
-          status: HttpStatus.UNAUTHORIZED,
-          error: 'Cannot update the credentials of an account that does not belong to you',
-        },
-        HttpStatus.UNAUTHORIZED,
-      );
     try {
       return UpdateCredentialsAdapter.toResponseDTO(
         await this.update_credentials_interactor.execute(
@@ -137,20 +123,10 @@ export class AuthController {
 
   @Delete('user/:user_id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiBearerAuth()
   public async deleteUser(
-    @HttpUser() http_user: HttpUserPayload,
     @Param('user_id') user_id: string,
     @Query('password') password: string
   ) {
-    if (user_id !== http_user.id)
-      throw new HttpException(
-        {
-          status: HttpStatus.UNAUTHORIZED,
-          error: 'Cannot delete an account that does not belong to you',
-        },
-        HttpStatus.UNAUTHORIZED,
-      );
     try {
       await this.delete_user_interactor.execute({ id: user_id, password });
     } catch (e) {
@@ -158,7 +134,6 @@ export class AuthController {
     }
   }
 
-  @Public()
   @Patch('/request-reset-password')
   @HttpCode(HttpStatus.OK)
   public async requestResetPassword(
@@ -173,7 +148,6 @@ export class AuthController {
     }
   }
 
-  @Public()
   @Patch('/reset-password/:token')
   @HttpCode(HttpStatus.OK)
   public async resetPassword(
@@ -192,7 +166,6 @@ export class AuthController {
 
   }
 
-  @Public()
   @Post('val-captcha')
   @HttpCode(HttpStatus.OK)
   public validateCaptcha(@Body() details): Observable<any> {

@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "rootDirs": [
+      "./src",
+      "./test"
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "@application/*": ["src/application/*"],
+      "@test/*": ["test/*"]
+    },
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./test/**/*.ts",
+  ]
+}
