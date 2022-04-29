@@ -54,7 +54,7 @@ type Query {
   searchUsers(search_params: SearchParams!): [User!]!
   followRelationships(user_id: ID!): FollowRelationships!
   story(id: ID!, viewer_id: ID!): Story!
-  storiesOfFollowingUsers(owner_id: String!): [FollowingUsersStories!]!
+  storiesOfFollowingUsers(user_id: String!): [FollowingUsersStories!]!
 }
 
 input SearchParams {

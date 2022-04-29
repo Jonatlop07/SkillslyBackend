@@ -60,7 +60,9 @@ export class AccountResolver {
 
   @Query(() => User)
   public async user(@Args({ name: 'id' }) id: Id) {
+    this.logger.log(`Querying user in user service...`);
     const { account_details } = await this.query_user_service.execute({ id });
+    this.logger.log(`User successfully queried in user service...`);
     return UserMapper.toGraphQLModel(account_details);
   }
 
@@ -102,6 +104,9 @@ export class AccountResolver {
       user_id
     });
     this.logger.log(`User account in user service successfully deleted`);
+    this.logger.log('Deleting user stories in story service...');
+
+    this.logger.log('User stories in story service successfully deleted');
     return UserMapper.toGraphQLModel(deleted_user);
   }
 }

@@ -1,5 +1,5 @@
-import { UserModel } from '@application/common/model/user.model'
+import AuthUserModel from '@application/service/auth/model/auth_user.model'
 
 export default interface DeleteUserRequestResponse {
-  deleted_user: UserModel;
+  deleted_user: AuthUserModel;
 }

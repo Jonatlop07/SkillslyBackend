@@ -123,7 +123,7 @@ export class UserController {
   }
 
   @Delete('account/:user_id')
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @HttpCode(HttpStatus.OK)
   public async deleteUserAccount(
     @Param('user_id') user_id: string,
   ) {

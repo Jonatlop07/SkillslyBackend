@@ -13,9 +13,12 @@ export class QueryUserService implements Requester<QueryUserRequestInput, QueryU
   }
 
   public async execute(input: QueryUserRequestInput): Promise<QueryUserRequestResponse> {
-    return await this.request.getRequest<QueryUserRequestResponse>({
+    console.log(input);
+    const result = await this.request.getRequest<QueryUserRequestResponse>({
       url: `${USER_MS_URL}/user/account/${input.id}`,
       params: {}
     });
+    console.log(result);
+    return result;
   }
 }

@@ -14,8 +14,6 @@ import { HttpTwoFactorAuthService } from '@application/api/http-rest/authenticat
 import { HttpUser } from '@application/api/http-rest/authentication/decorator/http_user';
 import { HttpUserPayload } from '@application/api/http-rest/authentication/types/http_authentication_types';
 import { TwoFactorAuthenticationDTO } from '@application/api/http-rest/authentication/types/two_factor_authentication.dto';
-import { JwtAuth } from '@application/api/http-rest/authentication/decorator/jwt_auth';
-import { DeactivateTwoFactorAuth } from '@application/api/http-rest/authentication/decorator/deactivate_two_factor_auth';
 
 @Controller('2fa')
 @ApiTags('Two Factor Authentication')
@@ -29,9 +27,6 @@ export class TwoFactorAuthController {
 
   @Post('generate')
   @HttpCode(HttpStatus.CREATED)
-  @DeactivateTwoFactorAuth()
-  @JwtAuth()
-  @ApiBearerAuth()
   public async generateQRCode(
     @HttpUser() http_user: HttpUserPayload,
     @Res() response: Response
@@ -43,9 +38,6 @@ export class TwoFactorAuthController {
 
   @Post('turn-on')
   @HttpCode(HttpStatus.OK)
-  @DeactivateTwoFactorAuth()
-  @JwtAuth()
-  @ApiBearerAuth()
   public async activationOfTwoFactorAuth(
     @HttpUser() http_user: HttpUserPayload,
     @Body(ValidationPipe) two_factor_auth_dto: TwoFactorAuthenticationDTO
@@ -58,9 +50,6 @@ export class TwoFactorAuthController {
 
   @Post('authenticate')
   @HttpCode(HttpStatus.OK)
-  @DeactivateTwoFactorAuth()
-  @JwtAuth()
-  @ApiBearerAuth()
   public authenticate(
     @HttpUser() http_user: HttpUserPayload,
     @Body(ValidationPipe) two_factor_auth_dto: TwoFactorAuthenticationDTO

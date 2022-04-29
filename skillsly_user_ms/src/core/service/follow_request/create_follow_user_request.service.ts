@@ -20,16 +20,16 @@ export class CreateFollowUserRequestService implements CreateFollowUserRequestIn
 
   constructor(
     @Inject(UserDITokens.UserRepository)
-    private user_gateway: CreateFollowUserRequestGateway,
+    private gateway: CreateFollowUserRequestGateway,
   ) {
   }
 
   public async execute(input: CreateFollowUserRequestInputModel): Promise<CreateFollowUserRequestOutputModel> {
     const { user_that_requests_id, user_to_follow_id } = input;
-    const requesting_user = await this.user_gateway.findOne({ id: user_that_requests_id });
+    const requesting_user = await this.gateway.findOne({ id: user_that_requests_id });
     if (!requesting_user)
       throw new UserAccountNotFoundException();
-    const user_to_follow = await this.user_gateway.findOne({ id: user_to_follow_id });
+    const user_to_follow = await this.gateway.findOne({ id: user_to_follow_id });
     if (!user_to_follow)
       throw new UserAccountNotFoundException();
     if (user_that_requests_id === user_to_follow_id)
@@ -38,10 +38,10 @@ export class CreateFollowUserRequestService implements CreateFollowUserRequestIn
       user_that_requests_id,
       user_to_follow_id
     };
-    const exists_user_follow_request = await this.user_gateway.existsFollowUserRequest(follow_request);
+    const exists_user_follow_request = await this.gateway.existsFollowUserRequest(follow_request);
     if (exists_user_follow_request)
       throw new FollowUserRequestAlreadyExistsException();
-    await this.user_gateway.createFollowUserRequest(follow_request);
+    await this.gateway.createFollowUserRequest(follow_request);
     return {
       user_details: requesting_user as UserRequestDetailsDTO
     }

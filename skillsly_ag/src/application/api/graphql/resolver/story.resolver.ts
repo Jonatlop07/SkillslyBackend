@@ -49,10 +49,10 @@ export class StoryResolver {
   }
 
   @Query(() => [FollowingUsersStories])
-  public async storiesOfFollowingUsers(@Args({ name: 'owner_id' }) owner_id: Id) {
+  public async storiesOfFollowingUsers(@Args({ name: 'user_id' }) user_id: Id) {
     this.logger.log('Querying following users in user service...');
     const { follow_request_collection: { following_users } } = await this.query_follow_relationships_service.execute({
-      user_id: owner_id
+      user_id
     });
     this.logger.log('Following users successfully queried in user service');
     this.logger.log('Querying stories of following users in story service...');

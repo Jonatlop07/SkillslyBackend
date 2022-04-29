@@ -18,16 +18,12 @@ export class Request {
     const { url, params } = get_params;
     return firstValueFrom(
       this.http_service
-        .get(url, { params })
+        .get<T>(url, { params })
         .pipe(
-          map(
-            (response): T => {
-              if (!response.data.success) {
-                throw new BadGatewayException();
-              }
-              return response.data as T;
-            }
-          )
+          map((response): T => response.data),
+          catchError(err => {
+            throw err;
+          })
         )
     );
   }
@@ -38,11 +34,7 @@ export class Request {
       this.http_service
         .post<T>(url, body, { params })
         .pipe(
-          map(
-            (response: AxiosResponse<T>): T => {
-              return response.data;
-            }
-          ),
+          map((response: AxiosResponse<T>): T => response.data),
           catchError(err => {
             throw err;
           })
@@ -54,16 +46,12 @@ export class Request {
     const { url, params, body } = put_params;
     return firstValueFrom(
       this.http_service
-        .put(url, body, { params })
+        .put<T>(url, body, { params })
         .pipe(
-          map(
-            (response): T => {
-              if (!response.data.success) {
-                throw new BadGatewayException();
-              }
-              return response.data as T;
-            }
-          )
+          map((response): T => response.data),
+          catchError(err => {
+            throw err;
+          })
         )
     );
   }
@@ -72,16 +60,12 @@ export class Request {
     const { url, params, body } = patch_params;
     return firstValueFrom(
       this.http_service
-        .patch(url, body, { params })
+        .patch<T>(url, body, { params })
         .pipe(
-          map(
-            (response): T => {
-              if (!response.data.success) {
-                throw new BadGatewayException();
-              }
-              return response.data as T;
-            }
-          )
+          map((response): T => response.data),
+          catchError(err => {
+            throw err;
+          })
         )
     );
   }
@@ -90,16 +74,12 @@ export class Request {
     const { url, params } = delete_params;
     return firstValueFrom(
       this.http_service
-        .delete(url, { params })
+        .delete<T>(url, { params })
         .pipe(
-          map(
-            (response): T => {
-              if (!response.data.success) {
-                throw new BadGatewayException();
-              }
-              return response.data as T;
-            }
-          )
+          map((response): T => response.data),
+          catchError(err => {
+            throw err;
+          })
         )
     );
   }

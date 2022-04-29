@@ -1,0 +1,106 @@
+mutation {
+    createUserAccount(account_details: {
+        email: "test_email123@test.com",
+        password: "Abc123_tr",
+        name: "User1",
+        date_of_birth: "02/07/2001",
+        gender: "male"
+    }) {
+        id
+    }
+
+    createUserAccount(account_details: {
+        email: "test_email122@test.com",
+        password: "Abc123_tr",
+        name: "User2",
+        date_of_birth: "02/07/2001",
+        gender: "female"
+    }) {
+        id
+    }
+
+    updateUserAccount(user_id: "c45d52ec-10d5-411b-b96a-a6194946bd96", updates: {
+        email: "test_email121@test.com",
+        name: "User1",
+        date_of_birth: "02/07/2001",
+        gender: "male"
+    }) {
+        email
+    }
+
+    deleteUserAccount(user_id: "3e6d5ada-59c8-4ce7-826d-22048a076707", password: "Abc123_tr") {
+        id
+    }
+
+    createStory(story_details: {
+        owner_id: "",
+        description: "This is my story",
+        media_locator: "file:/my_images/image.png"
+    }) {
+        id
+        description
+    }
+
+    createStory(story_details: {
+        owner_id: "",
+        description: "This is another story",
+        media_locator: "file:/my_images/image.png"
+    }) {
+        id
+        description
+    }
+
+    deleteStory(id: "") {
+        id
+    }
+
+    createFollowRequest(user_id: "", user_to_follow_id: "") {
+        name
+        email
+    }
+    updateFollowRequest(user_id: "", user_that_requests_id: "", accept: true){
+        name
+        email
+    }
+    deleteFollowRequest(user_id: "", user_to_follow_id: "", is_follow_request: true) {
+        name
+        email
+    }
+
+    followRelationships(user_id: "c45d52ec-10d5-411b-b96a-a6194946bd96") {
+      followers {
+        name
+        email
+      }
+      following_users {
+        name
+        email
+      }
+      pending_followers {
+        name
+        email
+      }
+      pending_users_to_follow {
+        name
+        email
+      }
+    }
+
+    storiesOfFollowingUsers(user_id: "c45d52ec-10d5-411b-b96a-a6194946bd96") {
+        friend_id
+        stories {
+          id
+          description
+        }
+      }
+}
+
+query {
+    user(id: "") {
+        id
+    }
+
+    story(id: "3f14d987-fd8c-48c3-ad54-251db35c4a47", viewer_id: "") {
+        id
+    }
+}

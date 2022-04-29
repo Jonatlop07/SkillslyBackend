@@ -8,9 +8,7 @@ import { TypeOrmUserMapper } from '@infrastructure/adapter/persistence/typeorm/e
 import { TypeOrmDITokens } from '@infrastructure/adapter/persistence/typeorm/di/typeorm_di_tokens'
 import { TypeOrmUser } from '@infrastructure/adapter/persistence/typeorm/entity/typeorm_user'
 import { TypeOrmUserRepository } from '@infrastructure/adapter/persistence/typeorm/repository/typeorm_user.repository'
-import { FollowRequestDTO } from '@core/domain/use-case/follow_request/persistence/follow_request.dto'
 import { PaginationDTO } from '@core/common/persistence/pagination.dto'
-import FollowRequestCollectionDTO from '@core/domain/use-case/follow_request/dto/follow_request_collection.dto'
 
 @Injectable()
 export class TypeOrmUserRepositoryAdapter implements UserRepository {
@@ -41,7 +39,7 @@ export class TypeOrmUserRepositoryAdapter implements UserRepository {
 
   public async findOne(params: UserQueryModel): Promise<Optional<UserDTO>> {
     const existing_user: TypeOrmUser = await this.repository.findOne({
-      where: params
+      where: { ...params }
     });
     if (existing_user)
       return TypeOrmUserMapper.toDTO(existing_user);
@@ -58,15 +56,12 @@ export class TypeOrmUserRepositoryAdapter implements UserRepository {
   }
 
   public async findAll(params: UserQueryModel, pagination: PaginationDTO): Promise<UserDTO[]> {
-    let where = {};
-    if (params.name) {
-      where['name'] = params.name;
-    }
-    if (params.email) {
-      where['email'] = params.email;
-    }
+    const { name, email } = params;
     const [users]: [Array<TypeOrmUser>, number] = await this.repository.findAndCount({
-      where,
+      where: [
+        { name },
+        { email }
+      ],
       take: pagination.limit,
       skip: pagination.offset
     });
