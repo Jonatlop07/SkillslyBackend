@@ -18,6 +18,12 @@ import { QueryFollowRelationshipsService } from '@application/service/user/reque
 import { CreateFollowUserRequestService } from '@application/service/user/requester/create_follow_user_request.service'
 import { UpdateFollowUserRequestService } from '@application/service/user/requester/update_follow_user_request.service'
 import { DeleteFollowUserRequestService } from '@application/service/user/requester/delete_follow_user_request.service'
+import { StoryDITokens } from '@application/service/story/di/story_di_tokens'
+import { QueryStoryService } from '@application/service/story/requester/query_story.service'
+import { QueryUserStoryCollectionService } from '@application/service/story/requester/query_user_story_collection.service'
+import { CreateStoryService } from '@application/service/story/requester/create_story.service'
+import { DeleteStoryService } from '@application/service/story/requester/delete_story.service'
+import { StoryResolver } from '@application/api/graphql/resolver/story.resolver'
 
 const request_providers = [
   {
@@ -92,9 +98,33 @@ const user_providers: Array<Provider> = [
   }
 ];
 
+const story_providers: Array<Provider> = [
+  {
+    provide: StoryDITokens.QueryStoryService,
+    useFactory: (request) => new QueryStoryService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: StoryDITokens.QueryStoryCollectionService,
+    useFactory: (request) => new QueryUserStoryCollectionService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: StoryDITokens.CreateStoryService,
+    useFactory: (request) => new CreateStoryService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: StoryDITokens.DeleteStoryService,
+    useFactory: (request) => new DeleteStoryService(request),
+    inject: [RequestDITokens.Request]
+  }
+];
+
 const resolvers: Array<Provider> = [
   AccountResolver,
-  SocialResolver
+  SocialResolver,
+  StoryResolver
 ];
 
 @Module({
@@ -108,6 +138,7 @@ const resolvers: Array<Provider> = [
     ...request_providers,
     ...auth_providers,
     ...user_providers,
+    ...story_providers,
     ...resolvers
   ]
 })

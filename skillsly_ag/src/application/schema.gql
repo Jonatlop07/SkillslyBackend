@@ -13,9 +13,48 @@ type User {
   updated_at: String
 }
 
+type FollowRelationships {
+  pending_followers: [User!]!
+  pending_users_to_follow: [User!]!
+  followers: [User!]!
+  following_users: [User!]!
+}
+
+type FollowRequestDetails {
+  id: ID!
+  name: String!
+  email: String!
+  gender: String!
+}
+
+"""Defines the content of a story view"""
+type StoryView {
+  story_id: ID!
+  viewer_id: ID!
+  viewed_at: String!
+}
+
+"""Defines the structure of stories"""
+type Story {
+  id: ID!
+  owner_id: ID!
+  description: String
+  media_locator: String
+  created_at: String!
+  views: [StoryView!]!
+}
+
+type FollowingUsersStories {
+  friend_id: ID!
+  stories: [Story!]!
+}
+
 type Query {
-  queryUser(id: String!): User!
+  user(id: String!): User!
   searchUsers(search_params: SearchParams!): [User!]!
+  followRelationships(user_id: ID!): FollowRelationships!
+  story(id: ID!, viewer_id: ID!): Story!
+  storiesOfFollowingUsers(owner_id: String!): [FollowingUsersStories!]!
 }
 
 input SearchParams {
@@ -29,6 +68,11 @@ type Mutation {
   createUserAccount(account_details: NewUser!): User!
   updateUserAccount(user_id: ID!, updates: UserAccountUpdates!): User!
   deleteUserAccount(user_id: ID!, password: String): User!
+  createFollowRequest(user_id: ID!, user_to_follow_id: ID!): FollowRequestDetails!
+  updateFollowRequest(user_id: ID!, user_that_requests_id: ID!, accept: Boolean!): FollowRequestDetails!
+  deleteFollowRequest(user_id: ID!, user_to_follow_id: ID!, is_follow_request: Boolean!): FollowRequestDetails!
+  createStory(story_details: StoryDetails!): Story!
+  deleteStory(id: String!): Story!
 }
 
 input NewUser {
@@ -44,4 +88,10 @@ input UserAccountUpdates {
   name: String
   date_of_birth: String
   gender: String
+}
+
+input StoryDetails {
+  owner_id: ID!
+  description: String
+  media_locator: String
 }
