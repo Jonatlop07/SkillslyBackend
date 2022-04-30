@@ -103,4 +103,11 @@ query {
     story(id: "3f14d987-fd8c-48c3-ad54-251db35c4a47", viewer_id: "") {
         id
     }
+
+    users(search_params: {
+        email: "",
+        name: ""
+    }) {
+        id
+    }
 }

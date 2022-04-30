@@ -47,5 +47,6 @@ pub trait StoryService: Send + Sync {
     async fn create_story(&self, req: CreateStory) -> Result<Story, ServiceError>;
     async fn query_story(&self, req: QueryStoryWithViews) -> Result<Story, ServiceError>;
     async fn query_story_collection(&self, req: QueryStoryCollection) -> Result<Vec<Story>, ServiceError>;
+    async fn delete_story_collection(&self, req: QueryStoryCollection) -> Result<Vec<Story>, ServiceError>;
     async fn delete_story(&self, req: QueryStory) -> Result<Story, ServiceError>;
 }

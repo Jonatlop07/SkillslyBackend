@@ -51,7 +51,7 @@ type FollowingUsersStories {
 
 type Query {
   user(id: String!): User!
-  searchUsers(search_params: SearchParams!): [User!]!
+  users(search_params: SearchParams!): [User!]!
   followRelationships(user_id: ID!): FollowRelationships!
   story(id: ID!, viewer_id: ID!): Story!
   storiesOfFollowingUsers(user_id: String!): [FollowingUsersStories!]!

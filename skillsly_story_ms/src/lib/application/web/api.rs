@@ -36,7 +36,7 @@ impl From<ServiceError> for ApiError {
 }
 
 pub fn configure_routes() -> Vec<Route> {
-    routes!(create_story, query_story, query_story_collection, delete_story)
+    routes!(create_story, query_story, query_story_collection, delete_story_collection, delete_story)
 }
 
 #[rocket::post("/stories", data = "<req>")]
@@ -83,6 +83,21 @@ pub async fn query_story_collection(
         Ok(req) => {
             let stories = service.query_story_collection(req).await?;
             return Ok(Json(stories));
+        },
+        Err(e) => Err(ApiError::from(ServiceError::from(StoryError::Id(e))))
+    }
+}
+
+#[rocket::delete("/user/<user_id>/stories")]
+pub async fn delete_story_collection(
+    user_id: &str,
+    service: &State<Box<dyn StoryService>>
+) -> Result<Json<Vec<crate::Story>>, ApiError> {
+    use service::ask::query::QueryStoryCollection;
+    match QueryStoryCollection::from_str(user_id) {
+        Ok(req) => {
+            let stories = service.delete_story_collection(req).await?;
+            return Ok(Json(stories))
         },
         Err(e) => Err(ApiError::from(ServiceError::from(StoryError::Id(e))))
     }

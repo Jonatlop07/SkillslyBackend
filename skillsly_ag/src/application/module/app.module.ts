@@ -24,6 +24,7 @@ import { QueryUserStoryCollectionService } from '@application/service/story/requ
 import { CreateStoryService } from '@application/service/story/requester/create_story.service'
 import { DeleteStoryService } from '@application/service/story/requester/delete_story.service'
 import { StoryResolver } from '@application/api/graphql/resolver/story.resolver'
+import { DeleteUserStoryCollectionService } from '@application/service/story/requester/delete_user_story_collection.service'
 
 const request_providers = [
   {
@@ -118,7 +119,12 @@ const story_providers: Array<Provider> = [
     provide: StoryDITokens.DeleteStoryService,
     useFactory: (request) => new DeleteStoryService(request),
     inject: [RequestDITokens.Request]
-  }
+  },
+  {
+    provide: StoryDITokens.DeleteStoryCollectionService,
+    useFactory: (request) => new DeleteUserStoryCollectionService(request),
+    inject: [RequestDITokens.Request]
+  },
 ];
 
 const resolvers: Array<Provider> = [

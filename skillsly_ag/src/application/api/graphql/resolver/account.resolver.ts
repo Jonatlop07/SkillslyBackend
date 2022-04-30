@@ -14,6 +14,9 @@ import { UpdateAccountService } from '@application/service/user/requester/update
 import { Id } from '@application/common/type/common_types'
 import { DeleteUserService } from '@application/service/auth/requester/delete_user.service'
 import { DeleteAccountService } from '@application/service/user/requester/delete_account.service'
+import { QueryFollowRelationshipsService } from '@application/service/user/requester/query_follow_relationships.service'
+import { StoryDITokens } from '@application/service/story/di/story_di_tokens'
+import { DeleteUserStoryCollectionService } from '@application/service/story/requester/delete_user_story_collection.service'
 
 @Resolver(() => User)
 export class AccountResolver {
@@ -33,7 +36,11 @@ export class AccountResolver {
     @Inject(AuthDITokens.DeleteUserService)
     private readonly delete_user_service: DeleteUserService,
     @Inject(UserDITokens.DeleteAccountService)
-    private readonly delete_account_service: DeleteAccountService
+    private readonly delete_account_service: DeleteAccountService,
+    @Inject(UserDITokens.QueryFollowRelationshipsService)
+    private readonly query_follow_relationships_service: QueryFollowRelationshipsService,
+    @Inject(StoryDITokens.DeleteStoryCollectionService)
+    private readonly delete_story_collection_service: DeleteUserStoryCollectionService,
   ) {}
 
   @Mutation(() => User)
@@ -105,7 +112,10 @@ export class AccountResolver {
     });
     this.logger.log(`User account in user service successfully deleted`);
     this.logger.log('Deleting user stories in story service...');
-
+    const response = await this.delete_story_collection_service.execute({
+      owner_id: user_id
+    });
+    this.logger.log(`Deleted stories: ${response}`);
     this.logger.log('User stories in story service successfully deleted');
     return UserMapper.toGraphQLModel(deleted_user);
   }

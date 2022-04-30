@@ -34,7 +34,7 @@ export class SocialResolver {
   ) {}
 
   @Query(() => [User])
-  public async searchUsers(@Args({ name: 'search_params', type: () => SearchParams }) search_params: SearchParams) {
+  public async users(@Args({ name: 'search_params', type: () => SearchParams }) search_params: SearchParams) {
     this.logger.log(`Searching user in user service...`);
     const { users } = await this.search_users_service.execute({
       ...search_params
