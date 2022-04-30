@@ -55,4 +55,5 @@ Depending on whether the service is running locally or in docker, PORT is 8000 o
 *Body:* `{ "owner_id": "...UUIDv4...", "description": "...", "media_locator": "..." }`
 - **Query story:** `GET to http://localhost:PORT/stories/<story_id>?viewer_id=<viewer_id>`
 - **Query stories of user:** `GET to http://localhost:PORT/user/<user_id>/stories`
+- **Delete stories of user:** `DELETE to http://localhost:PORT/user/<user_id>/stories`
 - **Delete story:** `DELETE to http://localhost:PORT/stories/<story_id>`

@@ -7,7 +7,7 @@ use crate::infrastructure::data::story::model::{CreateStory, DeleteStory, QueryS
 use crate::infrastructure::data::story::Result;
 
 pub struct PostgresStoryRepositoryImpl {
-    pub db_pool: Arc<DatabasePool>
+    pub db_pool: Arc<DatabasePool>,
 }
 
 #[async_trait]
@@ -89,24 +89,34 @@ impl StoryRepository for PostgresStoryRepositoryImpl {
 
     async fn query_collection<M: Into<QueryStoryCollection> + Send>(&self, model: M) -> Result<Vec<Story>> {
         let model = model.into();
-        let owner_id = model.owner_id;
         Ok(
             sqlx::query_as!(
                 Story,
                 "SELECT * FROM skillsly_story.story WHERE owner_id = $1",
-                owner_id
+                model.owner_id
             )
                 .fetch_all(&*self.db_pool)
                 .await?
         )
     }
 
+    async fn delete_collection<M: Into<QueryStoryCollection> + Send>(&self, model: M) -> Result<()> {
+        let model = model.into();
+        sqlx::query!(
+            "DELETE FROM skillsly_story.story WHERE owner_id = $1",
+            model.owner_id
+        )
+            .execute(&*self.db_pool)
+            .await?;
+        Ok(())
+    }
+
     async fn delete<M: Into<DeleteStory> + Send>(&self, model: M) -> Result<()> {
         let model = model.into();
         sqlx::query!(
-                "DELETE FROM skillsly_story.story WHERE story.story_id = $1",
-                model.story_id
-            )
+            "DELETE FROM skillsly_story.story WHERE story_id = $1",
+            model.story_id
+        )
             .execute(&*self.db_pool)
             .await?;
         Ok(())

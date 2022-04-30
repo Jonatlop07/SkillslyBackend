@@ -3,4 +3,5 @@ export class StoryDITokens {
   public static readonly QueryStoryCollectionService: unique symbol = Symbol('QueryStoryCollectionService');
   public static readonly CreateStoryService: unique symbol = Symbol('CreateStoryService');
   public static readonly DeleteStoryService: unique symbol = Symbol('DeleteStoryService');
+  public static readonly DeleteStoryCollectionService: unique symbol = Symbol('DeleteStoryCollectionService');
 }
