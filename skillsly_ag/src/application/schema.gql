@@ -13,9 +13,39 @@ type User {
   updated_at: String
 }
 
+"""Defines the information of a comment"""
+type Comment {
+  _id: ID!
+  owner_id: String!
+  post_id: String
+  description: String
+  media_locator: String
+  inner_comment_count: Int
+  created_at: String!
+  updated_at: String
+}
+
+type CommentContent {
+  description: String
+  media_locator: String
+}
+
+"""Defines the information of a comment"""
+type InnerComment {
+  _id: ID!
+  owner_id: String!
+  comment_id: String
+  description: String
+  media_locator: String
+  created_at: String!
+  updated_at: String
+}
+
 type Query {
   queryUser(id: String!): User!
   searchUsers(search_params: SearchParams!): [User!]!
+  queryComments(post_id: ID!, comments_pagination: PaginationParams!): [Comment!]!
+  queryInnerComments(inner_comments_pagination: PaginationParams!, comment_id: ID!): [InnerComment!]!
 }
 
 input SearchParams {
@@ -25,10 +55,21 @@ input SearchParams {
   offset: Int
 }
 
+input PaginationParams {
+  limit: Int
+  page: Int
+}
+
 type Mutation {
   createUserAccount(account_details: NewUser!): User!
   updateUserAccount(user_id: ID!, updates: UserAccountUpdates!): User!
   deleteUserAccount(user_id: ID!, password: String): User!
+  createComment(comment_details: NewComment!, post_id: ID!): Comment!
+  updateComment(comment_id: ID!, new_content: CommentContentUpdate!): CommentContent!
+  deleteComment(comment_id: ID!): String!
+  createInnerComment(inner_comment_details: NewInnerComment!, comment_id: ID!): InnerComment!
+  updateInnerComment(inner_comment_id: ID!, new_content: CommentContentUpdate!): CommentContent!
+  deleteInnerComment(inner_comment_id: ID!): String!
 }
 
 input NewUser {
@@ -44,4 +85,21 @@ input UserAccountUpdates {
   name: String
   date_of_birth: String
   gender: String
+}
+
+input NewComment {
+  owner_id: ID!
+  description: String
+  media_locator: String
+}
+
+input CommentContentUpdate {
+  description: String
+  media_locator: String
+}
+
+input NewInnerComment {
+  owner_id: ID!
+  description: String
+  media_locator: String
 }

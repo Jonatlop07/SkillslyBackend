@@ -1,17 +1,9 @@
-import { UserModel } from '@application/common/model/user.model'
-import { Id } from '@application/common/type/common_types'
+import { UserModel } from '@application/common/model/user.model';
 
 export class UserMapper {
   public static toGraphQLModel(user: UserModel) {
-    const {
-      id,
-      email,
-      name,
-      date_of_birth,
-      gender,
-      created_at,
-      updated_at,
-    } = user;
+    const { id, email, name, date_of_birth, gender, created_at, updated_at } =
+      user;
     return {
       id,
       email,
@@ -19,7 +11,7 @@ export class UserMapper {
       date_of_birth,
       gender,
       created_at,
-      updated_at
-    }
+      updated_at,
+    };
   }
 }
