@@ -37,6 +37,7 @@ export class CommentResolver {
     comment_details: NewComment,
     @Args({ name: 'post_id', type: () => ID }) post_id: Id,
   ) {
+    //to do: validate if posts exists
     this.logger.log('Creating comment in comment ms');
     const { _id, owner_id, content, created_at } =
       await this.create_comment_service.execute({

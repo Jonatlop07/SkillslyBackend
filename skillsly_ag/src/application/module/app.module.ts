@@ -37,6 +37,8 @@ import { CreateStoryService } from '@application/service/story/requester/create_
 import { DeleteStoryService } from '@application/service/story/requester/delete_story.service';
 import { StoryResolver } from '@application/api/graphql/resolver/story.resolver';
 import { DeleteUserStoryCollectionService } from '@application/service/story/requester/delete_user_story_collection.service';
+import { DeleteCommentsByOwnerService } from '@application/service/comments/comment/requester/delete_owner_comments.service';
+import { DeleteInnerCommentsByOwnerService } from '@application/service/comments/inner_comment/requester/delete_owner_inner_comments.service';
 
 const request_providers = [
   {
@@ -161,6 +163,11 @@ const comment_providers: Array<Provider> = [
     inject: [RequestDITokens.Request],
   },
   {
+    provide: CommentDITokens.DeleteCommentsByOwnerService,
+    useFactory: (request) => new DeleteCommentsByOwnerService(request),
+    inject: [RequestDITokens.Request],
+  },
+  {
     provide: InnerCommentDITokens.CreateInnerCommentService,
     useFactory: (request) => new CreateInnerCommentService(request),
     inject: [RequestDITokens.Request],
@@ -178,6 +185,11 @@ const comment_providers: Array<Provider> = [
   {
     provide: InnerCommentDITokens.DeleteInnerCommentService,
     useFactory: (request) => new DeleteInnerCommentService(request),
+    inject: [RequestDITokens.Request],
+  },
+  {
+    provide: InnerCommentDITokens.DeleteInnerCommentsByOwnerService,
+    useFactory: (request) => new DeleteInnerCommentsByOwnerService(request),
     inject: [RequestDITokens.Request],
   },
 ];

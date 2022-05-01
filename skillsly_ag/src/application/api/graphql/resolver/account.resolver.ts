@@ -17,6 +17,10 @@ import { DeleteAccountService } from '@application/service/user/requester/delete
 import { QueryFollowRelationshipsService } from '@application/service/user/requester/query_follow_relationships.service';
 import { StoryDITokens } from '@application/service/story/di/story_di_tokens';
 import { DeleteUserStoryCollectionService } from '@application/service/story/requester/delete_user_story_collection.service';
+import { CommentDITokens } from '@application/service/comments/comment/di/comment_di_tokens';
+import { DeleteCommentsByOwnerService } from '@application/service/comments/comment/requester/delete_owner_comments.service';
+import { DeleteInnerCommentsByOwnerService } from '@application/service/comments/inner_comment/requester/delete_owner_inner_comments.service';
+import { InnerCommentDITokens } from '@application/service/comments/inner_comment/di/inner_comment_di_tokens';
 
 @Resolver(() => User)
 export class AccountResolver {
@@ -41,6 +45,10 @@ export class AccountResolver {
     private readonly query_follow_relationships_service: QueryFollowRelationshipsService,
     @Inject(StoryDITokens.DeleteStoryCollectionService)
     private readonly delete_story_collection_service: DeleteUserStoryCollectionService,
+    @Inject(CommentDITokens.DeleteCommentsByOwnerService)
+    private readonly delete_user_comments_service: DeleteCommentsByOwnerService,
+    @Inject(InnerCommentDITokens.DeleteInnerCommentsByOwnerService)
+    private readonly delete_user_inner_comments_service: DeleteInnerCommentsByOwnerService,
   ) {}
 
   @Mutation(() => User)
@@ -119,6 +127,16 @@ export class AccountResolver {
     });
     this.logger.log(`Deleted stories: ${response}`);
     this.logger.log('User stories in story service successfully deleted');
+    this.logger.log(
+      'Deleting user comments and inner comments in comment service...',
+    );
+    await this.delete_user_comments_service.execute({
+      owner_id: user_id,
+    });
+    await this.delete_user_inner_comments_service.execute({
+      owner_id: user_id,
+    });
+    this.logger.log('User comments succesfully deleted');
     return UserMapper.toGraphQLModel(deleted_user);
   }
 }
