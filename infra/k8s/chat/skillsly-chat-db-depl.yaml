@@ -1,37 +1,39 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: skillsly_post_db_depl
+  name: skillsly-chat-db-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: skillsly_post_db
+      app: skillsly-chat-db
   template:
     metadata:
       labels:
-        app: skillsly_post_db
+        app: skillsly-chat-db
     spec:
       containers:
-        - name: skillsly_post_db
+        - name: skillsly-chat-db
           image: mongo:latest
           env:
-            - name: MONGO_DATA_PATH
+            - name: MONGO_DATA_DIR
               value: /data/db
-            - name: MONGO_LOG_PATH
+            - name: MONGO_LOG_DIR
               value: /dev/null
             - name: MONGODB_DATABASE
-              value: skillsly_story_db
+              value: skillsly_chat_db
+          command: ['mongod']
+          args: ['--logpath=/dev/null']
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: skillsly_post_db_srv
+  name: skillsly-chat-db-srv
 spec:
   selector:
-    app: skillsly_post_db
+    app: skillsly-chat-db
   ports:
     - name: db
       protocol: TCP
       port: 27017
-      targetPort: 8094
+      targetPort: 27017

@@ -40,8 +40,8 @@ build:
         manual:
           - src: 'src/**/*.rs'
             dest: .
-    - image: skillsly_post_ms
-      context: skillsly_post_ms
+    - image: skillsly_posts_ms
+      context: skillsly_posts_ms
       docker:
         dockerfile: Dockerfile
       sync:
@@ -55,14 +55,6 @@ build:
       sync:
         manual:
           - src: 'src/**/*.js'
-            dest: .
-    - image: skillsly_chat_ms
-      context: skillsly_chat_ms
-      docker:
-        dockerfile: Dockerfile
-      sync:
-        manual:
-          - src: './**/*.go'
             dest: .
     - image: skillsly_service_ms
       context: skillsly_service_ms

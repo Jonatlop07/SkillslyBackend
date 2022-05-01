@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: skillsly_service_ms_depl
+  name: skillsly-service-ms-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: skillsly_service_ms
+      app: skillsly-service-ms
   template:
     metadata:
       labels:
-        app: skillsly_service_ms
+        app: skillsly-service-ms
     spec:
       containers:
-        - name: skillsly_service_ms
-          image: skillsly_service_ms
+        - name: skillsly-service-ms
+          image: skillsly-service-ms
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: skillsly_service_ms_srv
+  name: skillsly-service-ms-srv
 spec:
   selector:
-    app: skillsly_service_ms
+    app: skillsly-service-ms
   ports:
     - name: service
       protocol: TCP
       port: 7000
-      targetPort: 8007
+      targetPort: 7000

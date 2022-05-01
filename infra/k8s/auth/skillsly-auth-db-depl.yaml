@@ -1,0 +1,74 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: skillsly-auth-db-pv-volume
+  labels:
+    type: local
+    app: skillsly-auth-db
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Mi
+  accessModes:
+    - ReadOnlyMany
+  hostPath:
+    path: /mnt/db-auth-data
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: skillsly-auth-db-pv-claim
+  labels:
+    app: skillsly-auth-db
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 10Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly-auth-db-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly-auth-db
+  template:
+    metadata:
+      labels:
+        app: skillsly-auth-db
+    spec:
+      containers:
+        - name: skillsly-auth-db
+          image: postgres:latest
+          env:
+            - name: POSTGRES_USER
+              value: skillsly
+            - name: POSTGRES_PASSWORD
+              value: auth
+            - name: POSTGRES_DB
+              value: skillsly_auth_db
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/db-auth-data
+              name: skillsly-auth-db-v
+      volumes:
+        - name: skillsly-auth-db-v
+          persistentVolumeClaim:
+            claimName: skillsly-auth-db-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly-auth-db-srv
+spec:
+  selector:
+    app: skillsly-auth-db
+  ports:
+    - name: db
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
