@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: skillsly_comment_ms_depl
+  name: skillsly-comment-ms-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: skillsly_comment_ms
+      app: skillsly-comment-ms
   template:
     metadata:
       labels:
-        app: skillsly_comment_ms
+        app: skillsly-comment-ms
     spec:
       containers:
-        - name: skillsly_comment_ms
-          image: skillsly_comment_ms
+        - name: skillsly-comment-ms
+          image: skillsly-comment-ms
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: skillsly_comment_ms_srv
+  name: skillsly-comment-ms-srv
 spec:
   selector:
-    app: skillsly_comment_ms
+    app: skillsly-comment-ms
   ports:
     - name: comment
       protocol: TCP

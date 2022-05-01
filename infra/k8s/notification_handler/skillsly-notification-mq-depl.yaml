@@ -19,16 +19,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: skillsly_notification_mq_srv
+  name: skillsly-notification-mq-srv
 spec:
   selector:
-    app: skillsly_notification_mq
+    app: skillsly-notification-mq
   ports:
-    - name: rabbit_mq
+    - name: rabbit-mq
         protocol: TCP
         port: 5672
         targetPort: 5672
-    - name: rabbit_mq_management
+    - name: rabbit-mq-management
         protocol: TCP
         port: 15672
         targetPort: 15672

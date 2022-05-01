@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly-auth-ms-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly-auth-ms
+  template:
+    metadata:
+      labels:
+        app: skillsly-auth-ms
+    spec:
+      containers:
+        - name: skillsly-auth-ms
+          image: jonatlop07/skillsly-auth-ms:latest
+          env:
+            - name: API_HOST
+              value: '0.0.0.0'
+            - name: API_PORT
+              value: '3000'
+            - name: API_ENABLE_LOG
+              value: 'true'
+            - name: DATABASE_URL
+              value: 'postgres://skillsly:auth@skillsly-auth-db-srv:5432/skillsly_auth_db'
+            - name: AUTH_DB_ENABLE_LOG
+              value: 'true'
+            - name: JWT_SECRET
+              value: 'Rx334Juo_a2'
+            - name: JWT_EXPIRATION_TIME
+              value: '60'
+            - name: THROTTLE_TTL
+              value: '60'
+            - name: THROTTLE_LIMIT
+              value: '200'
+            - name: TWO_FACTOR_AUTHENTICATION_APP_NAME
+              value: 'skillsly'
+            - name: CAPTCHA_SITE_KEY
+              value: '6Le-PfMdAAAAAPbJ8IEDDRkETuRyWBbDViisYyIe'
+            - name: MAILER_HOST
+              value: 'smtp.gmail.com'
+            - name: MAILER_PORT
+              value: '465'
+            - name: MAILER_IGNORE_TLS
+              value: 'false'
+            - name: MAILER_SECURE
+              value: 'false'
+            - name: USER_MAILER
+              value: 'SkillslyTeam@gmail.com'
+            - name: PASS_MAILER
+              value: 'kdeddnrigplubqdj'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly-auth-ms-srv
+spec:
+  selector:
+    app: skillsly-auth-ms
+  ports:
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

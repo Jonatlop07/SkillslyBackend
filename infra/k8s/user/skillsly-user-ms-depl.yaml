@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly-user-ms-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly-user-ms
+  template:
+    metadata:
+      labels:
+        app: skillsly-user-ms
+    spec:
+      containers:
+        - name: skillsly-user-ms
+          image: jonatlop07/skillsly-user-ms:latest
+          env:
+            - name: API_HOST
+              value: '0.0.0.0'
+            - name: API_PORT
+              value: '3000'
+            - name: API_ENABLE_LOG
+              value: 'true'
+            - name: DATABASE_URL
+              value: 'postgres://skillsly:user@skillsly-user-db-srv:5432/skillsly_user_db'
+            - name: USER_DB_ENABLE_LOG
+              value: 'true'
+            - name: THROTTLE_TTL
+              value: '60'
+            - name: THROTTLE_LIMIT
+              value: '200'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly-user-ms-srv
+spec:
+  selector:
+    app: skillsly-user-ms
+  ports:
+    - name: user
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

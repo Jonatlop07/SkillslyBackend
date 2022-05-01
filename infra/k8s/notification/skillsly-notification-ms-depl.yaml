@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly-notification-ms-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly-notification-ms
+  template:
+    metadata:
+      labels:
+        app: skillsly-notification-ms
+    spec:
+      containers:
+        - name: skillsly-notification-ms
+          image: jonatlop07/skillsly-notification-ms
+          env:
+            - name: API_HOST
+              value: '0.0.0.0'
+            - name: API_PORT
+              value: '3000'
+            - name: API_ENABLE_LOG
+              value: 'true'
+            - name: DATABASE_URL
+              value: 'postgres://skillsly:notification@skillsly-notification-db-srv:5432/skillsly_notification_db'
+            - name: NOTIFICATION_DB_ENABLE_LOG
+              value: 'true'
+            - name: MQ_PROTOCOL
+              value: 'amqp'
+            - name: MQ_HOST
+              value: 'skillsly-notification-mq-srv'
+            - name: MQ_PORT
+              value: '5672'
+            - name: MQ_USERNAME
+              value: 'skillsly_notification'
+            - name: MQ_PASSWORD
+              value: 'notification'
+            - name: MQ_QUEUE
+              value: 'notifications_queue'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly-notification-ms-srv
+spec:
+  selector:
+    app: skillsly-notification-ms
+  ports:
+    - name: notification
+      protocol: TCP
+      port: 3000
+      targetPort: 8009
