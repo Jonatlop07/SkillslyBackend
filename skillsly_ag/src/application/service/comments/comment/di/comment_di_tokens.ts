@@ -11,4 +11,7 @@ export class CommentDITokens {
   public static readonly DeleteCommentService: unique symbol = Symbol(
     'DeleteCommentService',
   );
+  public static readonly DeleteCommentsByOwnerService: unique symbol = Symbol(
+    'DeleteCommentsByOwnerService',
+  );
 }

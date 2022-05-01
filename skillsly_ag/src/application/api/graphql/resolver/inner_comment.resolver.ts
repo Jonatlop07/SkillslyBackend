@@ -3,7 +3,7 @@ import { Inject, Logger } from '@nestjs/common';
 import { Id } from '@application/common/type/common_types';
 import { PaginationParams } from '../model/comment/input/pagination_params';
 import { CommentContentUpdate } from '../model/comment/input/comment_content_update';
-import { InnerCommentDITokens } from '@application/service/comments/inner_comment/di/inner_token_di_tokens';
+import { InnerCommentDITokens } from '@application/service/comments/inner_comment/di/inner_comment_di_tokens';
 import { CreateInnerCommentService } from '@application/service/comments/inner_comment/requester/create_comment.service';
 import { DeleteInnerCommentService } from '@application/service/comments/inner_comment/requester/delete_comment.service';
 import { QueryInnerCommentsService } from '@application/service/comments/inner_comment/requester/query_comments.service';

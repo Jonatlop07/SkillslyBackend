@@ -23,7 +23,7 @@ import { CreateInnerCommentService } from '@application/service/comments/inner_c
 import { DeleteInnerCommentService } from '@application/service/comments/inner_comment/requester/delete_comment.service';
 import { QueryInnerCommentsService } from '@application/service/comments/inner_comment/requester/query_comments.service';
 import { UpdateInnerCommentService } from '@application/service/comments/inner_comment/requester/update_comment.service';
-import { InnerCommentDITokens } from '@application/service/comments/inner_comment/di/inner_token_di_tokens';
+import { InnerCommentDITokens } from '@application/service/comments/inner_comment/di/inner_comment_di_tokens';
 import { CommentResolver } from '@application/api/graphql/resolver/comment.resolver';
 import { InnerCommentResolver } from '@application/api/graphql/resolver/inner_comment.resolver';
 

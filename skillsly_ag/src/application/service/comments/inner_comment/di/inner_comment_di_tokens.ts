@@ -11,4 +11,6 @@ export class InnerCommentDITokens {
   public static readonly DeleteInnerCommentService: unique symbol = Symbol(
     'DeleteInnerCommentService',
   );
+  public static readonly DeleteInnerCommentsByOwnerService: unique symbol =
+    Symbol('DeleteInnerCommentsByOwnerService');
 }
