@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly_storage_ms_depl.yaml
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly_storage_ms
+  template:
+    metadata:
+      labels:
+        app: skillsly_storage_ms
+    spec:
+      containers:
+        - name: skillsly_storage_ms
+          image: skillsly_storage_ms
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly_storage_ms_srv
+spec:
+  selector:
+    app: skillsly_storage_ms
+  ports:
+    - name: storage
+      protocol: TCP
+      port: 4000
+      targetPort: 8008

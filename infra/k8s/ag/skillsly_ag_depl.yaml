@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly_ag_depl.yaml
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly_ag
+  template:
+    metadata:
+      labels:
+        app: skillsly_ag
+    spec:
+      containers:
+        - name: skillsly_ag
+          image: skillsly_ag
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly_ag_srv
+spec:
+  selector:
+    app: skillsly_ag
+  ports:
+    - name: api_gateway
+      protocol: TCP
+      port: 3000
+      targetPort: 8000
