@@ -3,7 +3,7 @@ import {
   RequestParamsWithoutBody,
 } from '@application/common/request/request_params';
 import { HttpService } from '@nestjs/axios';
-import { BadGatewayException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { catchError, firstValueFrom, map } from 'rxjs';
 import { AxiosResponse } from 'axios';
 
@@ -14,12 +14,10 @@ export class Request {
   public getRequest<T>(get_params: RequestParamsWithoutBody): Promise<T> {
     const { url, params } = get_params;
     return firstValueFrom(
-      this.http_service.get(url, { params }).pipe(
-        map((response): T => {
-          if (!response.data) {
-            throw new BadGatewayException();
-          }
-          return response.data as T;
+      this.http_service.get<T>(url, { params }).pipe(
+        map((response): T => response.data),
+        catchError((err) => {
+          throw err;
         }),
       ),
     );
@@ -29,9 +27,7 @@ export class Request {
     const { url, params, body } = post_params;
     return firstValueFrom(
       this.http_service.post<T>(url, body, { params }).pipe(
-        map((response: AxiosResponse<T>): T => {
-          return response.data;
-        }),
+        map((response: AxiosResponse<T>): T => response.data),
         catchError((err) => {
           throw err;
         }),
@@ -42,12 +38,10 @@ export class Request {
   public putRequest<T>(put_params: RequestParamsWithBody): Promise<T> {
     const { url, params, body } = put_params;
     return firstValueFrom(
-      this.http_service.put(url, body, { params }).pipe(
-        map((response): T => {
-          if (!response.data) {
-            throw new BadGatewayException();
-          }
-          return response.data as T;
+      this.http_service.put<T>(url, body, { params }).pipe(
+        map((response): T => response.data),
+        catchError((err) => {
+          throw err;
         }),
       ),
     );
@@ -56,12 +50,10 @@ export class Request {
   public patchRequest<T>(patch_params: RequestParamsWithBody): Promise<T> {
     const { url, params, body } = patch_params;
     return firstValueFrom(
-      this.http_service.patch(url, body, { params }).pipe(
-        map((response): T => {
-          if (!response.data.success) {
-            throw new BadGatewayException();
-          }
-          return response.data as T;
+      this.http_service.patch<T>(url, body, { params }).pipe(
+        map((response): T => response.data),
+        catchError((err) => {
+          throw err;
         }),
       ),
     );
@@ -70,12 +62,10 @@ export class Request {
   public deleteRequest<T>(delete_params: RequestParamsWithoutBody): Promise<T> {
     const { url, params } = delete_params;
     return firstValueFrom(
-      this.http_service.delete(url, { params }).pipe(
-        map((response): T => {
-          if (!response.data) {
-            throw new BadGatewayException();
-          }
-          return response.data as T;
+      this.http_service.delete<T>(url, { params }).pipe(
+        map((response): T => response.data),
+        catchError((err) => {
+          throw err;
         }),
       ),
     );

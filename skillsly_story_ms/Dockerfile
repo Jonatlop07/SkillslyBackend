@@ -10,7 +10,7 @@ RUN sqlx database setup --database-url $DATABASE_URL
 
 ENV ROCKET_ADDRESS=0.0.0.0
 ENV ROCKET_PORT=8000
-    
+
 RUN cargo install --bin skillsly_story_ms --path .
 
 FROM debian:buster-slim

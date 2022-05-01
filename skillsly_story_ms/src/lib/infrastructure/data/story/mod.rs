@@ -15,5 +15,6 @@ pub trait StoryRepository {
     async fn query_story_views<M: Into<model::QueryStory> + Send>(&self, model: M) -> Result<Vec<StoryView>>;
     async fn add_story_view<M: Into<model::AddStoryView> + Send>(&self, model: M) -> Result<()>;
     async fn query_collection<M: Into<model::QueryStoryCollection> + Send>(&self, model: M) -> Result<Vec<Story>>;
+    async fn delete_collection<M: Into<model::QueryStoryCollection> + Send>(&self, model: M) -> Result<()>;
     async fn delete<M: Into<model::DeleteStory> + Send>(&self, model: M) -> Result<()>;
 }

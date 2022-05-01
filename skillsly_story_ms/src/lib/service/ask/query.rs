@@ -54,7 +54,7 @@ impl From<QueryStoryWithViews> for QueryStory {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct QueryStoryCollection(Id);
 
 impl QueryStoryCollection {

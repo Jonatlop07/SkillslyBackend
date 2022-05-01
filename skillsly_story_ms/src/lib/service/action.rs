@@ -1,5 +1,5 @@
 use std::borrow::Borrow;
-use async_trait::async_trait;   
+use async_trait::async_trait;
 
 use crate::domain::Story;
 use crate::infrastructure::data::story::{model, StoryRepository};
@@ -57,7 +57,13 @@ impl<G> StoryService for StoryServiceImpl<G>
         }
         Ok(story_collection)
     }
-    
+
+    async fn delete_story_collection(&self, req: QueryStoryCollection) -> Result<Vec<Story>, ServiceError> {
+        let stories: Vec<Story> = self.query_story_collection(req.clone()).await?;
+        self.gateway.delete_collection(req).await?;
+        Ok(stories)
+    }
+
     async fn delete_story(&self, req: QueryStory) -> Result<Story, ServiceError> {
         let story: Story = self.gateway.query(req).await?.try_into()?;
         self.gateway.delete(story.story_id.clone()).await?;

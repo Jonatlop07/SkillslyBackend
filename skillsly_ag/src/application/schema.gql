@@ -2,17 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-"""Defines the information of a user's account"""
-type User {
-  id: ID!
-  email: String!
-  name: String!
-  date_of_birth: String!
-  gender: String!
-  created_at: String!
-  updated_at: String
-}
-
 """Defines the information of a comment"""
 type Comment {
   _id: ID!
@@ -41,11 +30,61 @@ type InnerComment {
   updated_at: String
 }
 
+"""Defines the information of a user's account"""
+type User {
+  id: ID!
+  email: String!
+  name: String!
+  date_of_birth: String!
+  gender: String!
+  created_at: String!
+  updated_at: String
+}
+
+type FollowRelationships {
+  pending_followers: [User!]!
+  pending_users_to_follow: [User!]!
+  followers: [User!]!
+  following_users: [User!]!
+}
+
+type FollowRequestDetails {
+  id: ID!
+  name: String!
+  email: String!
+  gender: String!
+}
+
+"""Defines the content of a story view"""
+type StoryView {
+  story_id: ID!
+  viewer_id: ID!
+  viewed_at: String!
+}
+
+"""Defines the structure of stories"""
+type Story {
+  id: ID!
+  owner_id: ID!
+  description: String
+  media_locator: String
+  created_at: String!
+  views: [StoryView!]!
+}
+
+type FollowingUsersStories {
+  friend_id: ID!
+  stories: [Story!]!
+}
+
 type Query {
-  queryUser(id: String!): User!
-  searchUsers(search_params: SearchParams!): [User!]!
+  user(id: String!): User!
+  users(search_params: SearchParams!): [User!]!
+  followRelationships(user_id: ID!): FollowRelationships!
   queryComments(post_id: ID!, comments_pagination: PaginationParams!): [Comment!]!
   queryInnerComments(inner_comments_pagination: PaginationParams!, comment_id: ID!): [InnerComment!]!
+  story(id: ID!, viewer_id: ID!): Story!
+  storiesOfFollowingUsers(user_id: String!): [FollowingUsersStories!]!
 }
 
 input SearchParams {
@@ -64,12 +103,17 @@ type Mutation {
   createUserAccount(account_details: NewUser!): User!
   updateUserAccount(user_id: ID!, updates: UserAccountUpdates!): User!
   deleteUserAccount(user_id: ID!, password: String): User!
+  createFollowRequest(user_id: ID!, user_to_follow_id: ID!): FollowRequestDetails!
+  updateFollowRequest(user_id: ID!, user_that_requests_id: ID!, accept: Boolean!): FollowRequestDetails!
+  deleteFollowRequest(user_id: ID!, user_to_follow_id: ID!, is_follow_request: Boolean!): FollowRequestDetails!
   createComment(comment_details: NewComment!, post_id: ID!): Comment!
   updateComment(comment_id: ID!, new_content: CommentContentUpdate!): CommentContent!
   deleteComment(comment_id: ID!): String!
   createInnerComment(inner_comment_details: NewInnerComment!, comment_id: ID!): InnerComment!
   updateInnerComment(inner_comment_id: ID!, new_content: CommentContentUpdate!): CommentContent!
   deleteInnerComment(inner_comment_id: ID!): String!
+  createStory(story_details: StoryDetails!): Story!
+  deleteStory(id: String!): Story!
 }
 
 input NewUser {
@@ -99,6 +143,12 @@ input CommentContentUpdate {
 }
 
 input NewInnerComment {
+  owner_id: ID!
+  description: String
+  media_locator: String
+}
+
+input StoryDetails {
   owner_id: ID!
   description: String
   media_locator: String

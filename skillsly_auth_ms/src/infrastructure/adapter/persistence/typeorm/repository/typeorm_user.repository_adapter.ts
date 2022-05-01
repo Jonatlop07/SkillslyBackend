@@ -6,7 +6,7 @@ import { UserDTO } from '@core/domain/use-case/dto/user.dto';
 import UserQueryModel from '@core/domain/use-case/query-model/user.query_model';
 import { TypeOrmUser } from '@infrastructure/adapter/persistence/typeorm/entity/typeorm_user';
 import { TypeOrmUserMapper } from '@infrastructure/adapter/persistence/typeorm/entity/mapper/typeorm_user.mapper';
-import { Optional } from '@core/common/type/common_types';
+import { Id, Optional } from '@core/common/type/common_types';
 import { PartialUserUpdateDTO } from '@core/domain/use-case/persistence/partial_user_update';
 
 @Injectable()
@@ -37,7 +37,7 @@ export class TypeOrmUserRepositoryAdapter implements UserRepository {
 
   public async findOne(params: UserQueryModel): Promise<Optional<UserDTO>> {
     const existing_user: TypeOrmUser = await this.repository.findOne({
-      where: params
+      where: { ...params }
     });
     if (existing_user)
       return TypeOrmUserMapper.toDTO(existing_user);

@@ -14,7 +14,7 @@ import { DeleteUserAccountService } from '@core/service/account/delete_user_acco
 import { QueryUserAccountService } from '@core/service/account/query_user_account.service'
 import { SearchUsersService } from '@core/service/search/search_users.service'
 import { CreateFollowUserRequestService } from '@core/service/follow_request/create_follow_user_request.service'
-import { UpdateFollowUserRequestService } from '@core/service/follow_request/update_user_follow_request.service'
+import { UpdateFollowUserRequestService } from '@core/service/follow_request/update_follow_user_request.service'
 import { DeleteFollowUserRequestService } from '@core/service/follow_request/delete_follow_user_request.service'
 import { GetFollowUserRequestCollectionService } from '@core/service/follow_request/get_user_follow_request_collection.service'
 
