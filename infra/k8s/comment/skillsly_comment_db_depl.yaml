@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly_comment_db_depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly_comment_db
+  template:
+    metadata:
+      labels:
+        app: skillsly_comment_db
+    spec:
+      containers:
+        - name: skillsly_comment_db
+          image: mongo:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly_comment_db_srv
+spec:
+  selector:
+    app: skillsly_comment_db
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 8095

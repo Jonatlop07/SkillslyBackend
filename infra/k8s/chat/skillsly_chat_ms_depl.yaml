@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: skillsly_chat_ms_depl.yaml
+  name: skillsly_chat_ms_depl
 spec:
   replicas: 1
   selector:

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly_post_db_depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly_post_db
+  template:
+    metadata:
+      labels:
+        app: skillsly_post_db
+    spec:
+      containers:
+        - name: skillsly_post_db
+          image: mongo:latest
+          env:
+            - name: MONGO_DATA_PATH
+              value: /data/db
+            - name: MONGO_LOG_PATH
+              value: /dev/null
+            - name: MONGODB_DATABASE
+              value: skillsly_story_db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly_post_db_srv
+spec:
+  selector:
+    app: skillsly_post_db
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 8094

@@ -1,7 +1,7 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: skillsly_notification_mq
+  name: skillsly_notification_mq_depl
 spec:
   replicas: 1
   selector:

@@ -1,7 +1,7 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: skillsly_notification_handler_cache
+  name: skillsly_notification_handler_cache_depl
 spec:
   replicas: 1
   selector:
