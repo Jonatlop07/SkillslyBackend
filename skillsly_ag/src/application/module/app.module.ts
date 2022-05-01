@@ -25,6 +25,8 @@ import { CreateStoryService } from '@application/service/story/requester/create_
 import { DeleteStoryService } from '@application/service/story/requester/delete_story.service'
 import { StoryResolver } from '@application/api/graphql/resolver/story.resolver'
 import { DeleteUserStoryCollectionService } from '@application/service/story/requester/delete_user_story_collection.service'
+import { NotificationDITokens } from '@application/service/notification/di/notification_di_tokens'
+import { SendNotificationService } from '@application/service/notification/requester/send_notification.service'
 
 const request_providers = [
   {
@@ -127,6 +129,14 @@ const story_providers: Array<Provider> = [
   },
 ];
 
+const notification_providers: Array<Provider> = [
+  {
+    provide: NotificationDITokens.SendNotificationService,
+    useFactory: (request) => new SendNotificationService(request),
+    inject: [RequestDITokens.Request]
+  }
+];
+
 const resolvers: Array<Provider> = [
   AccountResolver,
   SocialResolver,
@@ -145,6 +155,7 @@ const resolvers: Array<Provider> = [
     ...auth_providers,
     ...user_providers,
     ...story_providers,
+    ...notification_providers,
     ...resolvers
   ]
 })

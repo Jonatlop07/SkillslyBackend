@@ -7,7 +7,6 @@ import { setEnvironment } from '@application/environments';
 import { join } from 'path';
 import { GraphQLError } from 'graphql'
 import { AppModule } from '@application/module/app.module'
-import { HttpModule } from '@nestjs/axios'
 
 @Module({
   imports: [

@@ -4,6 +4,7 @@ import { InfrastructureModule } from '@application/module/infrastructure.module'
 import { setEnvironment } from '@application/environments';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { NotificationModule } from '@application/module/notification.module'
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
         limit: config.get('THROTTLE_LIMIT'),
       }),
     }),
-    InfrastructureModule
+    InfrastructureModule,
+    NotificationModule
   ],
   providers: [
     {

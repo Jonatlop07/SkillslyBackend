@@ -25,7 +25,7 @@ export class TypeORMNotificationChange {
 
   @Column({
     name: 'status',
-    type: 'tinyint',
+    type: 'smallint',
     nullable: false
   })
   public status: number;

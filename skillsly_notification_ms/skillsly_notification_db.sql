@@ -6,18 +6,20 @@ CREATE TABLE IF NOT EXISTS skillsly_notification.notification
     id		                    UUID PRIMARY KEY NOT NULL,
     notification_resource_id    UUID NOT NULL,
     notifier_id                 UUID NOT NULL,
-    status                      TINYINT NOT NULL,
-    FOREIGN KEY (notification_resource_id) REFERENCES skillsly_notification.notification_resource(id)
-    ON DELETE CASCADE
+    status                      SMALLINT NOT NULL,
+    FOREIGN KEY (notification_resource_id)
+    REFERENCES skillsly_notification.notification_resource(id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
 );
 
 CREATE TABLE IF NOT EXISTS skillsly_notification.notification_resource
 (
     id                  UUID PRIMARY KEY NOT NULL,
-    resource_type_id    UUID NOT NULL,
+    resource_type       TEXT NOT NULL,
     resource_id         UUID NOT NULL,
     created_at          TIMESTAMPTZ NOT NULL,
-    status              TINYINT NOT NULL
+    status              SMALLINT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS skillsly_notification.notification_change
@@ -25,7 +27,9 @@ CREATE TABLE IF NOT EXISTS skillsly_notification.notification_change
     id		                    UUID PRIMARY KEY NOT NULL,
     notification_resource_id    UUID NOT NULL,
     actor_id                    UUID NOT NULL,
-    status                      TINYINT NOT NULL,
-    FOREIGN KEY (notification_resource_id) REFERENCES skillsly_notification.notification_resource(id)
-    ON DELETE CASCADE
+    status                      SMALLINT NOT NULL,
+    FOREIGN KEY (notification_resource_id)
+    REFERENCES skillsly_notification.notification_resource(id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
 );

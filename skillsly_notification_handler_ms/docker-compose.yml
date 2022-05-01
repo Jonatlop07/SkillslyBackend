@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   skillsly_notification_mq:
-    image: rabbitmq:3-management-alpine
+    image: rabbitmq:3
     container_name: skillsly_notification_mq
     ports:
       - "5672:5672"
@@ -11,12 +11,12 @@ services:
       - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
       - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
     env_file:
-      - ./env/rabbitmq
+      - ./env/rabbitmq.env
   skillsly_notification_handler_ms:
     build: .
     container_name: skillsly_notification_handler_ms
     depends_on:
-      - skillsly_notification_handler_mq
+      - skillsly_notification_mq
     environment:
       API_HOST: localhost
       API_PORT: 3000
@@ -28,7 +28,7 @@ services:
       MQ_PASSWORD: notification
       MQ_QUEUE: notifications_queue
     ports:
-      - "8011:3000"
-      - "9232:9229"
+      - "8012:3000"
+      - "9233:9229"
 
 

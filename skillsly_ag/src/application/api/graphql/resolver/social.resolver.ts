@@ -15,6 +15,11 @@ import { FollowRequestDetailsMapper } from '@application/api/graphql/mapper/foll
 import { GraphQLBoolean } from 'graphql'
 import { UpdateFollowUserRequestService } from '@application/service/user/requester/update_follow_user_request.service'
 import { DeleteFollowUserRequestService } from '@application/service/user/requester/delete_follow_user_request.service'
+import { NotificationDITokens } from '@application/service/notification/di/notification_di_tokens'
+import { SendNotificationService } from '@application/service/notification/requester/send_notification.service'
+import {
+  NotificationResourceType
+} from '@application/service/notification/model/notification_resource_type.enum'
 
 @Resolver(() => User)
 export class SocialResolver {
@@ -30,7 +35,9 @@ export class SocialResolver {
     @Inject(UserDITokens.UpdateFollowUserRequestService)
     private readonly update_follow_user_request_service: UpdateFollowUserRequestService,
     @Inject(UserDITokens.DeleteFollowUserRequestService)
-    private readonly delete_follow_user_request_service: DeleteFollowUserRequestService
+    private readonly delete_follow_user_request_service: DeleteFollowUserRequestService,
+    @Inject(NotificationDITokens.SendNotificationService)
+    private readonly send_notification_service: SendNotificationService
   ) {}
 
   @Query(() => [User])
@@ -64,6 +71,16 @@ export class SocialResolver {
       user_to_follow_id
     });
     this.logger.log('Follow request successfully created in user service');
+    this.logger.log('Creating follow request notification in notification service...');
+    await this.send_notification_service.execute({
+      notification_details: {
+        resource_type: NotificationResourceType.FollowRequestCreated,
+        entity_id: request_details.id,
+        actor_id: request_details.actor_id,
+        notifier_ids: [user_to_follow_id]
+      }
+    })
+    this.logger.log('Create follow request notification successfully created in notification service');
     return FollowRequestDetailsMapper.toGraphQLModel(request_details);
   }
 
@@ -80,6 +97,18 @@ export class SocialResolver {
       accept
     });
     this.logger.log('Follow request successfully updated in user service');
+    if (accept) {
+      this.logger.log('Accepted follow request notification in notification service...');
+      await this.send_notification_service.execute({
+        notification_details: {
+          resource_type: NotificationResourceType.FollowRequestAccepted,
+          entity_id: request_details.id,
+          actor_id: request_details.actor_id,
+          notifier_ids: [user_that_requests_id]
+        }
+      })
+      this.logger.log('Accepted follow request notification successfully created in notification service');
+    }
     return FollowRequestDetailsMapper.toGraphQLModel(request_details);
   }
 
@@ -96,6 +125,16 @@ export class SocialResolver {
       is_follow_request
     });
     this.logger.log('Follow request successfully deleted in user service');
+    this.logger.log('Deleted follow request notification in notification service...');
+    await this.send_notification_service.execute({
+      notification_details: {
+        resource_type: NotificationResourceType.FollowRequestDeleted,
+        entity_id: request_details.id,
+        actor_id: request_details.actor_id,
+        notifier_ids: [user_to_follow_id]
+      }
+    })
+    this.logger.log('Deleted follow request notification successfully created in notification service');
     return FollowRequestDetailsMapper.toGraphQLModel(request_details);
   }
 }

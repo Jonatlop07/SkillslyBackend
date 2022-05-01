@@ -15,6 +15,11 @@ import QueryUserStoryCollectionRequestResponse
   from '@application/service/story/request-response/query_user_story_collection.request_response'
 import { FollowingUsersStories } from '@application/api/graphql/model/story/following_users_stories'
 import { FollowingUsersStoriesMapper } from '@application/api/graphql/mapper/following_users_stories.mapper'
+import {
+  NotificationResourceType
+} from '@application/service/notification/model/notification_resource_type.enum'
+import { NotificationDITokens } from '@application/service/notification/di/notification_di_tokens'
+import { SendNotificationService } from '@application/service/notification/requester/send_notification.service'
 
 @Resolver(() => Story)
 export class StoryResolver {
@@ -30,7 +35,9 @@ export class StoryResolver {
     @Inject(StoryDITokens.QueryStoryCollectionService)
     private readonly query_story_collection_service: QueryUserStoryCollectionService,
     @Inject(UserDITokens.QueryFollowRelationshipsService)
-    private readonly query_follow_relationships_service: QueryFollowRelationshipsService
+    private readonly query_follow_relationships_service: QueryFollowRelationshipsService,
+    @Inject(NotificationDITokens.SendNotificationService)
+    private readonly send_notification_service: SendNotificationService
   ) {
   }
 
@@ -45,6 +52,16 @@ export class StoryResolver {
       viewer_id
     });
     this.logger.log('Story queried successfully in story service');
+    this.logger.log('Story viewed notification in notification service...');
+    await this.send_notification_service.execute({
+      notification_details: {
+        resource_type: NotificationResourceType.StoryViewed,
+        entity_id: story.story_id,
+        actor_id: viewer_id,
+        notifier_ids: [story.owner_id]
+      }
+    })
+    this.logger.log('Story viewed notification successfully created in notification service');
     return StoryMapper.toGraphQLModel(story);
   }
 

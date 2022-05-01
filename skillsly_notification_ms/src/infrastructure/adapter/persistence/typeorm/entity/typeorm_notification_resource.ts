@@ -11,11 +11,11 @@ export class TypeOrmNotificationResource {
   public id: string;
 
   @Column({
-    name: 'resource_type_id',
-    type: 'uuid',
+    name: 'resource_type',
+    type: 'text',
     nullable: false
   })
-  public resource_type_id: string;
+  public resource_type: string;
 
   @Column({
     name: 'created_at',
@@ -26,7 +26,7 @@ export class TypeOrmNotificationResource {
 
   @Column({
     name: 'status',
-    type: 'tinyint',
+    type: 'smallint',
     nullable: false
   })
   public status: number;
