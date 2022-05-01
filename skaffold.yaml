@@ -1,0 +1,98 @@
+apiVersion: skaffold/v2beta28
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: skillsly_ag
+      context: skillsly_ag
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: skillsly_auth_ms
+      context: skillsly_auth_ms
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: skillsly_user_ms
+      context: skillsly_user_ms
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: skillsly_story_ms
+      context: skillsly_story_ms
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.rs'
+            dest: .
+    - image: skillsly_post_ms
+      context: skillsly_post_ms
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.java'
+            dest: .
+    - image: skillsly_comment_ms
+      context: skillsly_comment_ms
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.js'
+            dest: .
+    - image: skillsly_chat_ms
+      context: skillsly_chat_ms
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: './**/*.go'
+            dest: .
+    - image: skillsly_service_ms
+      context: skillsly_service_ms
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: './**/*.py'
+            dest: .
+    - image: skillsly_storage_ms
+      context: skillsly_storage_ms
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: './**/*.py'
+            dest: .
+    - image: skillsly_notification_ms
+      context: skillsly_notification_ms
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: skillsly_notification_handler_ms
+      context: skillsly_notification_handler_ms
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .

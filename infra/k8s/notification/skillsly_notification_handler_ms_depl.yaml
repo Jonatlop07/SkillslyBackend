@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly_notification_handler_ms_depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly_notification_handler_ms
+  template:
+    metadata:
+      labels:
+        app: skillsly_notification_handler_ms
+    spec:
+      containers:
+        - name: skillsly_notification_handler_ms
+          image: skillsly_notification_handler_ms
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly_notification_handler_ms_srv
+spec:
+  selector:
+    app: skillsly_notification_handler_ms
+  ports:
+    - name: notification_handler
+      protocol: TCP
+      port: 3000
+      targetPort: 8010

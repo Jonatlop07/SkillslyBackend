@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly_auth_ms_depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly_auth_ms
+  template:
+    metadata:
+      labels:
+        app: skillsly_auth_ms
+    spec:
+      containers:
+        - name: skillsly_auth_ms
+          image: skillsly_auth_ms
+          env:
+            - name: DATABASE_URL
+              value: 'postgres://skillsly:auth@skillsly_auth_db_srv:5432/skillsly_auth_db'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly_auth_ms_srv
+spec:
+  selector:
+    app: skillsly_auth_ms
+  ports:
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 8001

@@ -14,13 +14,14 @@ CREATE TABLE IF NOT EXISTS skillsly_user.user
 
 CREATE TABLE IF NOT EXISTS skillsly_user.user_relationship
 (
+    id              UUID NOT NULL,
     follower_id     UUID NOT NULL,
     following_id    UUID NOT NULL,
     status          TEXT NOT NULL CHECK (status IN ('Pending', 'Following')),
     accepted_at     TIMESTAMPTZ,
-    PRIMARY KEY (follower_id, following_id),
+    PRIMARY KEY (id, follower_id, following_id),
     FOREIGN KEY (follower_id) REFERENCES skillsly_user.user(id)
-    ON DELETE CASCADE
+    ON DELETE CASCADE,
     FOREIGN KEY (following_id) REFERENCES skillsly_user.user(id)
     ON DELETE CASCADE
 );

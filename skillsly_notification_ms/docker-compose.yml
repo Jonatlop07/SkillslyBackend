@@ -1,0 +1,25 @@
+version: "3.7"
+
+services:
+  skillsly_notification_db:
+    container_name: skillsly_notification_db
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: skillsly
+      POSTGRES_PASSWORD: notification
+      POSTGRES_DB: skillsly_notification_db
+    volumes:
+      - ./skillsly_notification_db.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+    ports:
+      - "35002:5432"
+  skillsly_notification_ms:
+    build: .
+    container_name: skillsly_notification_ms
+    depends_on:
+      - skillsly_notification_db
+    environment:
+      DATABASE_URL: postgres://skillsly:notification@skillsly_notification_db:5432/skillsly_notification_db
+    ports:
+      - "8011:3000"
+      - "9232:9229"

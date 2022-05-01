@@ -3,6 +3,7 @@ import { Gender } from '@core/domain/entity/type/gender.enum'
 
 export default interface UserRequestDetailsDTO {
   id: Id;
+  actor_id: Id;
   name: string;
   email: string;
   gender: Gender;

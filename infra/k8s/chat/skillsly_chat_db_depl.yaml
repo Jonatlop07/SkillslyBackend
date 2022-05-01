@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly_chat_db_depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly_chat_db
+  template:
+    metadata:
+      labels:
+        app: skillsly_chat_db
+    spec:
+      containers:
+        - name: skillsly_chat_db
+          image: mongo:latest
+          env:
+            - name: MONGO_DATA_DIR
+              value: /data/db
+            - name: MONGO_LOG_DIR
+              value: /dev/null
+            - name: MONGODB_DATABASE
+              value: skillsly_chat_db
+          command: ['mongod']
+          args: ['--logpath=/dev/null']
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly_chat_db_srv
+spec:
+  selector:
+    app: skillsly_chat_db
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 8095

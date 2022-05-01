@@ -41,9 +41,13 @@ export class CreateFollowUserRequestService implements CreateFollowUserRequestIn
     const exists_user_follow_request = await this.gateway.existsFollowUserRequest(follow_request);
     if (exists_user_follow_request)
       throw new FollowUserRequestAlreadyExistsException();
-    await this.gateway.createFollowUserRequest(follow_request);
+    const id = await this.gateway.createFollowUserRequest(follow_request);
     return {
-      user_details: requesting_user as UserRequestDetailsDTO
+      user_details: {
+        ...requesting_user,
+        actor_id: requesting_user.id,
+        id
+      }
     }
   }
 }
