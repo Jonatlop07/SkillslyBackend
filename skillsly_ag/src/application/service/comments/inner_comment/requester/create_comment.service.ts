@@ -7,12 +7,11 @@ import CreateInnerCommentRequestResponse from '../request-response/create_inner_
 
 @Injectable()
 export class CreateInnerCommentService
-  implements
+implements
     Requester<
-      CreateInnerCommentRequestInput,
-      CreateInnerCommentRequestResponse
-    >
-{
+    CreateInnerCommentRequestInput,
+    CreateInnerCommentRequestResponse
+    > {
   constructor(private readonly request: Request) {}
 
   public async execute(

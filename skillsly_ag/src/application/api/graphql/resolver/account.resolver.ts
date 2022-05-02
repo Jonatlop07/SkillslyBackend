@@ -53,10 +53,10 @@ export class AccountResolver {
 
   @Mutation(() => User)
   public async createUserAccount(
-    @Args({
-      name: 'account_details',
-      type: () => NewUser,
-    })
+  @Args({
+    name: 'account_details',
+    type: () => NewUser,
+  })
     account_details: NewUser,
   ) {
     this.logger.log('Creating user in auth service...');
@@ -84,7 +84,7 @@ export class AccountResolver {
 
   @Mutation(() => User)
   public async updateUserAccount(
-    @Args({ name: 'user_id', type: () => ID }) user_id: Id,
+  @Args({ name: 'user_id', type: () => ID }) user_id: Id,
     @Args({ name: 'updates', type: () => UserAccountUpdates })
     updates: UserAccountUpdates,
   ) {
@@ -107,7 +107,7 @@ export class AccountResolver {
 
   @Mutation(() => User)
   public async deleteUserAccount(
-    @Args({ name: 'user_id', type: () => ID }) user_id: Id,
+  @Args({ name: 'user_id', type: () => ID }) user_id: Id,
     @Args({ name: 'password', nullable: true }) password: string,
   ) {
     this.logger.log('Deleting user in auth service...');

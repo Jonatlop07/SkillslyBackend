@@ -7,8 +7,7 @@ import { USER_MS_URL } from '@application/service/user/url';
 
 @Injectable()
 export class SearchUsersService
-  implements Requester<SearchUsersRequestInput, SearchUsersRequestResponse>
-{
+implements Requester<SearchUsersRequestInput, SearchUsersRequestResponse> {
   constructor(private readonly request: Request) {}
 
   public async execute(

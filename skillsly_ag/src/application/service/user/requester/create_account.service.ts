@@ -1,10 +1,5 @@
 import Requester from '@application/common/requester/requester';
-<<<<<<< HEAD
-import CreateAccountRequestResponse
-  from '@application/service/user/request-response/create_account.request_response';
-=======
 import CreateAccountRequestResponse from '@application/service/user/request-response/create_account.request_response';
->>>>>>> d166fccf916ff6f1b1baab67610f88f63307b230
 import { Injectable } from '@nestjs/common';
 import { Request } from '@application/common/request/request';
 import { USER_MS_URL } from '@application/service/user/url';
@@ -12,8 +7,7 @@ import CreateAccountRequestInput from '@application/service/user/request-input/c
 
 @Injectable()
 export class CreateAccountService
-  implements Requester<CreateAccountRequestInput, CreateAccountRequestResponse>
-{
+implements Requester<CreateAccountRequestInput, CreateAccountRequestResponse> {
   constructor(private readonly request: Request) {}
 
   public async execute(

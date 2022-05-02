@@ -7,12 +7,11 @@ import QueryInnerCommentsRequestResponse from '../request-response/query_inner_c
 
 @Injectable()
 export class QueryInnerCommentsService
-  implements
+implements
     Requester<
-      QueryInnerCommentsRequestInput,
-      QueryInnerCommentsRequestResponse
-    >
-{
+    QueryInnerCommentsRequestInput,
+    QueryInnerCommentsRequestResponse
+    > {
   constructor(private readonly request: Request) {}
 
   public async execute(
