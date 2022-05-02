@@ -7,8 +7,7 @@ import QueryCommentsRequestResponse from '../request-response/query_comments.req
 
 @Injectable()
 export class QueryCommentsService
-  implements Requester<QueryCommentsRequestInput, QueryCommentsRequestResponse>
-{
+implements Requester<QueryCommentsRequestInput, QueryCommentsRequestResponse> {
   constructor(private readonly request: Request) {}
 
   public async execute(

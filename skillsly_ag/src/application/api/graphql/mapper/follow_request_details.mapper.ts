@@ -1,5 +1,5 @@
-import { FollowRequestDetails } from '@application/api/graphql/model/user/follow_request_details'
-import FollowRequestDetailsModel from '@application/service/user/model/follow_request_details.model'
+import { FollowRequestDetails } from '@application/api/graphql/model/user/follow_request_details';
+import FollowRequestDetailsModel from '@application/service/user/model/follow_request_details.model';
 
 export class FollowRequestDetailsMapper {
   public static toGraphQLModel(request_details: FollowRequestDetailsModel): FollowRequestDetails {

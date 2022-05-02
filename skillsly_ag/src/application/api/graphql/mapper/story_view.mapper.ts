@@ -1,5 +1,5 @@
-import { StoryView } from '@application/api/graphql/model/story/story_view'
-import StoryViewModel from '@application/service/story/model/story_view.model'
+import { StoryView } from '@application/api/graphql/model/story/story_view';
+import StoryViewModel from '@application/service/story/model/story_view.model';
 
 export class StoryViewMapper {
   public static toGraphQLModel(story_view_model: StoryViewModel): StoryView {

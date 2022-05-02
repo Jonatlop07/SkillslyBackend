@@ -24,6 +24,13 @@ import { QueryUserStoryCollectionService } from '@application/service/story/requ
 import { CreateStoryService } from '@application/service/story/requester/create_story.service';
 import { DeleteStoryService } from '@application/service/story/requester/delete_story.service';
 import { StoryResolver } from '@application/api/graphql/resolver/story.resolver';
+import { PostResolver } from '@application/api/graphql/resolver/post.resolver';
+import { PostDITokens } from '@application/service/post/di/post_di_tokens';
+import { CreatePostService } from '@application/service/post/requester/create_post.service';
+import { UpdatePostService } from '@application/service/post/requester/update_post.service';
+import { QueryPostService } from '@application/service/post/requester/query_post.service';
+import { QueryPostCollectionService } from '@application/service/post/requester/query_post_collection.service';
+import { DeletePostService } from '@application/service/post/requester/delete_post.service';
 import { DeleteUserStoryCollectionService } from '@application/service/story/requester/delete_user_story_collection.service';
 import { CommentDITokens } from '@application/service/comments/comment/di/comment_di_tokens';
 import { CreateCommentService } from '@application/service/comments/comment/requester/create_comment.service';
@@ -211,9 +218,39 @@ const notification_providers: Array<Provider> = [
   },
 ];
 
+const post_providers: Array<Provider> = [
+  {
+    provide: PostDITokens.QueryPostService,
+    useFactory: (request) => new QueryPostService(request),
+    inject: [RequestDITokens.Request],
+  },
+  {
+    provide: PostDITokens.QueryPostCollectionService,
+    useFactory: (request) => new QueryPostCollectionService(request),
+    inject: [RequestDITokens.Request],
+  },
+  {
+    provide: PostDITokens.CreatePostService,
+    useFactory: (request) => new CreatePostService(request),
+    inject: [RequestDITokens.Request],
+  },
+  {
+    provide: PostDITokens.DeletePostService,
+    useFactory: (request) => new DeletePostService(request),
+    inject: [RequestDITokens.Request],
+  },
+  {
+    provide: PostDITokens.UpdatedPostService,
+    useFactory: (request) => new UpdatePostService(request),
+    inject: [RequestDITokens.Request],
+  },
+];
+
 const resolvers: Array<Provider> = [
   AccountResolver,
   SocialResolver,
+  StoryResolver,
+  PostResolver,
   CommentResolver,
   InnerCommentResolver,
   StoryResolver,
@@ -232,6 +269,8 @@ const resolvers: Array<Provider> = [
     ...auth_providers,
     ...user_providers,
     ...story_providers,
+    ...post_providers,
+    ...resolvers,
     ...comment_providers,
     ...notification_providers,
     ...resolvers,

@@ -39,7 +39,7 @@ export class StoryResolver {
 
   @Query(() => Story)
   public async story(
-    @Args({ name: 'id', type: () => ID }) story_id: Id,
+  @Args({ name: 'id', type: () => ID }) story_id: Id,
     @Args({ name: 'viewer_id', type: () => ID }) viewer_id: Id,
   ) {
     this.logger.log('Querying a story in story service...');
@@ -92,7 +92,7 @@ export class StoryResolver {
 
   @Mutation(() => Story)
   public async createStory(
-    @Args({ name: 'story_details', type: () => StoryDetails })
+  @Args({ name: 'story_details', type: () => StoryDetails })
     story_details: StoryDetails,
   ) {
     const { owner_id, description, media_locator } = story_details;

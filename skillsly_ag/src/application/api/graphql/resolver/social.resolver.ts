@@ -40,7 +40,7 @@ export class SocialResolver {
 
   @Query(() => [User])
   public async users(
-    @Args({ name: 'search_params', type: () => SearchParams })
+  @Args({ name: 'search_params', type: () => SearchParams })
     search_params: SearchParams,
   ) {
     this.logger.log('Searching user in user service...');
@@ -53,7 +53,7 @@ export class SocialResolver {
 
   @Query(() => FollowRelationships)
   public async followRelationships(
-    @Args({ name: 'user_id', type: () => ID }) user_id: Id,
+  @Args({ name: 'user_id', type: () => ID }) user_id: Id,
   ) {
     this.logger.log('Fetching follow relationships from user service...');
     const { follow_request_collection } =
@@ -68,7 +68,7 @@ export class SocialResolver {
 
   @Mutation(() => FollowRequestDetails)
   public async createFollowRequest(
-    @Args({ name: 'user_id', type: () => ID }) user_id: Id,
+  @Args({ name: 'user_id', type: () => ID }) user_id: Id,
     @Args({ name: 'user_to_follow_id', type: () => ID }) user_to_follow_id: Id,
   ) {
     this.logger.log('Creating follow request in user service...');
@@ -97,7 +97,7 @@ export class SocialResolver {
 
   @Mutation(() => FollowRequestDetails)
   public async updateFollowRequest(
-    @Args({ name: 'user_id', type: () => ID }) user_id: Id,
+  @Args({ name: 'user_id', type: () => ID }) user_id: Id,
     @Args({ name: 'user_that_requests_id', type: () => ID })
     user_that_requests_id: Id,
     @Args({ name: 'accept', type: () => GraphQLBoolean }) accept: boolean,
@@ -131,7 +131,7 @@ export class SocialResolver {
 
   @Mutation(() => FollowRequestDetails)
   public async deleteFollowRequest(
-    @Args({ name: 'user_id', type: () => ID }) user_id: Id,
+  @Args({ name: 'user_id', type: () => ID }) user_id: Id,
     @Args({ name: 'user_to_follow_id', type: () => ID }) user_to_follow_id: Id,
     @Args({ name: 'is_follow_request', type: () => GraphQLBoolean })
     is_follow_request: boolean,

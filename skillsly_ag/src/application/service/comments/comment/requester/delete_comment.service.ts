@@ -7,8 +7,7 @@ import DeleteCommentRequestResponse from '../request-response/delete_comment.req
 
 @Injectable()
 export class DeleteCommentService
-  implements Requester<DeleteCommentRequestInput, DeleteCommentRequestResponse>
-{
+implements Requester<DeleteCommentRequestInput, DeleteCommentRequestResponse> {
   constructor(private readonly request: Request) {}
 
   public async execute(

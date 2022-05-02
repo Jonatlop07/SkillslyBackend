@@ -1,0 +1,1 @@
+export const POST_MS_URL = 'http://localhost:8080';

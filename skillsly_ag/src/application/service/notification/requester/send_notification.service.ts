@@ -7,9 +7,8 @@ import { NOTIFICATION_MS_URL } from '@application/service/notification/url';
 
 @Injectable()
 export class SendNotificationService
-  implements
-    Requester<SendNotificationRequestInput, SendNotificationRequestResponse>
-{
+implements
+    Requester<SendNotificationRequestInput, SendNotificationRequestResponse> {
   constructor(private readonly request: Request) {}
 
   public async execute(

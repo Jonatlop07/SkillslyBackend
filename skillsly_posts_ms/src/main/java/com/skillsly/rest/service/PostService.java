@@ -32,7 +32,7 @@ public class PostService {
             throw new RuntimeException("Post already exists");
         }catch (Exception e) {
             LOGGER.warn("Post already exists with id: " + post.getPostId());
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.unprocessableEntity().build();
         }
     }
 
@@ -48,7 +48,7 @@ public class PostService {
             throw new RuntimeException("Post not found");
         }catch (Exception e) {
             LOGGER.warn("Post not found with id: " + post.getPostId());
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -61,7 +61,7 @@ public class PostService {
             throw new RuntimeException("Owner not found");
         }catch (Exception e) {
             LOGGER.warn("Posts not found with owner id: " + id);
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -74,21 +74,22 @@ public class PostService {
             throw new RuntimeException("Post not found");
         }catch (Exception e) {
             LOGGER.warn("Post not found with id: " + postId);
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.notFound().build();
         }
     }
 
-    public ResponseEntity<UUID> deleteByPostId(UUID postId){
+    public ResponseEntity<Object> deleteByPostId(UUID postId){
         try{
             if(postRepository.existsByPostId(postId)){
                 LOGGER.info("Post deleted with id: " + postId);
+                PostModel post_deleted= postRepository.findByPostId(postId);
                 postRepository.deleteByPostId(postId);
-                return ResponseEntity.ok().body(postId);
+                return ResponseEntity.ok().body(post_deleted);
             }
             throw new RuntimeException("Post not found");
         }catch (Exception e) {
             LOGGER.warn("Post not found with id: " + postId);
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.notFound().build();
         }
     }
 }
