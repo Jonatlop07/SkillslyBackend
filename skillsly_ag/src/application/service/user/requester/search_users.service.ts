@@ -6,16 +6,17 @@ import SearchUsersRequestResponse from '@application/service/user/request-respon
 import { USER_MS_URL } from '@application/service/user/url';
 
 @Injectable()
-export class SearchUsersService implements Requester<SearchUsersRequestInput, SearchUsersRequestResponse> {
-  constructor(
-    private readonly request: Request
-  ) {
-  }
+export class SearchUsersService
+  implements Requester<SearchUsersRequestInput, SearchUsersRequestResponse>
+{
+  constructor(private readonly request: Request) {}
 
-  public async execute(input: SearchUsersRequestInput): Promise<SearchUsersRequestResponse> {
+  public async execute(
+    input: SearchUsersRequestInput,
+  ): Promise<SearchUsersRequestResponse> {
     return await this.request.getRequest<SearchUsersRequestResponse>({
       url: `${USER_MS_URL}/user`,
-      params: input
+      params: input,
     });
   }
 }

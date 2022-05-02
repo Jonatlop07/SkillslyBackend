@@ -69,10 +69,21 @@ async function updateInnerCommentCount(comment_id, increment) {
   });
 }
 
+async function deleteAllOwnerComments(owner_id) {
+  const owner_comments = await comments.find(
+    { owner_id },
+    "-__v -post_id -content -created_at -owner_id -inner_comment_count"
+  );
+  owner_comments.forEach(async (comment) => {
+    await deleteComment(comment._id);
+  });
+}
+
 module.exports = {
   getAllComments,
   createComment,
   updateComment,
   deleteComment,
   updateInnerCommentCount,
+  deleteAllOwnerComments,
 };

@@ -1,0 +1,66 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: skillsly-notification-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Mi
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: skillsly-notification-db-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly-notification-db
+  template:
+    metadata:
+      labels:
+        app: skillsly-notification-db
+    spec:
+      containers:
+        - name: skillsly-notification-db
+          image: postgres:latest
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: skillsly-notification-db-secret
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: skillsly-notification-db-secret
+                  key: password
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: skillsly-notification-db-env-config
+                  key: postgres_db
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: skillsly-notification-db-volume
+      volumes:
+        - name: skillsly-notification-db-volume
+          persistentVolumeClaim:
+            claimName: skillsly-notification-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly-notification-db-srv
+spec:
+  selector:
+    app: skillsly-notification-db
+  ports:
+    - name: db
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+

@@ -3,6 +3,7 @@ const {
   createInnerComment,
   updateInnerComment,
   deleteInnerComment,
+  deleteAllOwnerInnerComments,
 } = require("../../models/inner-comments/inner_comments.model");
 const getPagination = require("../../utils/pagination");
 const { getException } = require("../../utils/exception");
@@ -15,7 +16,7 @@ async function httpGetInnerComments(req, res) {
       skip,
       limit
     );
-    return res.status(200).json(inner_comments);
+    return res.status(200).json({ inner_comments });
   } catch (e) {
     getException(res, e);
   }
@@ -51,7 +52,17 @@ async function httpDeleteInnerComment(req, res) {
   const inner_comment_id = req.params.inner_comment_id;
   try {
     await deleteInnerComment(inner_comment_id);
-    return res.status(200).json({});
+    return res.status(200).json({ deleted_comment: inner_comment_id });
+  } catch (e) {
+    getException(res, e);
+  }
+}
+
+async function httpDeleteAllInnerComments(req, res) {
+  const owner_id = req.params.owner_id;
+  try {
+    await deleteAllOwnerInnerComments(owner_id);
+    return res.status(200).json({ deleted_owner: owner_id });
   } catch (e) {
     getException(res, e);
   }
@@ -62,4 +73,5 @@ module.exports = {
   httpDeleteInnerComment,
   httpGetInnerComments,
   httpUpdateInnerComment,
+  httpDeleteAllInnerComments,
 };

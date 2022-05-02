@@ -1,9 +1,6 @@
 {
   "compilerOptions": {
-    "rootDirs": [
-      "./src",
-      "./test"
-    ],
+    "rootDirs": ["./src", "./test"],
     "baseUrl": "./",
     "paths": {
       "@application/*": ["src/application/*"],
@@ -26,8 +23,5 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
   },
-  "include": [
-    "./src/**/*.ts",
-    "./test/**/*.ts",
-  ]
+  "include": ["./src/**/*.ts", "./test/**/*.ts"]
 }

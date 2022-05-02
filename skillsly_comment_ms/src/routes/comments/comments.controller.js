@@ -3,6 +3,7 @@ const {
   createComment,
   updateComment,
   deleteComment,
+  deleteAllOwnerComments,
 } = require("../../models/comments/comments.model");
 const getPagination = require("../../utils/pagination");
 const { getException } = require("../../utils/exception");
@@ -11,7 +12,7 @@ async function httpGetComments(req, res) {
   const { skip, limit } = getPagination(req.query);
   try {
     const comments = await getAllComments(req.params.post_id, skip, limit);
-    return res.status(200).json(comments);
+    return res.status(200).json({ comments });
   } catch (e) {
     getException(res, e);
   }
@@ -47,7 +48,17 @@ async function httpDeleteComment(req, res) {
   const comment_id = req.params.comment_id;
   try {
     await deleteComment(comment_id);
-    return res.status(200).json({});
+    return res.status(200).json({ deleted_comment: comment_id });
+  } catch (e) {
+    getException(res, e);
+  }
+}
+
+async function httpDeleteAllComments(req, res) {
+  const owner_id = req.params.owner_id;
+  try {
+    await deleteAllOwnerComments(owner_id);
+    return res.status(200).json({ deleted_owner: owner_id });
   } catch (e) {
     getException(res, e);
   }
@@ -58,4 +69,5 @@ module.exports = {
   httpGetComments,
   httpUpdateComment,
   httpDeleteComment,
+  httpDeleteAllComments,
 };

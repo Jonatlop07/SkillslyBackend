@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Id } from '@application/common/type/common_types';
 
-@ObjectType({ description: 'Defines the information of a user\'s account' })
+@ObjectType({ description: "Defines the information of a user's account" })
 export class User {
   @Field(() => ID)
   public id: Id;

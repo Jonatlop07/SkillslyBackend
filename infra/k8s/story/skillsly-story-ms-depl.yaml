@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly-story-ms-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly-story-ms
+  template:
+    metadata:
+      labels:
+        app: skillsly-story-ms
+    spec:
+      containers:
+        - name: skillsly-story-ms
+          image: jonatlop07/skillsly-story-ms:latest
+          envFrom:
+            - configMapRef:
+                name: skillsly-story-ms-env-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly-story-ms-srv
+spec:
+  selector:
+    app: skillsly-story-ms
+  ports:
+    - name: story
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
