@@ -1,10 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
-import { TypeOrmNotification } from '@infrastructure/adapter/persistence/typeorm/entity/typeorm_notification'
-import { TypeORMNotificationChange } from '@infrastructure/adapter/persistence/typeorm/entity/typeorm_notification_change'
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { TypeOrmNotification } from '@infrastructure/adapter/persistence/typeorm/entity/typeorm_notification';
+import { TypeORMNotificationChange } from '@infrastructure/adapter/persistence/typeorm/entity/typeorm_notification_change';
 
 @Entity({
   schema: 'skillsly_notification',
-  name: 'notification_resource'
+  name: 'notification_resource',
 })
 export class TypeOrmNotificationResource {
   @PrimaryGeneratedColumn('uuid')
@@ -13,7 +13,7 @@ export class TypeOrmNotificationResource {
   @Column({
     name: 'resource_type',
     type: 'text',
-    nullable: false
+    nullable: false,
   })
   public resource_type: string;
 
@@ -27,26 +27,26 @@ export class TypeOrmNotificationResource {
   @Column({
     name: 'created_at',
     type: 'timestamptz',
-    nullable: false
+    nullable: false,
   })
   public created_at: Date;
 
   @Column({
     name: 'status',
     type: 'smallint',
-    nullable: false
+    nullable: false,
   })
   public status: number;
 
   @OneToMany(
     () => TypeOrmNotification,
-    (notification) => notification.notification_resource_id
+    (notification) => notification.notification_resource,
   )
   public notifications: Array<TypeOrmNotification>;
 
   @OneToMany(
     () => TypeORMNotificationChange,
-    (notification_change) => notification_change.notification_resource_id
+    (notification_change) => notification_change.notification_resource,
   )
   public notification_changes: Array<TypeORMNotificationChange>;
 }
