@@ -1,6 +1,6 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql'
-import { Id } from '@application/common/type/common_types'
-import { StoryView } from '@application/api/graphql/model/story/story_view'
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Id } from '@application/common/type/common_types';
+import { StoryView } from '@application/api/graphql/model/story/story_view';
 
 @ObjectType({ description: 'Defines the structure of stories' })
 export class Story {

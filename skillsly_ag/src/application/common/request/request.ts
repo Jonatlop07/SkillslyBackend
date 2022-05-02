@@ -5,7 +5,7 @@ import {
 import { HttpService } from '@nestjs/axios';
 import { BadGatewayException, Injectable } from '@nestjs/common';
 import { catchError, firstValueFrom, map, Observable } from 'rxjs';
-import { AxiosResponse } from 'axios'
+import { AxiosResponse } from 'axios';
 
 @Injectable()
 export class Request {

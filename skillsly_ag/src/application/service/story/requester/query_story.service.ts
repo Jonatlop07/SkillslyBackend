@@ -1,10 +1,10 @@
-import Requester from '@application/common/requester/requester'
-import QueryStoryRequestInput from '@application/service/story/request-input/query_story.request_input'
-import QueryStoryRequestResponse from '@application/service/story/request-response/query_story.request_response'
-import { Request } from '@application/common/request/request'
-import { Injectable } from '@nestjs/common'
-import { STORY_MS_URL } from '@application/service/story/url'
-import StoryModel from '@application/service/story/model/story.model'
+import Requester from '@application/common/requester/requester';
+import QueryStoryRequestInput from '@application/service/story/request-input/query_story.request_input';
+import QueryStoryRequestResponse from '@application/service/story/request-response/query_story.request_response';
+import { Request } from '@application/common/request/request';
+import { Injectable } from '@nestjs/common';
+import { STORY_MS_URL } from '@application/service/story/url';
+import StoryModel from '@application/service/story/model/story.model';
 
 @Injectable()
 export class QueryStoryService implements Requester<QueryStoryRequestInput, QueryStoryRequestResponse> {

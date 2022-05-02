@@ -1,20 +1,20 @@
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql'
-import { User } from '@application/api/graphql/model/user/user'
-import { SearchParams } from '@application/api/graphql/model/user/input/search_params'
-import { Inject, Logger } from '@nestjs/common'
-import { SearchUsersService } from '@application/service/user/requester/search_users.service'
-import { UserMapper } from '@application/api/graphql/mapper/user.mapper'
-import { UserDITokens } from '@application/service/user/di/user_di_tokens'
-import { FollowRelationships } from '@application/api/graphql/model/user/follow_relationships'
-import { Id } from '@application/common/type/common_types'
-import { QueryFollowRelationshipsService } from '@application/service/user/requester/query_follow_relationships.service'
-import { FollowRelationshipsMapper } from '@application/api/graphql/mapper/follow_relationships.mapper'
-import { FollowRequestDetails } from '@application/api/graphql/model/user/follow_request_details'
-import { CreateFollowUserRequestService } from '@application/service/user/requester/create_follow_user_request.service'
-import { FollowRequestDetailsMapper } from '@application/api/graphql/mapper/follow_request_details.mapper'
-import { GraphQLBoolean } from 'graphql'
-import { UpdateFollowUserRequestService } from '@application/service/user/requester/update_follow_user_request.service'
-import { DeleteFollowUserRequestService } from '@application/service/user/requester/delete_follow_user_request.service'
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { User } from '@application/api/graphql/model/user/user';
+import { SearchParams } from '@application/api/graphql/model/user/input/search_params';
+import { Inject, Logger } from '@nestjs/common';
+import { SearchUsersService } from '@application/service/user/requester/search_users.service';
+import { UserMapper } from '@application/api/graphql/mapper/user.mapper';
+import { UserDITokens } from '@application/service/user/di/user_di_tokens';
+import { FollowRelationships } from '@application/api/graphql/model/user/follow_relationships';
+import { Id } from '@application/common/type/common_types';
+import { QueryFollowRelationshipsService } from '@application/service/user/requester/query_follow_relationships.service';
+import { FollowRelationshipsMapper } from '@application/api/graphql/mapper/follow_relationships.mapper';
+import { FollowRequestDetails } from '@application/api/graphql/model/user/follow_request_details';
+import { CreateFollowUserRequestService } from '@application/service/user/requester/create_follow_user_request.service';
+import { FollowRequestDetailsMapper } from '@application/api/graphql/mapper/follow_request_details.mapper';
+import { GraphQLBoolean } from 'graphql';
+import { UpdateFollowUserRequestService } from '@application/service/user/requester/update_follow_user_request.service';
+import { DeleteFollowUserRequestService } from '@application/service/user/requester/delete_follow_user_request.service';
 
 @Resolver(() => User)
 export class SocialResolver {
@@ -35,11 +35,11 @@ export class SocialResolver {
 
   @Query(() => [User])
   public async users(@Args({ name: 'search_params', type: () => SearchParams }) search_params: SearchParams) {
-    this.logger.log(`Searching user in user service...`);
+    this.logger.log('Searching user in user service...');
     const { users } = await this.search_users_service.execute({
       ...search_params
     });
-    this.logger.log(`Search in user service successfully made`);
+    this.logger.log('Search in user service successfully made');
     return users.map(UserMapper.toGraphQLModel);
   }
 
@@ -55,8 +55,8 @@ export class SocialResolver {
 
   @Mutation(() => FollowRequestDetails)
   public async createFollowRequest(
-    @Args({ name: 'user_id' , type: () => ID }) user_id: Id,
-    @Args({ name: 'user_to_follow_id' , type: () => ID }) user_to_follow_id: Id
+  @Args({ name: 'user_id', type: () => ID }) user_id: Id,
+    @Args({ name: 'user_to_follow_id', type: () => ID }) user_to_follow_id: Id
   ) {
     this.logger.log('Creating follow request in user service...');
     const { user_details: request_details } = await this.create_follow_user_request_service.execute({
@@ -69,7 +69,7 @@ export class SocialResolver {
 
   @Mutation(() => FollowRequestDetails)
   public async updateFollowRequest(
-    @Args({ name: 'user_id', type: () => ID}) user_id: Id,
+  @Args({ name: 'user_id', type: () => ID}) user_id: Id,
     @Args({ name: 'user_that_requests_id', type: () => ID}) user_that_requests_id: Id,
     @Args({ name: 'accept', type: () => GraphQLBoolean }) accept: boolean
   ) {
@@ -85,7 +85,7 @@ export class SocialResolver {
 
   @Mutation(() => FollowRequestDetails)
   public async deleteFollowRequest(
-    @Args({ name: 'user_id', type: () => ID}) user_id: Id,
+  @Args({ name: 'user_id', type: () => ID}) user_id: Id,
     @Args({ name: 'user_to_follow_id', type: () => ID}) user_to_follow_id: Id,
     @Args({ name: 'is_follow_request', type: () => GraphQLBoolean }) is_follow_request: boolean
   ) {

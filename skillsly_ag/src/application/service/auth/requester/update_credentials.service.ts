@@ -1,14 +1,14 @@
-import Requester from '@application/common/requester/requester'
-import UpdateCredentialsRequestInput from '@application/service/auth/request-input/update_credentials.request_input'
+import Requester from '@application/common/requester/requester';
+import UpdateCredentialsRequestInput from '@application/service/auth/request-input/update_credentials.request_input';
 import UpdateCredentialsRequestResponse
-  from '@application/service/auth/request-response/update_credentials.request_response'
-import { Request } from '@application/common/request/request'
-import { AUTH_MS_URL } from '@application/service/auth/url'
-import { Injectable } from '@nestjs/common'
+  from '@application/service/auth/request-response/update_credentials.request_response';
+import { Request } from '@application/common/request/request';
+import { AUTH_MS_URL } from '@application/service/auth/url';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UpdateCredentialsService
-  implements Requester<UpdateCredentialsRequestInput, UpdateCredentialsRequestResponse> {
+implements Requester<UpdateCredentialsRequestInput, UpdateCredentialsRequestResponse> {
 
   constructor(
     private readonly request: Request

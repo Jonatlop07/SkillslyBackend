@@ -10,4 +10,4 @@ interface RequestParamsWithBody extends RequestParamsWithoutBody {
 export {
   RequestParamsWithoutBody,
   RequestParamsWithBody
-}
+};

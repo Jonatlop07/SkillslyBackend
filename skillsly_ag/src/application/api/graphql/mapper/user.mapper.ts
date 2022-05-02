@@ -1,5 +1,5 @@
-import { UserModel } from '@application/common/model/user.model'
-import { User } from '@application/api/graphql/model/user/user'
+import { UserModel } from '@application/common/model/user.model';
+import { User } from '@application/api/graphql/model/user/user';
 
 export class UserMapper {
   public static toGraphQLModel(user: UserModel): User {
@@ -20,6 +20,6 @@ export class UserMapper {
       gender,
       created_at,
       updated_at
-    }
+    };
   }
 }

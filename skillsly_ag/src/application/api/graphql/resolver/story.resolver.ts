@@ -1,20 +1,20 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Story } from '@application/api/graphql/model/story/story';
-import { Id } from '@application/common/type/common_types'
-import { Inject, Logger } from '@nestjs/common'
-import { StoryDITokens } from '@application/service/story/di/story_di_tokens'
-import { QueryStoryService } from '@application/service/story/requester/query_story.service'
-import { StoryMapper } from '@application/api/graphql/mapper/story.mapper'
-import { StoryDetails } from '@application/api/graphql/model/story/input/story_details'
-import { CreateStoryService } from '@application/service/story/requester/create_story.service'
-import { DeleteStoryService } from '@application/service/story/requester/delete_story.service'
-import { UserDITokens } from '@application/service/user/di/user_di_tokens'
-import { QueryFollowRelationshipsService } from '@application/service/user/requester/query_follow_relationships.service'
-import { QueryUserStoryCollectionService } from '@application/service/story/requester/query_user_story_collection.service'
+import { Id } from '@application/common/type/common_types';
+import { Inject, Logger } from '@nestjs/common';
+import { StoryDITokens } from '@application/service/story/di/story_di_tokens';
+import { QueryStoryService } from '@application/service/story/requester/query_story.service';
+import { StoryMapper } from '@application/api/graphql/mapper/story.mapper';
+import { StoryDetails } from '@application/api/graphql/model/story/input/story_details';
+import { CreateStoryService } from '@application/service/story/requester/create_story.service';
+import { DeleteStoryService } from '@application/service/story/requester/delete_story.service';
+import { UserDITokens } from '@application/service/user/di/user_di_tokens';
+import { QueryFollowRelationshipsService } from '@application/service/user/requester/query_follow_relationships.service';
+import { QueryUserStoryCollectionService } from '@application/service/story/requester/query_user_story_collection.service';
 import QueryUserStoryCollectionRequestResponse
-  from '@application/service/story/request-response/query_user_story_collection.request_response'
-import { FollowingUsersStories } from '@application/api/graphql/model/story/following_users_stories'
-import { FollowingUsersStoriesMapper } from '@application/api/graphql/mapper/following_users_stories.mapper'
+  from '@application/service/story/request-response/query_user_story_collection.request_response';
+import { FollowingUsersStories } from '@application/api/graphql/model/story/following_users_stories';
+import { FollowingUsersStoriesMapper } from '@application/api/graphql/mapper/following_users_stories.mapper';
 
 @Resolver(() => Story)
 export class StoryResolver {
@@ -36,7 +36,7 @@ export class StoryResolver {
 
   @Query(() => Story)
   public async story(
-    @Args({ name: 'id', type: () => ID }) story_id: Id,
+  @Args({ name: 'id', type: () => ID }) story_id: Id,
     @Args({ name: 'viewer_id', type: () => ID }) viewer_id: Id
   ) {
     this.logger.log('Querying a story in story service...');
@@ -70,7 +70,7 @@ export class StoryResolver {
 
   @Mutation(() => Story)
   public async createStory(
-    @Args({ name: 'story_details', type: () => StoryDetails }) story_details: StoryDetails) {
+  @Args({ name: 'story_details', type: () => StoryDetails }) story_details: StoryDetails) {
     const { owner_id, description, media_locator } = story_details;
     this.logger.log('Creating a story in story service...');
     const { created_story } = await this.create_story_service.execute({

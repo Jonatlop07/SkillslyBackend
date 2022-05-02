@@ -61,7 +61,7 @@ public class PostController {
     })
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/posts/{postId}")//delete a post by id
-    public ResponseEntity<UUID> deletePostByPostId(@PathVariable("postId") UUID postId) {
+    public ResponseEntity<Object> deletePostByPostId(@PathVariable("postId") UUID postId) {
          return postService.deleteByPostId(postId);
     }
 

@@ -1,30 +1,37 @@
-import { Module, Provider } from '@nestjs/common'
-import { AccountResolver } from '@application/api/graphql/resolver/account.resolver'
-import { QueryUserService } from '@application/service/user/requester/query_user.service'
-import { CreateAccountService as AuthCreateUserAccountService } from '@application/service/auth/requester/create_account.service'
-import { CreateAccountService as UserCreateUserAccountService } from '@application/service/user/requester/create_account.service'
-import { Request } from '@application/common/request/request'
-import { HttpModule } from '@nestjs/axios'
-import { RequestDITokens } from '@application/common/request/request_di_tokens'
-import { AuthDITokens } from '@application/service/auth/di/auth_di_tokens'
-import { UserDITokens } from '@application/service/user/di/user_di_tokens'
-import { UpdateAccountService } from '@application/service/user/requester/update_account.service'
-import { UpdateCredentialsService } from '@application/service/auth/requester/update_credentials.service'
-import { DeleteUserService } from '@application/service/auth/requester/delete_user.service'
-import { DeleteAccountService } from '@application/service/user/requester/delete_account.service'
-import { SearchUsersService } from '@application/service/user/requester/search_users.service'
-import { SocialResolver } from '@application/api/graphql/resolver/social.resolver'
-import { QueryFollowRelationshipsService } from '@application/service/user/requester/query_follow_relationships.service'
-import { CreateFollowUserRequestService } from '@application/service/user/requester/create_follow_user_request.service'
-import { UpdateFollowUserRequestService } from '@application/service/user/requester/update_follow_user_request.service'
-import { DeleteFollowUserRequestService } from '@application/service/user/requester/delete_follow_user_request.service'
-import { StoryDITokens } from '@application/service/story/di/story_di_tokens'
-import { QueryStoryService } from '@application/service/story/requester/query_story.service'
-import { QueryUserStoryCollectionService } from '@application/service/story/requester/query_user_story_collection.service'
-import { CreateStoryService } from '@application/service/story/requester/create_story.service'
-import { DeleteStoryService } from '@application/service/story/requester/delete_story.service'
-import { StoryResolver } from '@application/api/graphql/resolver/story.resolver'
-import { DeleteUserStoryCollectionService } from '@application/service/story/requester/delete_user_story_collection.service'
+import { Module, Provider } from '@nestjs/common';
+import { AccountResolver } from '@application/api/graphql/resolver/account.resolver';
+import { QueryUserService } from '@application/service/user/requester/query_user.service';
+import { CreateAccountService as AuthCreateUserAccountService } from '@application/service/auth/requester/create_account.service';
+import { CreateAccountService as UserCreateUserAccountService } from '@application/service/user/requester/create_account.service';
+import { Request } from '@application/common/request/request';
+import { HttpModule } from '@nestjs/axios';
+import { RequestDITokens } from '@application/common/request/request_di_tokens';
+import { AuthDITokens } from '@application/service/auth/di/auth_di_tokens';
+import { UserDITokens } from '@application/service/user/di/user_di_tokens';
+import { UpdateAccountService } from '@application/service/user/requester/update_account.service';
+import { UpdateCredentialsService } from '@application/service/auth/requester/update_credentials.service';
+import { DeleteUserService } from '@application/service/auth/requester/delete_user.service';
+import { DeleteAccountService } from '@application/service/user/requester/delete_account.service';
+import { SearchUsersService } from '@application/service/user/requester/search_users.service';
+import { SocialResolver } from '@application/api/graphql/resolver/social.resolver';
+import { QueryFollowRelationshipsService } from '@application/service/user/requester/query_follow_relationships.service';
+import { CreateFollowUserRequestService } from '@application/service/user/requester/create_follow_user_request.service';
+import { UpdateFollowUserRequestService } from '@application/service/user/requester/update_follow_user_request.service';
+import { DeleteFollowUserRequestService } from '@application/service/user/requester/delete_follow_user_request.service';
+import { StoryDITokens } from '@application/service/story/di/story_di_tokens';
+import { QueryStoryService } from '@application/service/story/requester/query_story.service';
+import { QueryUserStoryCollectionService } from '@application/service/story/requester/query_user_story_collection.service';
+import { CreateStoryService } from '@application/service/story/requester/create_story.service';
+import { DeleteStoryService } from '@application/service/story/requester/delete_story.service';
+import { StoryResolver } from '@application/api/graphql/resolver/story.resolver';
+import { PostResolver } from '@application/api/graphql/resolver/post.resolver';
+import { DeleteUserStoryCollectionService } from '@application/service/story/requester/delete_user_story_collection.service';
+import {PostDITokens} from '@application/service/post/di/post_di_tokens';
+import {CreatePostService} from '@application/service/post/requester/create_post.service';
+import {UpdatePostService} from '@application/service/post/requester/update_post.service';
+import {QueryPostService} from '@application/service/post/requester/query_post.service';
+import {QueryPostCollectionService} from '@application/service/post/requester/query_post_collection.service';
+import {DeletePostService} from '@application/service/post/requester/delete_post.service';
 
 const request_providers = [
   {
@@ -127,10 +134,39 @@ const story_providers: Array<Provider> = [
   },
 ];
 
+const post_providers: Array<Provider> = [
+  {
+    provide: PostDITokens.QueryPostService,
+    useFactory: (request) => new QueryPostService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: PostDITokens.QueryPostCollectionService,
+    useFactory: (request) => new QueryPostCollectionService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: PostDITokens.CreatePostService,
+    useFactory: (request) => new CreatePostService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: PostDITokens.DeletePostService,
+    useFactory: (request) => new DeletePostService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: PostDITokens.UpdatedPostService,
+    useFactory: (request) => new UpdatePostService(request),
+    inject: [RequestDITokens.Request]
+  },
+];
+
 const resolvers: Array<Provider> = [
   AccountResolver,
   SocialResolver,
-  StoryResolver
+  StoryResolver,
+  PostResolver
 ];
 
 @Module({
@@ -145,6 +181,7 @@ const resolvers: Array<Provider> = [
     ...auth_providers,
     ...user_providers,
     ...story_providers,
+    ...post_providers,
     ...resolvers
   ]
 })
