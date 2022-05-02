@@ -25,6 +25,6 @@ spec:
     app: skillsly_notification_handler_cache
   ports:
     - name: redis
-        protocol: TCP
-        port: 6379
-        targetPort: 6379
+      protocol: TCP
+      port: 6379
+      targetPort: 6379

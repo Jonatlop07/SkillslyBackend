@@ -18,6 +18,13 @@ export class TypeOrmNotificationResource {
   public resource_type: string;
 
   @Column({
+    name: 'entity_id',
+    type: 'uuid',
+    nullable: false
+  })
+  public entity_id: string;
+
+  @Column({
     name: 'created_at',
     type: 'timestamptz',
     nullable: false,

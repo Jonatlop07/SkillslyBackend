@@ -25,22 +25,24 @@ import { CreateStoryService } from '@application/service/story/requester/create_
 import { DeleteStoryService } from '@application/service/story/requester/delete_story.service';
 import { StoryResolver } from '@application/api/graphql/resolver/story.resolver';
 import { DeleteUserStoryCollectionService } from '@application/service/story/requester/delete_user_story_collection.service';
-import { NotificationDITokens } from '@application/service/notification/di/notification_di_tokens';
-import { SendNotificationService } from '@application/service/notification/requester/send_notification.service';
-import { CommentResolver } from '@application/api/graphql/resolver/comment.resolver';
-import { InnerCommentResolver } from '@application/api/graphql/resolver/inner_comment.resolver';
 import { CommentDITokens } from '@application/service/comments/comment/di/comment_di_tokens';
 import { CreateCommentService } from '@application/service/comments/comment/requester/create_comment.service';
 import { DeleteCommentService } from '@application/service/comments/comment/requester/delete_comment.service';
-import { DeleteCommentsByOwnerService } from '@application/service/comments/comment/requester/delete_owner_comments.service';
 import { QueryCommentsService } from '@application/service/comments/comment/requester/query_comments.service';
 import { UpdateCommentService } from '@application/service/comments/comment/requester/update_comment.service';
-import { InnerCommentDITokens } from '@application/service/comments/inner_comment/di/inner_comment_di_tokens';
 import { CreateInnerCommentService } from '@application/service/comments/inner_comment/requester/create_comment.service';
 import { DeleteInnerCommentService } from '@application/service/comments/inner_comment/requester/delete_comment.service';
-import { DeleteInnerCommentsByOwnerService } from '@application/service/comments/inner_comment/requester/delete_owner_inner_comments.service';
 import { QueryInnerCommentsService } from '@application/service/comments/inner_comment/requester/query_comments.service';
 import { UpdateInnerCommentService } from '@application/service/comments/inner_comment/requester/update_comment.service';
+import { InnerCommentDITokens } from '@application/service/comments/inner_comment/di/inner_comment_di_tokens';
+import { DeleteCommentsByOwnerService } from '@application/service/comments/comment/requester/delete_owner_comments.service';
+import { DeleteInnerCommentsByOwnerService } from '@application/service/comments/inner_comment/requester/delete_owner_inner_comments.service';
+import { CommentResolver } from '@application/api/graphql/resolver/comment.resolver';
+import { InnerCommentResolver } from '@application/api/graphql/resolver/inner_comment.resolver';
+import { NotificationDITokens } from '@application/service/notification/di/notification_di_tokens';
+import { SendNotificationService } from '@application/service/notification/requester/send_notification.service';
+import { QueryNotificationsService } from '@application/service/notification/requester/query_notifications.service';
+import { NotificationResolver } from '@application/api/graphql/resolver/notification.resolver';
 
 const request_providers = [
   {
@@ -202,6 +204,11 @@ const notification_providers: Array<Provider> = [
     useFactory: (request) => new SendNotificationService(request),
     inject: [RequestDITokens.Request],
   },
+  {
+    provide: NotificationDITokens.QueryNotificationsService,
+    useFactory: (request) => new QueryNotificationsService(request),
+    inject: [RequestDITokens.Request],
+  },
 ];
 
 const resolvers: Array<Provider> = [
@@ -210,6 +217,7 @@ const resolvers: Array<Provider> = [
   CommentResolver,
   InnerCommentResolver,
   StoryResolver,
+  NotificationResolver,
 ];
 
 @Module({
@@ -223,9 +231,8 @@ const resolvers: Array<Provider> = [
     ...request_providers,
     ...auth_providers,
     ...user_providers,
-    ...comment_providers,
-    ...resolvers,
     ...story_providers,
+    ...comment_providers,
     ...notification_providers,
     ...resolvers,
   ],

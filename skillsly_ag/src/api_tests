@@ -111,3 +111,90 @@ query {
         id
     }
 }
+
+//Comments
+mutation{
+  createComment(post_id: "3051b6db-1738-425f-9f9f-d7dc43e2a2a0fsdfsd", comment_details: {
+    description: "New comment",
+    media_locator: "https://storage.googleapis.com/upload/storage/v1/b/BUCKET_NAME/o",
+    owner_id: "c3ef416e-87e0-4dae-a4d1-34de41290453b"
+  }){
+  	_id,
+    description,
+    media_locator,
+    post_id
+  }
+}
+
+mutation{
+  updateComment(comment_id: "626dc6441b434b26f99e4b90", new_content: {
+    description: "",
+    media_locator: ""
+  }){
+    content
+  }
+}
+
+mutation{
+  deleteComment(comment_id: "626dc6101b434b26f99e4b8a")
+}
+
+query{
+  queryComments(post_id: "3051b6db-1738-425f-9f9f-d7dc43e2a2a0fsdfsd", comments_pagination: {limit: 1}){
+		owner_id,
+    description,
+    media_locator,
+    post_id,
+    created_at,
+    inner_comment_count
+  }
+}
+
+mutation{
+  createInnerComment(comment_id: "626dc6001b434b26f99e4b88", inner_comment_details: {
+    description: "New comment",
+    media_locator: "https://storage.googleapis.com/upload/storage/v1/b/BUCKET_NAME/o",
+    owner_id: "c3ef416e-87e0-4dae-a4d1-34de41290453b"
+  }){
+  	_id,
+    description,
+    media_locator,
+    updated_at,
+    comment_id
+  }
+}
+
+mutation{
+  updateInnerComment(inner_comment_id: "626dd5a9b353619bebe91ae0", new_content: {
+    description: "ffff",
+    media_locator: "oooo"
+  }){
+    description
+  }
+}
+
+query{
+  queryInnerComments(comment_id: "626dc6001b434b26f99e4b88", inner_comments_pagination: {}){
+		owner_id,
+    description,
+    media_locator,
+    comment_id,
+    created_at,
+    _id
+  }
+}
+
+mutation{
+  deleteInnerComment(inner_comment_id: "626dd5a2b353619bebe91add")
+}
+
+//Notifications
+query{
+  queryNotifications(notifier_id: "aafca522-c9a6-11ec-9d64-0242ac120002", notifications_pagination: {}){
+		notifier_id,
+    created_at,
+    actor_id,
+    entity_id,
+    resource_type
+  }
+}

@@ -8,80 +8,80 @@ build:
   local:
     push: false
   artifacts:
-    - image: skillsly_ag
-      context: skillsly_ag
+    - image: jonatlop07/skillsly-ag
+      context: skillsly-ag
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: skillsly_auth_ms
-      context: skillsly_auth_ms
+    - image: jonatlop07/skillsly-auth-ms
+      context: skillsly-auth-ms
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: skillsly_user_ms
-      context: skillsly_user_ms
+    - image: jonatlop07/skillsly-user-ms
+      context: skillsly-user-ms
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: skillsly_story_ms
-      context: skillsly_story_ms
+    - image: jonatlop07/skillsly-story-ms
+      context: skillsly-story-ms
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
           - src: 'src/**/*.rs'
             dest: .
-    - image: skillsly_posts_ms
-      context: skillsly_posts_ms
+    - image: jonatlop07/skillsly-posts-ms
+      context: skillsly-posts-ms
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
           - src: 'src/**/*.java'
             dest: .
-    - image: skillsly_comment_ms
-      context: skillsly_comment_ms
+    - image: jonatlop07/skillsly-comment-ms
+      context: skillsly-comment-ms
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
           - src: 'src/**/*.js'
             dest: .
-    - image: skillsly_service_ms
-      context: skillsly_service_ms
+    - image: jonatlop07/skillsly-service-ms
+      context: skillsly-service-ms
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
           - src: './**/*.py'
             dest: .
-    - image: skillsly_storage_ms
-      context: skillsly_storage_ms
+    - image: jonatlop07/skillsly-storage-ms
+      context: skillsly-storage-ms
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
           - src: './**/*.py'
             dest: .
-    - image: skillsly_notification_ms
-      context: skillsly_notification_ms
+    - image: jonatlop07/skillsly-notification-ms
+      context: skillsly-notification-ms
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: skillsly_notification_handler_ms
-      context: skillsly_notification_handler_ms
+    - image: jonatlop07/skillsly-notification-handler-ms
+      context: skillsly-notification-handler-ms
       docker:
         dockerfile: Dockerfile
       sync:

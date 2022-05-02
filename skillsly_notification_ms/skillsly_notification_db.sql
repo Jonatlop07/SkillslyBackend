@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS skillsly_notification.notification_resource
 (
     id                  UUID PRIMARY KEY NOT NULL,
     resource_type       TEXT NOT NULL,
-    resource_id         UUID NOT NULL,
+    entity_id           UUID NOT NULL,
     created_at          TIMESTAMPTZ NOT NULL,
     status              SMALLINT NOT NULL
 );

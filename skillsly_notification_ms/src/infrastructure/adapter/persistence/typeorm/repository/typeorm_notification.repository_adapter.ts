@@ -33,6 +33,7 @@ export class TypeOrmNotificationRepositoryAdapter
     const { id, created_at } = await this.notification_resource_repository.save(
       this.notification_resource_repository.create({
         resource_type: notification_details.resource_type as string,
+        entity_id: notification_details.entity_id,
         created_at: new Date(),
         status: 1,
       }),
@@ -94,7 +95,7 @@ export class TypeOrmNotificationRepositoryAdapter
         actor_id: notification_change.actor_id,
         created_at: notification.created_at,
         resource_type: notification.resource_type as NotificationResourceType,
-        entity_id: '',
+        entity_id: notification.entity_id,
       };
     });
     return user_notifications;
