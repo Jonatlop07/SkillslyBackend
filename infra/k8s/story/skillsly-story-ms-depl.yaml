@@ -14,10 +14,10 @@ spec:
     spec:
       containers:
         - name: skillsly-story-ms
-          image: jonathan07/skillsly-story-ms
-          env:
-            - name: DATABASE_URL
-              value: 'postgres://skillsly:story@skillsly-story-db-srv:5432/skillsly_story_db'
+          image: jonatlop07/skillsly-story-ms:latest
+          envFrom:
+            - configMapRef:
+                name: skillsly-story-ms-env-config
 ---
 apiVersion: v1
 kind: Service

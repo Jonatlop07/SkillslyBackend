@@ -1,35 +1,17 @@
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: skillsly-auth-db-pv-volume
-  labels:
-    type: local
-    app: skillsly-auth-db
-spec:
-  storageClassName: manual
-  capacity:
-    storage: 10Mi
-  accessModes:
-    - ReadOnlyMany
-  hostPath:
-    path: /mnt/db-auth-data
----
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: skillsly-auth-db-pv-claim
-  labels:
-    app: skillsly-auth-db
+  name: skillsly-auth-pv-claim
 spec:
   storageClassName: manual
   accessModes:
-    - ReadOnlyMany
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 10Mi
+      storage: 50Mi
 ---
-apiVersion: apps/v1
 kind: Deployment
+apiVersion: apps/v1
 metadata:
   name: skillsly-auth-db-depl
 spec:
@@ -47,18 +29,27 @@ spec:
           image: postgres:latest
           env:
             - name: POSTGRES_USER
-              value: skillsly
+              valueFrom:
+                secretKeyRef:
+                  name: skillsly-auth-db-secret
+                  key: username
             - name: POSTGRES_PASSWORD
-              value: auth
+              valueFrom:
+                secretKeyRef:
+                  name: skillsly-auth-db-secret
+                  key: password
             - name: POSTGRES_DB
-              value: skillsly_auth_db
+              valueFrom:
+                configMapKeyRef:
+                  name: skillsly-auth-db-env-config
+                  key: postgres_db
           volumeMounts:
-            - mountPath: /var/lib/postgresql/db-auth-data
-              name: skillsly-auth-db-v
+            - mountPath: /var/lib/postgresql/data
+              name: skillsly-auth-db-volume
       volumes:
-        - name: skillsly-auth-db-v
+        - name: skillsly-auth-db-volume
           persistentVolumeClaim:
-            claimName: skillsly-auth-db-pv-claim
+            claimName: skillsly-auth-pv-claim
 ---
 apiVersion: v1
 kind: Service

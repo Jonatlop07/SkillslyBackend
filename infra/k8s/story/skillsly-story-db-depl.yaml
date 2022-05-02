@@ -1,5 +1,17 @@
-apiVersion: apps/v1
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: skillsly-story-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Mi
+---
 kind: Deployment
+apiVersion: apps/v1
 metadata:
   name: skillsly-story-db-depl
 spec:
@@ -17,11 +29,27 @@ spec:
           image: postgres:latest
           env:
             - name: POSTGRES_USER
-              value: skillsly
+              valueFrom:
+                secretKeyRef:
+                  name: skillsly-story-db-secret
+                  key: username
             - name: POSTGRES_PASSWORD
-              value: story
+              valueFrom:
+                secretKeyRef:
+                  name: skillsly-story-db-secret
+                  key: password
             - name: POSTGRES_DB
-              value: skillsly_story_db
+              valueFrom:
+                configMapKeyRef:
+                  name: skillsly-story-db-env-config
+                  key: postgres_db
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: skillsly-story-db-volume
+      volumes:
+        - name: skillsly-story-db-volume
+          persistentVolumeClaim:
+            claimName: skillsly-story-pv-claim
 ---
 apiVersion: v1
 kind: Service
@@ -35,3 +63,4 @@ spec:
       protocol: TCP
       port: 5432
       targetPort: 5432
+
