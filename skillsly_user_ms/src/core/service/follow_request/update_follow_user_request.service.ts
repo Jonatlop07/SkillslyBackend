@@ -13,7 +13,6 @@ import {
 import { FollowRequestDTO } from '@core/domain/use-case/follow_request/persistence/follow_request.dto'
 import { UserDITokens } from '@core/domain/di/user_di_tokens'
 import { UserAccountNotFoundException } from '@core/domain/use-case/common/exception/user_account.exception'
-import UserRequestDetailsDTO from '@core/domain/use-case/follow_request/dto/user_request_details.dto'
 
 export class UpdateFollowUserRequestService implements UpdateFollowUserRequestInteractor {
   private readonly logger: Logger = new Logger(UpdateFollowUserRequestService.name);
@@ -42,10 +41,15 @@ export class UpdateFollowUserRequestService implements UpdateFollowUserRequestIn
     const exists_user_follow_request = await this.user_gateway.existsFollowUserRequest(follow_request);
     if (!exists_user_follow_request)
       throw new FollowUserRequestNotFoundException();
-    if (accept) await this.user_gateway.acceptFollowUserRequest(follow_request);
-    else await this.user_gateway.rejectFollowUserRequest(follow_request);
+    const follow_request_id = accept
+      ? await this.user_gateway.acceptFollowUserRequest(follow_request)
+      : await this.user_gateway.rejectFollowUserRequest(follow_request);
     return {
-      user_details: user_to_follow as UserRequestDetailsDTO
+      user_details: {
+        ...user_to_follow,
+        actor_id: user_to_follow_id,
+        id: follow_request_id
+      }
     }
   }
 }

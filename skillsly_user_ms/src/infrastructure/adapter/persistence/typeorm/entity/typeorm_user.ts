@@ -69,5 +69,4 @@ export class TypeOrmUser {
     (user_relationship) => user_relationship.follower_id
   )
   public following_users: Array<TypeOrmUserRelationship>;
-
 }

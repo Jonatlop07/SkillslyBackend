@@ -13,7 +13,6 @@ import DeleteFollowUserRequestOutputModel
 import { UserDITokens } from '@core/domain/di/user_di_tokens'
 import { UserAccountNotFoundException } from '@core/domain/use-case/common/exception/user_account.exception'
 import { FollowRequestDTO } from '@core/domain/use-case/follow_request/persistence/follow_request.dto'
-import UserRequestDetailsDTO from '@core/domain/use-case/follow_request/dto/user_request_details.dto'
 
 export class DeleteFollowUserRequestService implements DeleteFollowUserRequestInteractor {
   private readonly logger: Logger = new Logger(DeleteFollowUserRequestService.name);
@@ -45,9 +44,13 @@ export class DeleteFollowUserRequestService implements DeleteFollowUserRequestIn
       if (!exists_follow_user_relationship && !is_follow_request)
         throw new FollowUserRelationshipNotFoundException();
     }
-    await this.gateway.deleteUserRelationship(follow_request);
+    const follow_request_id = await this.gateway.deleteUserRelationship(follow_request);
     return {
-      user_details: requesting_user as UserRequestDetailsDTO
+      user_details: {
+        ...requesting_user,
+        actor_id: user_that_requests_id,
+        id: follow_request_id
+      }
     }
   }
 }

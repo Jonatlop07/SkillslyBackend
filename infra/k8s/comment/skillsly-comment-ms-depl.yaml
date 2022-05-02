@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly-comment-ms-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly-comment-ms
+  template:
+    metadata:
+      labels:
+        app: skillsly-comment-ms
+    spec:
+      containers:
+        - name: skillsly-comment-ms
+          image: skillsly-comment-ms
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly-comment-ms-srv
+spec:
+  selector:
+    app: skillsly-comment-ms
+  ports:
+    - name: comment
+      protocol: TCP
+      port: 3000
+      targetPort: 8005

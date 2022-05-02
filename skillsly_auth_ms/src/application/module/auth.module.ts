@@ -21,8 +21,6 @@ import { HttpModule } from '@nestjs/axios';
 import { HttpLocalStrategy } from '@application/api/http-rest/authentication/passport/http_local.strategy';
 import { HttpJwtStrategy } from '@application/api/http-rest/authentication/passport/http_jwt.strategy';
 import { HttpJwtTwoFactorAuthStrategy } from '@application/api/http-rest/authentication/passport/http_jwt_two_factor_auth.strategy';
-import { APP_GUARD } from '@nestjs/core';
-import { HttpJwtTwoFactorAuthGuard } from '@application/api/http-rest/authentication/guard/http_jwt_two_factor_auth.guard';
 
 const persistence_providers: Array<Provider> = [
   {

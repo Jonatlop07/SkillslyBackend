@@ -1,0 +1,50 @@
+version: "3.7"
+
+services:
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6380:6379"
+  redis-commander:
+    image: "rediscommander/redis-commander:latest"
+    environment:
+      - REDIS_HOSTS=local:redis:6380
+    ports:
+      - "8082:8081"
+    depends_on:
+        - redis
+  skillsly_notification_mq:
+    image: rabbitmq:3.10-rc-management-alpine
+    container_name: skillsly_notification_mq
+    ports:
+      - "5673:5672"
+      - "15673:15672"
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    env_file:
+      - ./env/rabbitmq.env
+  skillsly_notification_handler_ms:
+    build: .
+    container_name: skillsly_notification_handler_ms
+    depends_on:
+      - redis
+      - skillsly_notification_mq
+    environment:
+      API_HOST: localhost
+      API_PORT: 3000
+      API_ENABLE_LOG: true
+      MQ_PROTOCOL: amqp
+      MQ_HOST: skillsly_notification_mq
+      MQ_PORT: 5672
+      MQ_USERNAME: skillsly_notification
+      MQ_PASSWORD: notification
+      MQ_QUEUE: notifications_queue
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      TTL_CACHE: 600
+    ports:
+      - "8012:3000"
+      - "9233:9229"
+
+

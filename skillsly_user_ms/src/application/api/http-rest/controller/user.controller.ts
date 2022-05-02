@@ -47,7 +47,7 @@ import { SearchUsersMapper } from '@application/api/http-rest/http-mapper/http_s
   description: 'An internal server error occurred',
 })
 export class UserController {
-  private readonly logger: Logger = new Logger(UserController.name);
+    private readonly logger: Logger = new Logger(UserController.name);
 
   constructor(
     @Inject(UserDITokens.CreateUserAccountInteractor)

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly-story-db-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly-story-db
+  template:
+    metadata:
+      labels:
+        app: skillsly-story-db
+    spec:
+      containers:
+        - name: skillsly-story-db
+          image: postgres:latest
+          env:
+            - name: POSTGRES_USER
+              value: skillsly
+            - name: POSTGRES_PASSWORD
+              value: story
+            - name: POSTGRES_DB
+              value: skillsly_story_db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly-story-db-srv
+spec:
+  selector:
+    app: skillsly-story-db
+  ports:
+    - name: db
+      protocol: TCP
+      port: 5432
+      targetPort: 5432

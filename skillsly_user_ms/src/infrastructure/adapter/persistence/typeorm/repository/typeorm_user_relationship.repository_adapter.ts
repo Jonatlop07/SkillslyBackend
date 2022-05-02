@@ -26,41 +26,49 @@ export class TypeOrmUserRelationshipRepositoryAdapter implements UserRelationshi
   ) {
   }
 
-  public async createFollowUserRequest(params: FollowRequestDTO): Promise<void> {
-    await this.relationship_repository.save(
+  private async getFollowUserRequest(params: FollowRequestDTO): Promise<TypeOrmUserRelationship> {
+    return await this.relationship_repository.findOne({
+      where: {
+        follower_id: params.user_that_requests_id,
+        following_id: params.user_to_follow_id,
+      },
+    });
+  }
+
+  public async createFollowUserRequest(params: FollowRequestDTO): Promise<string> {
+    const result = await this.relationship_repository.save(
       this.relationship_repository.create({
         follower_id: params.user_that_requests_id,
         following_id: params.user_to_follow_id,
         status: FollowRequestStatus.Pending,
       }),
     );
+    return result.id;
   }
 
-  public async acceptFollowUserRequest(params: FollowRequestDTO): Promise<void> {
-    const relationship: TypeOrmUserRelationship = await this.relationship_repository.findOne({
-      where: {
-        follower_id: params.user_that_requests_id,
-        following_id: params.user_to_follow_id,
-      },
-    });
-    await this.relationship_repository.save(
+  public async acceptFollowUserRequest(params: FollowRequestDTO): Promise<string> {
+    const relationship = await this.getFollowUserRequest(params);
+    const result = await this.relationship_repository.save(
       this.relationship_repository.create({
         ...relationship,
         status: FollowRequestStatus.Following,
         accepted_at: new Date(),
       }),
     );
+    return result.id;
   }
 
-  public async deleteUserRelationship(params: FollowRequestDTO): Promise<void> {
+  public async deleteUserRelationship(params: FollowRequestDTO): Promise<string> {
+    const relationship = await this.getFollowUserRequest(params);
     await this.relationship_repository.delete({
       follower_id: params.user_that_requests_id,
       following_id: params.user_to_follow_id,
     });
+    return relationship.id;
   }
 
-  public async rejectFollowUserRequest(params: FollowRequestDTO): Promise<void> {
-    await this.deleteUserRelationship(params);
+  public async rejectFollowUserRequest(params: FollowRequestDTO): Promise<string> {
+    return await this.deleteUserRelationship(params);
   }
 
   public async existsFollowUserRelationship(params: FollowRequestDTO): Promise<boolean> {

@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { FollowRequestStatus } from '@infrastructure/adapter/persistence/typeorm/entity/follow_request_status.enum'
 import { TypeOrmUser } from '@infrastructure/adapter/persistence/typeorm/entity/typeorm_user'
 
@@ -7,6 +7,9 @@ import { TypeOrmUser } from '@infrastructure/adapter/persistence/typeorm/entity/
   name: 'user_relationship'
 })
 export class TypeOrmUserRelationship {
+  @PrimaryGeneratedColumn('uuid')
+  public id: string;
+
   @PrimaryColumn({
     name: 'follower_id',
     type: 'uuid',
