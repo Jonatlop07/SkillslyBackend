@@ -23,6 +23,7 @@ export class TypeOrmNotificationRepositoryAdapter implements NotificationReposit
     const { id, created_at } = await this.notification_resource_repository.save(
       this.notification_resource_repository.create({
         resource_type: notification_details.resource_type as string,
+        entity_id: notification_details.entity_id,
         created_at: new Date(),
         status: 1
       })
