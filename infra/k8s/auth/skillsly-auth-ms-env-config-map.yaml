@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: skillsly-auth-ms-env-config
+data:
+  API_HOST: '0.0.0.0'
+  API_PORT: '3000'
+  API_ENABLE_LOG: 'true'
+  DATABASE_URL: 'postgres://skillsly:auth@skillsly-auth-db-srv:5432/skillsly_auth_db'
+  AUTH_DB_ENABLE_LOG: 'true'
+  JWT_SECRET: 'Rx334Juo_a2'
+  JWT_EXPIRATION_TIME: '60'
+  THROTTLE_TTL: '60'
+  THROTTLE_LIMIT: '200'
+  TWO_FACTOR_AUTHENTICATION_APP_NAME: 'skillsly'
+  CAPTCHA_SITE_KEY: '6Le-PfMdAAAAAPbJ8IEDDRkETuRyWBbDViisYyIe'
+  MAILER_HOST: 'smtp.gmail.com'
+  MAILER_PORT: '465'
+  MAILER_IGNORE_TLS: 'false'
+  MAILER_SECURE: 'false'
+  USER_MAILER: 'SkillslyTeam@gmail.com'
+  PASS_MAILER: 'kdeddnrigplubqdj'

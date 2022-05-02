@@ -1,35 +1,17 @@
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: skillsly-notification-db-pv-volume
-  labels:
-    type: local
-    app: skillsly-notification-db
-spec:
-  storageClassName: manual
-  capacity:
-    storage: 20Mi
-  accessModes:
-    - ReadOnlyMany
-  hostPath:
-    path: /mnt/notification-data
----
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: skillsly-notification-db-pv-claim
-  labels:
-    app: skillsly-notification-db
+  name: skillsly-notification-pv-claim
 spec:
   storageClassName: manual
   accessModes:
-    - ReadOnlyMany
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 20Mi
+      storage: 50Mi
 ---
-apiVersion: apps/v1
 kind: Deployment
+apiVersion: apps/v1
 metadata:
   name: skillsly-notification-db-depl
 spec:
@@ -47,18 +29,27 @@ spec:
           image: postgres:latest
           env:
             - name: POSTGRES_USER
-              value: skillsly
+              valueFrom:
+                secretKeyRef:
+                  name: skillsly-notification-db-secret
+                  key: username
             - name: POSTGRES_PASSWORD
-              value: notification
+              valueFrom:
+                secretKeyRef:
+                  name: skillsly-notification-db-secret
+                  key: password
             - name: POSTGRES_DB
-              value: skillsly_notification_db
+              valueFrom:
+                configMapKeyRef:
+                  name: skillsly-notification-db-env-config
+                  key: postgres_db
           volumeMounts:
-            - mountPath: /var/lib/postgresql/notification-data
-              name: skillsly-notification-db-v
+            - mountPath: /var/lib/postgresql/data
+              name: skillsly-notification-db-volume
       volumes:
-        - name: skillsly-notification-db-v
+        - name: skillsly-notification-db-volume
           persistentVolumeClaim:
-            claimName: skillsly-notification-db-pv-claim
+            claimName: skillsly-notification-pv-claim
 ---
 apiVersion: v1
 kind: Service
@@ -72,3 +63,4 @@ spec:
       protocol: TCP
       port: 5432
       targetPort: 5432
+
