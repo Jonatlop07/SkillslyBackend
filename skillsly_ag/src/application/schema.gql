@@ -2,6 +2,34 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+"""Defines the information of a comment"""
+type Comment {
+  _id: ID!
+  owner_id: String!
+  post_id: String
+  description: String
+  media_locator: String
+  inner_comment_count: Int
+  created_at: String!
+  updated_at: String
+}
+
+type CommentContent {
+  description: String
+  media_locator: String
+}
+
+"""Defines the information of a comment"""
+type InnerComment {
+  _id: ID!
+  owner_id: String!
+  comment_id: String
+  description: String
+  media_locator: String
+  created_at: String!
+  updated_at: String
+}
+
 """Defines the information of a user's account"""
 type User {
   id: ID!
@@ -53,6 +81,8 @@ type Query {
   user(id: String!): User!
   users(search_params: SearchParams!): [User!]!
   followRelationships(user_id: ID!): FollowRelationships!
+  queryComments(post_id: ID!, comments_pagination: PaginationParams!): [Comment!]!
+  queryInnerComments(inner_comments_pagination: PaginationParams!, comment_id: ID!): [InnerComment!]!
   story(id: ID!, viewer_id: ID!): Story!
   storiesOfFollowingUsers(user_id: String!): [FollowingUsersStories!]!
 }
@@ -64,6 +94,11 @@ input SearchParams {
   offset: Int
 }
 
+input PaginationParams {
+  limit: Int
+  page: Int
+}
+
 type Mutation {
   createUserAccount(account_details: NewUser!): User!
   updateUserAccount(user_id: ID!, updates: UserAccountUpdates!): User!
@@ -71,6 +106,12 @@ type Mutation {
   createFollowRequest(user_id: ID!, user_to_follow_id: ID!): FollowRequestDetails!
   updateFollowRequest(user_id: ID!, user_that_requests_id: ID!, accept: Boolean!): FollowRequestDetails!
   deleteFollowRequest(user_id: ID!, user_to_follow_id: ID!, is_follow_request: Boolean!): FollowRequestDetails!
+  createComment(comment_details: NewComment!, post_id: ID!): Comment!
+  updateComment(comment_id: ID!, new_content: CommentContentUpdate!): CommentContent!
+  deleteComment(comment_id: ID!): String!
+  createInnerComment(inner_comment_details: NewInnerComment!, comment_id: ID!): InnerComment!
+  updateInnerComment(inner_comment_id: ID!, new_content: CommentContentUpdate!): CommentContent!
+  deleteInnerComment(inner_comment_id: ID!): String!
   createStory(story_details: StoryDetails!): Story!
   deleteStory(id: String!): Story!
 }
@@ -88,6 +129,23 @@ input UserAccountUpdates {
   name: String
   date_of_birth: String
   gender: String
+}
+
+input NewComment {
+  owner_id: ID!
+  description: String
+  media_locator: String
+}
+
+input CommentContentUpdate {
+  description: String
+  media_locator: String
+}
+
+input NewInnerComment {
+  owner_id: ID!
+  description: String
+  media_locator: String
 }
 
 input StoryDetails {

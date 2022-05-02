@@ -25,6 +25,20 @@ import { CreateStoryService } from '@application/service/story/requester/create_
 import { DeleteStoryService } from '@application/service/story/requester/delete_story.service'
 import { StoryResolver } from '@application/api/graphql/resolver/story.resolver'
 import { DeleteUserStoryCollectionService } from '@application/service/story/requester/delete_user_story_collection.service'
+import { CommentDITokens } from '@application/service/comments/comment/di/comment_di_tokens';
+import { CreateCommentService } from '@application/service/comments/comment/requester/create_comment.service';
+import { DeleteCommentService } from '@application/service/comments/comment/requester/delete_comment.service';
+import { QueryCommentsService } from '@application/service/comments/comment/requester/query_comments.service';
+import { UpdateCommentService } from '@application/service/comments/comment/requester/update_comment.service';
+import { CreateInnerCommentService } from '@application/service/comments/inner_comment/requester/create_comment.service';
+import { DeleteInnerCommentService } from '@application/service/comments/inner_comment/requester/delete_comment.service';
+import { QueryInnerCommentsService } from '@application/service/comments/inner_comment/requester/query_comments.service';
+import { UpdateInnerCommentService } from '@application/service/comments/inner_comment/requester/update_comment.service';
+import { InnerCommentDITokens } from '@application/service/comments/inner_comment/di/inner_comment_di_tokens';
+import { DeleteCommentsByOwnerService } from '@application/service/comments/comment/requester/delete_owner_comments.service';
+import { DeleteInnerCommentsByOwnerService } from '@application/service/comments/inner_comment/requester/delete_owner_inner_comments.service';
+import { CommentResolver } from '@application/api/graphql/resolver/comment.resolver';
+import { InnerCommentResolver } from '@application/api/graphql/resolver/inner_comment.resolver';
 import { NotificationDITokens } from '@application/service/notification/di/notification_di_tokens'
 import { SendNotificationService } from '@application/service/notification/requester/send_notification.service'
 
@@ -129,6 +143,59 @@ const story_providers: Array<Provider> = [
   },
 ];
 
+const comment_providers: Array<Provider> = [
+  {
+    provide: CommentDITokens.CreateCommentService,
+    useFactory: (request) => new CreateCommentService(request),
+    inject: [RequestDITokens.Request],
+  },
+  {
+    provide: CommentDITokens.QueryCommentsService,
+    useFactory: (request) => new QueryCommentsService(request),
+    inject: [RequestDITokens.Request],
+  },
+  {
+    provide: CommentDITokens.UpdateCommentService,
+    useFactory: (request) => new UpdateCommentService(request),
+    inject: [RequestDITokens.Request],
+  },
+  {
+    provide: CommentDITokens.DeleteCommentService,
+    useFactory: (request) => new DeleteCommentService(request),
+    inject: [RequestDITokens.Request],
+  },
+  {
+    provide: CommentDITokens.DeleteCommentsByOwnerService,
+    useFactory: (request) => new DeleteCommentsByOwnerService(request),
+    inject: [RequestDITokens.Request],
+  },
+  {
+    provide: InnerCommentDITokens.CreateInnerCommentService,
+    useFactory: (request) => new CreateInnerCommentService(request),
+    inject: [RequestDITokens.Request],
+  },
+  {
+    provide: InnerCommentDITokens.QueryInnerCommentsService,
+    useFactory: (request) => new QueryInnerCommentsService(request),
+    inject: [RequestDITokens.Request],
+  },
+  {
+    provide: InnerCommentDITokens.UpdateInnerCommentService,
+    useFactory: (request) => new UpdateInnerCommentService(request),
+    inject: [RequestDITokens.Request],
+  },
+  {
+    provide: InnerCommentDITokens.DeleteInnerCommentService,
+    useFactory: (request) => new DeleteInnerCommentService(request),
+    inject: [RequestDITokens.Request],
+  },
+  {
+    provide: InnerCommentDITokens.DeleteInnerCommentsByOwnerService,
+    useFactory: (request) => new DeleteInnerCommentsByOwnerService(request),
+    inject: [RequestDITokens.Request],
+  },
+];
+
 const notification_providers: Array<Provider> = [
   {
     provide: NotificationDITokens.SendNotificationService,
@@ -140,7 +207,9 @@ const notification_providers: Array<Provider> = [
 const resolvers: Array<Provider> = [
   AccountResolver,
   SocialResolver,
-  StoryResolver
+  CommentResolver,
+  InnerCommentResolver,
+  StoryResolver,
 ];
 
 @Module({
@@ -155,6 +224,7 @@ const resolvers: Array<Provider> = [
     ...auth_providers,
     ...user_providers,
     ...story_providers,
+    ...comment_providers,
     ...notification_providers,
     ...resolvers
   ]

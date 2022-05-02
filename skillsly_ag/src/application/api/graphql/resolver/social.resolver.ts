@@ -46,7 +46,7 @@ export class SocialResolver {
     const { users } = await this.search_users_service.execute({
       ...search_params
     });
-    this.logger.log(`Search in user service successfully made`);
+    this.logger.log('Search in user service successfully made');
     return users.map(UserMapper.toGraphQLModel);
   }
 
@@ -62,8 +62,8 @@ export class SocialResolver {
 
   @Mutation(() => FollowRequestDetails)
   public async createFollowRequest(
-    @Args({ name: 'user_id' , type: () => ID }) user_id: Id,
-    @Args({ name: 'user_to_follow_id' , type: () => ID }) user_to_follow_id: Id
+    @Args({ name: 'user_id', type: () => ID }) user_id: Id,
+    @Args({ name: 'user_to_follow_id', type: () => ID }) user_to_follow_id: Id,
   ) {
     this.logger.log('Creating follow request in user service...');
     const { user_details: request_details } = await this.create_follow_user_request_service.execute({

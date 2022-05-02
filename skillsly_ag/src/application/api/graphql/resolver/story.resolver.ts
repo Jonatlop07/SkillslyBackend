@@ -68,20 +68,27 @@ export class StoryResolver {
   @Query(() => [FollowingUsersStories])
   public async storiesOfFollowingUsers(@Args({ name: 'user_id' }) user_id: Id) {
     this.logger.log('Querying following users in user service...');
-    const { follow_request_collection: { following_users } } = await this.query_follow_relationships_service.execute({
-      user_id
+    const {
+      follow_request_collection: { following_users },
+    } = await this.query_follow_relationships_service.execute({
+      user_id,
     });
     this.logger.log('Following users successfully queried in user service');
     this.logger.log('Querying stories of following users in story service...');
-    const stories_of_following_users_responses: Array<QueryUserStoryCollectionRequestResponse> = await Promise.all(
-      following_users.map(
-        ({ id }) => this.query_story_collection_service.execute({ owner_id: id })
-      )
+    const stories_of_following_users_responses: Array<QueryUserStoryCollectionRequestResponse> =
+      await Promise.all(
+        following_users.map(({ id }) =>
+          this.query_story_collection_service.execute({ owner_id: id }),
+        ),
+      );
+    this.logger.log(
+      'Stories of following users successfully queried in story service',
     );
-    this.logger.log('Stories of following users successfully queried in story service');
-    return stories_of_following_users_responses.map(
-      ({ stories }, index) =>
-        FollowingUsersStoriesMapper.toGraphQLModel(following_users[index].id, stories)
+    return stories_of_following_users_responses.map(({ stories }, index) =>
+      FollowingUsersStoriesMapper.toGraphQLModel(
+        following_users[index].id,
+        stories,
+      ),
     );
   }
 
