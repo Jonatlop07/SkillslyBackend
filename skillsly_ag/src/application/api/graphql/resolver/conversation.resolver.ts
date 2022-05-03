@@ -38,6 +38,7 @@ import {MessageMapper} from '@application/api/graphql/mapper/message.mapper';
 @Resolver()
 export class ConversationResolver {
   private readonly logger: Logger = new Logger(ConversationResolver.name);
+  public result = '';
 
   constructor(
     @Inject(ChatDITokens.CreatePrivateConversationService)
@@ -72,16 +73,23 @@ export class ConversationResolver {
   ) {
     try {
       await this.query_user_service.execute({id: private_conversation.member_user_id});
+    } catch (e) {
+      this.result = 'User not found';
+      return this.result;
+    }
+    try {
       this.logger.log('Creating private chat with chat service...');
       await this.create_private_conversation_service.execute({
         CreatorUserID: private_conversation.creator_user_id,
         MemberUserID: private_conversation.member_user_id
       });
-      this.logger.log('Private chat was created successfully');
-      return 'Private chat was created successfully';
+      this.result = 'Private conversation created';
+      this.logger.log(this.result);
+      return this.result;
     } catch (e) {
-      this.logger.log('Error creating chat, member user account doesn\'t exist');
-      return 'Error creating chat, member user account doesn\'t exist';
+      this.result = 'Error creating private conversation ' + e;
+      this.logger.log(this.result);
+      return this.result;
     }
   }
 
@@ -92,10 +100,17 @@ export class ConversationResolver {
     type: () => GroupConversation
   }) group_conversation: GroupConversation
   ) {
+
     try {
       for (const member of group_conversation.members) {
         await this.query_user_service.execute({id: member.UserID});
       }
+    } catch (e) {
+      this.result = 'Error creating chat, one or more member user accounts don\'t exist';
+      this.logger.log(this.result);
+      return this.result;
+    }
+    try {
       this.logger.log('Creating group chat with group chat service...');
       await this.create_group_conversation_service.execute({
         RequestUserID: group_conversation.request_user_id,
@@ -108,7 +123,7 @@ export class ConversationResolver {
       this.logger.log(resultString);
       return resultString;
     } catch (e) {
-      const resultString = 'Error creating group chat: some member user account doesn\'t exist';
+      const resultString = 'Error creating chat, something went wrong : ' + e;
       this.logger.log(resultString);
       return resultString;
     }
@@ -123,18 +138,25 @@ export class ConversationResolver {
   ) {
     try {
       await this.query_user_service.execute({id: delete_conversation.user_id});
+    } catch (e) {
+      this.result = 'User not found';
+      return this.result;
+    }
+
+    try {
+      await this.query_user_service.execute({id: delete_conversation.user_id});
       this.logger.log('Deleting chat with chat service...');
       await this.delete_conversation_service.execute({
         ConversationID: delete_conversation.conversation_id,
         UserID: delete_conversation.user_id,
       });
-      const resultString = 'Conversation was deleted successfully';
-      this.logger.log(resultString);
-      return resultString;
+      this.result = 'Conversation was deleted successfully';
+      this.logger.log(this.result);
+      return this.result;
     } catch (e) {
-      const resultString = 'Error deleting chat, user account doesn\'t exist' + e;
-      this.logger.log(resultString);
-      return resultString;
+      this.result = 'Error deleting conversation: ' + e;
+      this.logger.log(this.result);
+      return this.result;
     }
   }
 
@@ -148,24 +170,23 @@ export class ConversationResolver {
     try {
       await this.query_user_service.execute({id: exit_group_conversation.user_id});
     } catch (e) {
-      const resultString = 'Error: this user doesn\'t exist';
-      this.logger.log(resultString);
-      return resultString;
+      this.result = 'Error: this user doesn\'t exist';
+      this.logger.log(this.result);
+      return this.result;
     }
-
     try {
       this.logger.log('Exiting chat with chat service...');
       await this.exit_group_conversation_service.execute({
         ConversationID: exit_group_conversation.conversation_id,
         UserID: exit_group_conversation.user_id,
       });
-      const resultString = 'Exited successfully from this chat';
-      this.logger.log(resultString);
-      return resultString;
+      this.result = 'Exited successfully from this chat';
+      this.logger.log(this.result);
+      return this.result;
     } catch (e) {
-      const resultString = 'Error while exiting chat ';
-      this.logger.log(resultString);
-      return resultString;
+      this.result = 'Error while exiting chat ';
+      this.logger.log(this.result);
+      return this.result;
     }
   }
 
@@ -178,6 +199,11 @@ export class ConversationResolver {
   ) {
     try {
       await this.query_user_service.execute({id: get_conversations.user_id});
+    } catch (e) {
+      this.result = 'Error: this user doesn\'t exist';
+      return this.result;
+    }
+    try {
       this.logger.log('Retrieving conversations with chat service...');
       const result = await this.get_conversations_collection_service.execute({
         UserID: get_conversations.user_id
@@ -188,8 +214,8 @@ export class ConversationResolver {
       });
       return response;
     } catch (e) {
-      const resultString = 'Error retrieving conversations, member user account doesn\'t exist';
-      this.logger.log(resultString);
+      this.result = 'Error retrieving conversations, member user account doesn\'t exist';
+      this.logger.log(this.result);
       return [];
     }
   }
@@ -205,18 +231,23 @@ export class ConversationResolver {
       for (const member of add_members_conversation.users_ids) {
         await this.query_user_service.execute({id: member});
       }
+    } catch (e) {
+      this.result = 'Error: one of the users doesn\'t exist';
+      return this.result;
+    }
+    try {
       this.logger.log('Adding members to chat with chat service...');
       await this.add_members_group_conversation_service.execute({
         ConversationID: add_members_conversation.conversation_id,
         UsersIDs: add_members_conversation.users_ids
       });
-      const resultString = 'Members were added to chat successfully';
-      this.logger.log(resultString);
-      return resultString;
+      this.result = 'Members were added to chat successfully';
+      this.logger.log(this.result);
+      return this.result;
     } catch (e) {
-      const resultString = 'Error adding members: some members doesn\'t exist';
-      this.logger.log(resultString);
-      return resultString;
+      this.result = 'Error adding members: some members doesn\'t exist';
+      this.logger.log(this.result);
+      return this.result;
     }
   }
 
@@ -228,15 +259,21 @@ export class ConversationResolver {
   }) message_to_conversation: SendMessage
   ) {
     this.logger.log('Sending message to chat with message service...');
+    try {
+      await this.send_message_to_conversation_service.execute({
+        ConversationID: message_to_conversation.conversation_id,
+        Content: message_to_conversation.content,
+        OwnerUserID: message_to_conversation.owner_user_id
+      });
+      this.result  = 'Message added succesfully';
+      this.logger.log(this.result);
+      return this.result;
+    } catch (e) {
+      this.result = 'Error adding message';
+      this.logger.log(this.result);
+      return this.result;
+    }
 
-    await this.send_message_to_conversation_service.execute({
-      ConversationID: message_to_conversation.conversation_id,
-      Content: message_to_conversation.content,
-      OwnerUserID: message_to_conversation.owner_user_id
-    });
-    const resultMessage = 'Message added succesfully';
-    this.logger.log(resultMessage);
-    return resultMessage;
   }
 
   @Query(() => [Message])
@@ -246,15 +283,20 @@ export class ConversationResolver {
     type: () => GetConversationMessages
   }) get_messages: GetConversationMessages
   ) {
-    const result = await this.get_conversation_messages_service.execute({
-      ConversationID: get_messages.conversation_id
-    });
-    const response = [];
-    result.messages.forEach((message) => {
-      response.push(MessageMapper.toGraphQLModel(message));
-    });
-    return response;
-
+    try {
+      const result = await this.get_conversation_messages_service.execute({
+        ConversationID: get_messages.conversation_id
+      });
+      const response = [];
+      result.messages.forEach((message) => {
+        response.push(MessageMapper.toGraphQLModel(message));
+      });
+      return response;
+    } catch (e) {
+      this.result = 'Error retrieving messages: conversation doesn\'t exist';
+      this.logger.log(this.result);
+      return [];
+    }
   }
 
   @Mutation(() => String)
@@ -264,16 +306,22 @@ export class ConversationResolver {
     type: () => UpdateConversation
   }) update_conversation: UpdateConversation
   ) {
-    this.logger.log('Updating conversation with conversation service ...');
-    await this.update_group_details_service.execute({
-      ConversationID: update_conversation.conversation_id,
-      Name: update_conversation.name,
-      Description: update_conversation.description,
-      IsPrivate: update_conversation.is_private
-    });
-    const resultString = 'Conversation details were updated successfully';
-    this.logger.log(resultString);
-    return resultString;
+    try {
+      this.logger.log('Updating conversation with conversation service ...');
+      await this.update_group_details_service.execute({
+        ConversationID: update_conversation.conversation_id,
+        Name: update_conversation.name,
+        Description: update_conversation.description,
+        IsPrivate: update_conversation.is_private
+      });
+      this.result= 'Conversation details were updated successfully';
+      this.logger.log(this.result);
+      return this.result;
+    } catch (e) {
+      this.result = 'Error updating conversation details';
+      this.logger.log(this.result);
+      return this.result;
+    }
   }
 
 
