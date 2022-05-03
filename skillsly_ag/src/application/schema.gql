@@ -140,6 +140,41 @@ type Query {
   queryNotifications(notifier_id: ID!, notifications_pagination: NotificationQueryParams!): [Notifications!]!
   serviceApplications(service_id: Float!): [Application!]!
   listService(list_service_params: ListServiceParams!): [Service!]!
+"""Defines the information of a chat message"""
+type Message {
+  content: String!
+  path: String!
+  owner_user_id: String!
+  created_at: String!
+  updated_at: String!
+}
+
+"""Defines the information of a chat member"""
+type Member {
+  user_id: ID!
+  is_active: Boolean!
+  is_admin: Boolean!
+  joined_at: String!
+}
+
+"""Defines the information of a chat"""
+type Conversation {
+  conversation_id: ID!
+  creator_user_id: String!
+  name: String!
+  description: String!
+  members: [Member!]!
+  messages: [Message!]
+  created_at: String!
+  updated_at: String
+  is_private: Boolean!
+}
+
+type Query {
+  queryUser(id: String!): User!
+  searchUsers(search_params: SearchParams!): [User!]!
+  getConversationsCollection(get_conversations_collection: GetConversations!): [Conversation!]!
+  getConversationMessages(get_messages: GetConversationMessages!): [Message!]!
 }
 
 input SearchParams {
@@ -162,6 +197,12 @@ input NotificationQueryParams {
 input ListServiceParams {
   category: String
   requester_id: String
+input GetConversations {
+  user_id: String!
+}
+
+input GetConversationMessages {
+  conversation_id: String!
 }
 
 type Mutation {
@@ -186,6 +227,13 @@ type Mutation {
   deleteApplication(id: Float!): String!
   createService(service_details: ServiceDetails!): Service!
   deleteService(id: Float!): String!
+  createPrivateConversation(private_conversation: PrivateConversation!): String!
+  createGroupConversation(group_conversation: GroupConversation!): String!
+  deleteConversation(delete_conversation: DeleteConversation!): String!
+  exitGroupConversation(exit_group_conversation: DeleteConversation!): String!
+  addMembersGroupConversation(add_members_conversation: AddMembersConversation!): String!
+  sendMessageToConversation(message_to_conversation: SendMessage!): String!
+  updateConversationDetails(update_conversation: UpdateConversation!): String!
 }
 
 input NewUser {
@@ -259,4 +307,46 @@ input ServiceDetails {
   description: String!
   contact_info: String!
   category: String!
+input PrivateConversation {
+  creator_user_id: String!
+  member_user_id: String!
+}
+
+input GroupConversation {
+  request_user_id: String!
+  name: String!
+  description: String!
+  members: [InputMember!]!
+  is_private: Boolean!
+}
+
+"""Defines the information of a chat member"""
+input InputMember {
+  UserID: ID!
+  IsActive: Boolean!
+  IsAdmin: Boolean!
+  JoinedAt: String
+}
+
+input DeleteConversation {
+  conversation_id: String!
+  user_id: String!
+}
+
+input AddMembersConversation {
+  users_ids: [String!]!
+  conversation_id: String!
+}
+
+input SendMessage {
+  content: String!
+  owner_user_id: String!
+  conversation_id: String!
+}
+
+input UpdateConversation {
+  conversation_id: String!
+  name: String!
+  is_private: Boolean!
+  description: String!
 }

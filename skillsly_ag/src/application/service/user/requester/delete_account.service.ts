@@ -15,7 +15,8 @@ export class DeleteAccountService implements Requester<DeleteAccountRequestInput
   public async execute(input: DeleteAccountRequestInput): Promise<DeleteAccountRequestResponse> {
     return await this.request.deleteRequest<DeleteAccountRequestResponse>({
       url: `${USER_MS_URL}/user/account/${input.user_id}`,
-      params: {}
+      params: {},
+      body: {}
     });
   }
 }

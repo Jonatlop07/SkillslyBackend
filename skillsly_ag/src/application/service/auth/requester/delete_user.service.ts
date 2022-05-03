@@ -13,12 +13,13 @@ export class DeleteUserService implements Requester<DeleteUserRequestInput, Dele
   }
 
   public async execute(input: DeleteUserRequestInput): Promise<DeleteUserRequestResponse> {
-    const { user_id, password } = input;
+    const {user_id, password} = input;
     return await this.request.deleteRequest<DeleteUserRequestResponse>({
       url: `${AUTH_MS_URL}/auth/user/${user_id}`,
       params: {
         password
-      }
+      },
+      body: {}
     });
   }
 }
