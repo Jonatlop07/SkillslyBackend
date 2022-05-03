@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: skillsly-comment-ms-env-config
+data:
+  MONGO_URL: 'mongodb+srv://NASkillsly:LlT4e91kqZdgBW6V@skillsly-comments.fiy34.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+  MONGO_TESTS_URL: 'mongodb+srv://tquaza:niumckm6qMDoPvVW@skillslycomments.tlhzp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'

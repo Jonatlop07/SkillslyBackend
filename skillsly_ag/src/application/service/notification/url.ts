@@ -1,1 +1,1 @@
-export const NOTIFICATION_MS_URL = 'http://localhost:8011';
+export const NOTIFICATION_MS_URL = 'http://skillsly-notification-ms-srv:3000';

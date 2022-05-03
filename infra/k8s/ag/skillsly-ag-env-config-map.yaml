@@ -6,4 +6,5 @@ data:
   API_HOST: '0.0.0.0'
   API_PORT: '3000'
   API_ENABLE_LOG: 'true'
+  ORIGIN: '0.0.0.0'
   REDIS_HOST: skillsly-ag-redis-srv
