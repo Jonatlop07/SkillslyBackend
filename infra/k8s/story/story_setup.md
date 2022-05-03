@@ -80,6 +80,7 @@ kubectl delete configmap skillsly-story-ms-env-config ;`
 kubectl delete service skillsly-story-db-srv ;`
 kubectl delete deployment skillsly-story-db-depl ;`
 kubectl delete persistentvolumeclaims skillsly-story-pv-claim ;`
+kubectl delete persistentvolume skillsly-story-db-persistent-volume ;`
 kubectl delete secret skillsly-story-db-secret ;`
 kubectl delete configmap skillsly-story-db-env-config ; 
 ```

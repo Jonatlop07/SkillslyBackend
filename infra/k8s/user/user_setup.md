@@ -79,6 +79,7 @@ kubectl delete configmap skillsly-user-ms-env-config ;`
 kubectl delete service skillsly-user-db-srv ;`
 kubectl delete deployment skillsly-user-db-depl ;`
 kubectl delete persistentvolumeclaims skillsly-user-pv-claim ;`
+kubectl delete persistentvolume skillsly-user-db-persistent-volume ;`
 kubectl delete secret skillsly-user-db-secret ;`
 kubectl delete configmap skillsly-user-db-env-config ; 
 ```

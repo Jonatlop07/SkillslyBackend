@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: skillsly-notification-handler-ms-env-config
+data:
+  API_ENABLE_LOG: 'true'
+  MQ_PROTOCOL: 'amqp'
+  MQ_HOST: 'skillsly-notification-mq-srv'
+  MQ_PORT: '5672'
+  MQ_USERNAME: 'skillsly_notification'
+  MQ_PASSWORD: 'skillsly'
+  MQ_QUEUE: 'notifications_queue'
+  REDIS_HOST: 'skillsly-notification-handler-redis-srv'
+  REDIS_PORT: '6379'
+  TTL_CACHE: '600'

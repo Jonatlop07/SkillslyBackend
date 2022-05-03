@@ -16,6 +16,9 @@ services:
     build: .
     container_name: skillsly_ag
     environment:
+      API_HOST: '0.0.0.0'
+      API_PORT: '3000'
+      API_ENABLE_LOG: 'true'
       REDIS_HOST: redis
     depends_on:
       - redis

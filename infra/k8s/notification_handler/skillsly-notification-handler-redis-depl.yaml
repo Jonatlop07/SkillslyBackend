@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly-notification-handler-redis-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly-notification-handler-redis
+  template:
+    metadata:
+      labels:
+        app: skillsly-notification-handler-redis
+    spec:
+      containers:
+        - name: skillsly-notification-handler-redis
+          image: redis:alpine
+          resources:
+            limits:
+              cpu: "0.1"
+          volumeMounts:
+            - mountPath: /redis-master-data
+              name: data
+            - mountPath: /redis-master
+              name: config
+      volumes:
+        - name: data
+          emptyDir: { }
+        - name: config
+          configMap:
+            name: skillsly-notification-handler-redis-config
+            items:
+              - key: redis-config
+                path: redis.conf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly-notification-handler-redis-srv
+spec:
+  selector:
+    app: skillsly-notification-handler-redis
+  ports:
+    - name: redis
+      protocol: TCP
+      port: 6379
+      targetPort: 6379

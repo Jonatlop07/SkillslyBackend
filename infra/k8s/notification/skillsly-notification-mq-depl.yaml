@@ -1,0 +1,78 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: skillsly-notification-mq-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Mi
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: skillsly-notification-mq-depl
+spec:
+  serviceName: skillsly-notification-mq-srv
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly-notification-mq
+  template:
+    metadata:
+      labels:
+        app: skillsly-notification-mq
+    spec:
+      containers:
+        - name: skillsly-notification-mq
+          image: rabbitmq:3.10-rc-management-alpine
+          env:
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: skillsly-notification-mq-secret
+                  key: pass
+            - name: RABBITMQ_DEFAULT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: skillsly-notification-mq-secret
+                  key: user
+            - name: RABBITMQ_ERLANG_COOKIE
+              valueFrom:
+                secretKeyRef:
+                  name: skillsly-notification-mq-secret
+                  key: cookie
+            - name: RABBIT_POD_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+          volumeMounts:
+          - name: skillsly-notification-mq-volume
+            mountPath: /var/lib/rabbitmq
+      volumes:
+        - name: skillsly-notification-mq-volume
+          persistentVolumeClaim:
+            claimName: skillsly-notification-mq-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly-notification-mq-srv
+spec:
+  type: NodePort
+  selector:
+    app: skillsly-notification-mq
+  ports:
+    - name: rabbit-mq
+      protocol: TCP
+      port: 5672
+      targetPort: 5672
+    - name: rabbit-mq-management
+      protocol: TCP
+      port: 15672
+      targetPort: 15672
+      nodePort: 30007
+

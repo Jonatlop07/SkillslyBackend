@@ -8,11 +8,7 @@ RUN npm install
 
 COPY . .
 
-ENV API_HOST=0.0.0.0
-ENV API_PORT=3000
-ENV MS_HOST=0.0.0.0
-ENV MS_PORT=3001
-ENV API_ENABLE_LOG=true
+ENV ENABLE_LOG=true
 
 RUN npm run build
 

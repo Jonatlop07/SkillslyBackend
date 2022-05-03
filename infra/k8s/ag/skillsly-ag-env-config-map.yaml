@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: skillsly-ag-env-config
+data:
+  API_HOST: '0.0.0.0'
+  API_PORT: '3000'
+  API_ENABLE_LOG: 'true'
+  REDIS_HOST: skillsly-ag-redis-srv

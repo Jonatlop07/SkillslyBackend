@@ -12,5 +12,5 @@ COPY . .
 
 RUN npm run build
 
-EXPOSE 8009
+EXPOSE 8000
 CMD ["node", "dist/main"]

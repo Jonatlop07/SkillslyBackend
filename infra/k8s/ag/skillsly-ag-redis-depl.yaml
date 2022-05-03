@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly-ag-redis-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly-ag-redis
+  template:
+    metadata:
+      labels:
+        app: skillsly-ag-redis
+    spec:
+      containers:
+        - name: skillsly-ag-redis
+          image: redis:alpine
+          resources:
+            limits:
+              cpu: "0.1"
+          volumeMounts:
+            - mountPath: /redis-master-data
+              name: data
+            - mountPath: /redis-master
+              name: config
+      volumes:
+        - name: data
+          emptyDir: { }
+        - name: config
+          configMap:
+            name: skillsly-ag-redis-config
+            items:
+              - key: redis-config
+                path: redis.conf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly-ag-redis-srv
+spec:
+  selector:
+    app: skillsly-ag-redis
+  ports:
+    - name: redis
+      protocol: TCP
+      port: 6379
+      targetPort: 6379
