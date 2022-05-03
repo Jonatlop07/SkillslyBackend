@@ -2,8 +2,8 @@ from django.db import models
 
 class Service(models.Model):
 
-    requester_id = models.IntegerField(
-        "requester_id", null=False, blank=False
+    requester_id = models.CharField(
+        "requester_id", null=False, blank=False, max_length=50
     )
 
     title = models.CharField(
@@ -42,8 +42,8 @@ class Service(models.Model):
         "updated_at", auto_now=True, null=False, blank=False
     )
 
-    provider_id = models.IntegerField(
-        "provider_id", null=True, blank=True
+    provider_id = models.CharField(
+        "provider_id", null=True, blank=True, max_length=50
     )
 
     canceled = models.BooleanField(
