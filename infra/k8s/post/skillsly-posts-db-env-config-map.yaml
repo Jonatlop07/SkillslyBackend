@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: skillsly-posts-db-env-config
+data:
+  MONGO_DATA_PATH: '/data/db'
+  MONGO_LOG_PATH: '/dev/null'
+  MONGODB_HOST: 'skillsly-posts-db-srv'
+  MONGODB_DATABASE: 'Skillsly'
