@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: skillsly-posts-ms
-          image: skillsly-posts-ms
+          image: jonatlop07/skillsly-posts-ms
 ---
 apiVersion: v1
 kind: Service
@@ -24,7 +24,7 @@ spec:
   selector:
     app: skillsly-posts-ms
   ports:
-    - name: post
+    - name: posts
       protocol: TCP
       port: 8080
       targetPort: 8080
