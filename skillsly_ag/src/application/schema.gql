@@ -13,9 +13,41 @@ type User {
   updated_at: String
 }
 
+"""Defines the information of a chat message"""
+type Message {
+  content: String!
+  path: String!
+  owner_user_id: String!
+  created_at: String!
+  updated_at: String!
+}
+
+"""Defines the information of a chat member"""
+type Member {
+  user_id: ID!
+  is_active: Boolean!
+  is_admin: Boolean!
+  joined_at: String!
+}
+
+"""Defines the information of a chat"""
+type Conversation {
+  conversation_id: ID!
+  creator_user_id: String!
+  name: String!
+  description: String!
+  members: [Member!]!
+  messages: [Message!]
+  created_at: String!
+  updated_at: String
+  is_private: Boolean!
+}
+
 type Query {
   queryUser(id: String!): User!
   searchUsers(search_params: SearchParams!): [User!]!
+  getConversationsCollection(get_conversations_collection: GetConversations!): [Conversation!]!
+  getConversationMessages(get_messages: GetConversationMessages!): [Message!]!
 }
 
 input SearchParams {
@@ -25,10 +57,25 @@ input SearchParams {
   offset: Int
 }
 
+input GetConversations {
+  user_id: String!
+}
+
+input GetConversationMessages {
+  conversation_id: String!
+}
+
 type Mutation {
   createUserAccount(account_details: NewUser!): User!
   updateUserAccount(user_id: ID!, updates: UserAccountUpdates!): User!
   deleteUserAccount(user_id: ID!, password: String): User!
+  createPrivateConversation(private_conversation: PrivateConversation!): String!
+  createGroupConversation(group_conversation: GroupConversation!): String!
+  deleteConversation(delete_conversation: DeleteConversation!): String!
+  exitGroupConversation(exit_group_conversation: DeleteConversation!): String!
+  addMembersGroupConversation(add_members_conversation: AddMembersConversation!): String!
+  sendMessageToConversation(message_to_conversation: SendMessage!): String!
+  updateConversationDetails(update_conversation: UpdateConversation!): String!
 }
 
 input NewUser {
@@ -44,4 +91,48 @@ input UserAccountUpdates {
   name: String
   date_of_birth: String
   gender: String
+}
+
+input PrivateConversation {
+  creator_user_id: String!
+  member_user_id: String!
+}
+
+input GroupConversation {
+  request_user_id: String!
+  name: String!
+  description: String!
+  members: [InputMember!]!
+  is_private: Boolean!
+}
+
+"""Defines the information of a chat member"""
+input InputMember {
+  UserID: ID!
+  IsActive: Boolean!
+  IsAdmin: Boolean!
+  JoinedAt: String
+}
+
+input DeleteConversation {
+  conversation_id: String!
+  user_id: String!
+}
+
+input AddMembersConversation {
+  users_ids: [String!]!
+  conversation_id: String!
+}
+
+input SendMessage {
+  content: String!
+  owner_user_id: String!
+  conversation_id: String!
+}
+
+input UpdateConversation {
+  conversation_id: String!
+  name: String!
+  is_private: Boolean!
+  description: String!
 }

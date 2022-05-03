@@ -2,10 +2,10 @@ import {
   RequestParamsWithBody,
   RequestParamsWithoutBody
 } from '@application/common/request/request_params';
-import { HttpService } from '@nestjs/axios';
-import { BadGatewayException, Injectable } from '@nestjs/common';
-import { catchError, firstValueFrom, map, Observable } from 'rxjs';
-import { AxiosResponse } from 'axios'
+import {HttpService} from '@nestjs/axios';
+import {BadGatewayException, Injectable} from '@nestjs/common';
+import {catchError, firstValueFrom, map, Observable} from 'rxjs';
+import {AxiosResponse} from 'axios';
 
 @Injectable()
 export class Request {
@@ -15,14 +15,14 @@ export class Request {
   }
 
   public getRequest<T>(get_params: RequestParamsWithoutBody): Promise<T> {
-    const { url, params } = get_params;
+    const {url, params} = get_params;
     return firstValueFrom(
       this.http_service
-        .get(url, { params })
+        .get(url, {params})
         .pipe(
           map(
             (response): T => {
-              if (!response.data.success) {
+              if (!response.data) {
                 throw new BadGatewayException();
               }
               return response.data as T;
@@ -33,10 +33,10 @@ export class Request {
   }
 
   public postRequest<T>(post_params: RequestParamsWithBody): Promise<T> {
-    const { url, params, body } = post_params;
+    const {url, params, body} = post_params;
     return firstValueFrom(
       this.http_service
-        .post<T>(url, body, { params })
+        .post<T>(url, body, {params})
         .pipe(
           map(
             (response: AxiosResponse<T>): T => {
@@ -51,10 +51,10 @@ export class Request {
   }
 
   public putRequest<T>(put_params: RequestParamsWithBody): Promise<T> {
-    const { url, params, body } = put_params;
+    const {url, params, body} = put_params;
     return firstValueFrom(
       this.http_service
-        .put(url, body, { params })
+        .put(url, body, {params})
         .pipe(
           map(
             (response): T => {
@@ -69,35 +69,34 @@ export class Request {
   }
 
   public patchRequest<T>(patch_params: RequestParamsWithBody): Promise<T> {
-    const { url, params, body } = patch_params;
+    const {url, params, body} = patch_params;
     return firstValueFrom(
       this.http_service
-        .patch(url, body, { params })
+        .patch(url, body, {params})
         .pipe(
           map(
             (response): T => {
-              if (!response.data.success) {
-                throw new BadGatewayException();
-              }
-              return response.data as T;
+              // if (!response.data || response.data != ' ') {
+              //   throw new BadGatewayException();
+              // }
+              if (response.data != '')
+                return response.data as T;
             }
           )
         )
     );
   }
 
-  public deleteRequest<T>(delete_params: RequestParamsWithoutBody): Promise<T> {
-    const { url, params } = delete_params;
+  public deleteRequest<T>(delete_params: RequestParamsWithBody): Promise<T> {
+    const {url, params, body} = delete_params;
     return firstValueFrom(
       this.http_service
-        .delete(url, { params })
+        .delete(url, {params, data: body})
         .pipe(
           map(
             (response): T => {
-              if (!response.data.success) {
-                throw new BadGatewayException();
-              }
-              return response.data as T;
+              if (response.data != '')
+                return response.data as T;
             }
           )
         )
