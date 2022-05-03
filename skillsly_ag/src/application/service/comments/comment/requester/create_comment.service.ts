@@ -7,8 +7,7 @@ import CreateCommentRequestResponse from '../request-response/create_comment.req
 
 @Injectable()
 export class CreateCommentService
-  implements Requester<CreateCommentRequestInput, CreateCommentRequestResponse>
-{
+implements Requester<CreateCommentRequestInput, CreateCommentRequestResponse> {
   constructor(private readonly request: Request) {}
 
   public async execute(

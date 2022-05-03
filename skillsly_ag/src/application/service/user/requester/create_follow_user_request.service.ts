@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common'
-import Requester from '@application/common/requester/requester'
-import { Request } from '@application/common/request/request'
+import { Injectable } from '@nestjs/common';
+import Requester from '@application/common/requester/requester';
+import { Request } from '@application/common/request/request';
 import CreateFollowUserRequestRequestInput
-  from '@application/service/user/request-input/create_follow_user_request.request_input'
+  from '@application/service/user/request-input/create_follow_user_request.request_input';
 import CreateFollowUserRequestRequestResponse
-  from '@application/service/user/request-response/create_follow_user_request.request_response'
-import { USER_MS_URL } from '@application/service/user/url'
+  from '@application/service/user/request-response/create_follow_user_request.request_response';
+import { USER_MS_URL } from '@application/service/user/url';
 
 @Injectable()
 export class CreateFollowUserRequestService implements Requester<CreateFollowUserRequestRequestInput, CreateFollowUserRequestRequestResponse> {

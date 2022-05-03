@@ -7,12 +7,11 @@ import UpdateInnerCommentRequestResponse from '../request-response/update_inner_
 
 @Injectable()
 export class UpdateInnerCommentService
-  implements
+implements
     Requester<
-      UpdateInnerCommentRequestInput,
-      UpdateInnerCommentRequestResponse
-    >
-{
+    UpdateInnerCommentRequestInput,
+    UpdateInnerCommentRequestResponse
+    > {
   constructor(private readonly request: Request) {}
 
   public async execute(

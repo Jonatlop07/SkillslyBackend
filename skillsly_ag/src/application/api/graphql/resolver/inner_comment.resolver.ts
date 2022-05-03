@@ -30,10 +30,10 @@ export class InnerCommentResolver {
 
   @Mutation(() => InnerComment)
   public async createInnerComment(
-    @Args({
-      name: 'inner_comment_details',
-      type: () => NewInnerComment,
-    })
+  @Args({
+    name: 'inner_comment_details',
+    type: () => NewInnerComment,
+  })
     comment_details: NewInnerComment,
     @Args({ name: 'comment_id', type: () => ID }) comment_id: Id,
   ) {
@@ -58,7 +58,7 @@ export class InnerCommentResolver {
 
   @Query(() => [InnerComment])
   public async queryInnerComments(
-    @Args({ name: 'inner_comments_pagination', type: () => PaginationParams })
+  @Args({ name: 'inner_comments_pagination', type: () => PaginationParams })
     search_params: PaginationParams,
     @Args({ name: 'comment_id', type: () => ID }) comment_id: Id,
   ) {
@@ -73,7 +73,7 @@ export class InnerCommentResolver {
 
   @Mutation(() => CommentContent)
   public async updateInnerComment(
-    @Args({ name: 'inner_comment_id', type: () => ID }) comment_id: Id,
+  @Args({ name: 'inner_comment_id', type: () => ID }) comment_id: Id,
     @Args({ name: 'new_content', type: () => CommentContentUpdate })
     updates: CommentContentUpdate,
   ) {
@@ -93,7 +93,7 @@ export class InnerCommentResolver {
 
   @Mutation(() => String)
   public async deleteInnerComment(
-    @Args({ name: 'inner_comment_id', type: () => ID }) inner_comment_id: Id,
+  @Args({ name: 'inner_comment_id', type: () => ID }) inner_comment_id: Id,
   ) {
     this.logger.log('Deleting inner comment in comment ms');
     const deleted = await this.delete_inner_comment_service.execute({

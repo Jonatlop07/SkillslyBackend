@@ -1,4 +1,4 @@
-import { Id } from '@application/common/type/common_types'
+import { Id } from '@application/common/type/common_types';
 
 export interface UserModel {
   id: Id;

@@ -17,7 +17,7 @@ export class NotificationResolver {
 
   @Query(() => [Notifications])
   public async queryNotifications(
-    @Args({ name: 'notifier_id', type: () => ID }) notifier_id: Id,
+  @Args({ name: 'notifier_id', type: () => ID }) notifier_id: Id,
     @Args({
       name: 'notifications_pagination',
       type: () => NotificationQueryParams,

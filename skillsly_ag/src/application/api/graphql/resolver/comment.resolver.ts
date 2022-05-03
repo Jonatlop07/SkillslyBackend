@@ -12,6 +12,8 @@ import { UpdateCommentService } from '@application/service/comments/comment/requ
 import { CommentContentUpdate } from '../model/comment/input/comment_content_update';
 import { DeleteCommentService } from '@application/service/comments/comment/requester/delete_comment.service';
 import { CommentContent } from '../model/comment/comment_content';
+import { PostDITokens } from '@application/service/post/di/post_di_tokens';
+import { QueryPostService } from '@application/service/post/requester/query_post.service';
 
 @Resolver(() => Comment)
 export class CommentResolver {
@@ -26,6 +28,8 @@ export class CommentResolver {
     private readonly update_comment_service: UpdateCommentService,
     @Inject(CommentDITokens.DeleteCommentService)
     private readonly delete_comment_service: DeleteCommentService,
+    @Inject(PostDITokens.QueryPostService)
+    private readonly query_post_service: QueryPostService,
   ) {}
 
   @Mutation(() => Comment)
@@ -38,7 +42,13 @@ export class CommentResolver {
     @Args({ name: 'post_id', type: () => ID }) post_id: Id,
   ) {
     //to do: validate if posts exists
-    this.logger.log('Creating comment in comment ms');
+    this.logger.log('Creating comment in comment service');
+    this.logger.log('Checking if post exists in post service');
+    const { query_post } = await this.query_post_service.execute({
+      post_id,
+    });
+    this.logger.log(query_post);
+    this.logger.log('Post confirmed');
     const { _id, owner_id, content, created_at } =
       await this.create_comment_service.execute({
         content: {

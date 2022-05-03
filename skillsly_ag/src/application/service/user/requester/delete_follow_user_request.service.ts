@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common'
-import Requester from '@application/common/requester/requester'
-import { Request } from '@application/common/request/request'
+import { Injectable } from '@nestjs/common';
+import Requester from '@application/common/requester/requester';
+import { Request } from '@application/common/request/request';
 import DeleteFollowUserRequestRequestInput
-  from '@application/service/user/request-input/delete_follow_user_request.request_input'
+  from '@application/service/user/request-input/delete_follow_user_request.request_input';
 import DeleteFollowUserRequestRequestResponse
-  from '@application/service/user/request-response/delete_follow_user_request.request_response'
-import { USER_MS_URL } from '@application/service/user/url'
+  from '@application/service/user/request-response/delete_follow_user_request.request_response';
+import { USER_MS_URL } from '@application/service/user/url';
 
 @Injectable()
 export class DeleteFollowUserRequestService implements Requester<DeleteFollowUserRequestRequestInput, DeleteFollowUserRequestRequestResponse> {
@@ -21,6 +21,6 @@ export class DeleteFollowUserRequestService implements Requester<DeleteFollowUse
       params: {
         is_follow_request
       }
-    })
+    });
   }
 }

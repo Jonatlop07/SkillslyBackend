@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common'
-import Requester from '@application/common/requester/requester'
-import { Request } from '@application/common/request/request'
+import { Injectable } from '@nestjs/common';
+import Requester from '@application/common/requester/requester';
+import { Request } from '@application/common/request/request';
 import UpdateFollowUserRequestRequestInput
-  from '@application/service/user/request-input/update_follow_user_request.request_input'
+  from '@application/service/user/request-input/update_follow_user_request.request_input';
 import UpdateFollowUserRequestRequestResponse
-  from '@application/service/user/request-response/update_follow_user_request.request_response'
-import { USER_MS_URL } from '@application/service/user/url'
+  from '@application/service/user/request-response/update_follow_user_request.request_response';
+import { USER_MS_URL } from '@application/service/user/url';
 
 @Injectable()
 export class UpdateFollowUserRequestService implements Requester<UpdateFollowUserRequestRequestInput, UpdateFollowUserRequestRequestResponse> {
@@ -20,6 +20,6 @@ export class UpdateFollowUserRequestService implements Requester<UpdateFollowUse
       url: `${USER_MS_URL}/user/${user_id}/follow/${user_that_requests_id}`,
       body: { accept },
       params: {}
-    })
+    });
   }
 }

@@ -7,8 +7,7 @@ import UpdateCommentRequestResponse from '../request-response/update_comment.req
 
 @Injectable()
 export class UpdateCommentService
-  implements Requester<UpdateCommentRequestInput, UpdateCommentRequestResponse>
-{
+implements Requester<UpdateCommentRequestInput, UpdateCommentRequestResponse> {
   constructor(private readonly request: Request) {}
 
   public async execute(

@@ -1,5 +1,5 @@
-import { Id, Nullable } from '@application/common/type/common_types'
-import StoryViewModel from '@application/service/story/model/story_view.model'
+import { Id, Nullable } from '@application/common/type/common_types';
+import StoryViewModel from '@application/service/story/model/story_view.model';
 
 export default interface StoryModel {
   story_id: Id;

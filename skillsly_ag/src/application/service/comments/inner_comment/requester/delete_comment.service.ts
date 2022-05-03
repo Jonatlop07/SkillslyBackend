@@ -7,12 +7,11 @@ import DeleteInnerCommentRequestResponse from '../request-response/delete_inner_
 
 @Injectable()
 export class DeleteInnerCommentService
-  implements
+implements
     Requester<
-      DeleteInnerCommentRequestInput,
-      DeleteInnerCommentRequestResponse
-    >
-{
+    DeleteInnerCommentRequestInput,
+    DeleteInnerCommentRequestResponse
+    > {
   constructor(private readonly request: Request) {}
 
   public async execute(

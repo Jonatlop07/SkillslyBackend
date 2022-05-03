@@ -1,6 +1,8 @@
 package com.skillsly.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -21,28 +23,34 @@ public class PostModel {
 
     @Id
     @Generated("UUID")
+    @JsonProperty("post_id")
     private UUID postId;
 
     @NotNull
     @NotEmpty
     @NotBlank
+    @JsonProperty("owner_id")
     private UUID ownerId;
 
+    @JsonProperty("description")
     private String description;
 
     @CreatedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonProperty("created_at")
     private Date createdAt;
 
     @LastModifiedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonProperty("updated_at")
     private Date updatedAt;
 
     @NotNull
     @NotEmpty
     @NotBlank
+    @JsonProperty("privacy")
     private String privacy;
 
-
+    @JsonProperty("content_element")
     private ArrayList<ContentElementModel> contentElements;
 }

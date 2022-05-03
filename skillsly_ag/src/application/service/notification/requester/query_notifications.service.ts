@@ -7,12 +7,11 @@ import QueryNotificationsRequestResponse from '../request-response/query_notific
 
 @Injectable()
 export class QueryNotificationsService
-  implements
+implements
     Requester<
-      QueryNotificationsRequestInput,
-      QueryNotificationsRequestResponse
-    >
-{
+    QueryNotificationsRequestInput,
+    QueryNotificationsRequestResponse
+    > {
   constructor(private readonly request: Request) {}
 
   public async execute(

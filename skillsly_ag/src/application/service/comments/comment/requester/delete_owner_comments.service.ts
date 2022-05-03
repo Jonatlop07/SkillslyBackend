@@ -7,12 +7,11 @@ import DeleteCommentsByOwnerRequestResponse from '../request-response/delete_own
 
 @Injectable()
 export class DeleteCommentsByOwnerService
-  implements
+implements
     Requester<
-      DeleteCommentsByOwnerRequestInput,
-      DeleteCommentsByOwnerRequestResponse
-    >
-{
+    DeleteCommentsByOwnerRequestInput,
+    DeleteCommentsByOwnerRequestResponse
+    > {
   constructor(private readonly request: Request) {}
 
   public async execute(

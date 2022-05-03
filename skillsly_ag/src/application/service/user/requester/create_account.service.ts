@@ -7,8 +7,7 @@ import CreateAccountRequestInput from '@application/service/user/request-input/c
 
 @Injectable()
 export class CreateAccountService
-  implements Requester<CreateAccountRequestInput, CreateAccountRequestResponse>
-{
+implements Requester<CreateAccountRequestInput, CreateAccountRequestResponse> {
   constructor(private readonly request: Request) {}
 
   public async execute(
