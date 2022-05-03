@@ -50,6 +50,15 @@ import { NotificationDITokens } from '@application/service/notification/di/notif
 import { SendNotificationService } from '@application/service/notification/requester/send_notification.service';
 import { QueryNotificationsService } from '@application/service/notification/requester/query_notifications.service';
 import { NotificationResolver } from '@application/api/graphql/resolver/notification.resolver';
+import { ApplicationResolver } from '@application/api/graphql/resolver/application.resolver';
+import { ServiceResolver } from '@application/api/graphql/resolver/service.resolver';
+import { ServiceDITokens } from '@application/service/service/di/service_di_tokens';
+import { CreateApplicationService } from '@application/service/service/requester/create_application.service';
+import { DeleteApplicationService } from '@application/service/service/requester/delete_application.service';
+import { ServiceApplicationsService } from '@application/service/service/requester/service_applications.service';
+import { CreateServiceService } from '@application/service/service/requester/create_service.service';
+import { DeleteServiceService } from '@application/service/service/requester/delete_service.service';
+import { ListServiceService } from '@application/service/service/requester/list_service.service';
 
 const request_providers = [
   {
@@ -246,6 +255,42 @@ const post_providers: Array<Provider> = [
   },
 ];
 
+const application_providers: Array<Provider> = [
+  {
+    provide: ServiceDITokens.CreateApplicationService,
+    useFactory: (request) => new CreateApplicationService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: ServiceDITokens.DeleteApplicationService,
+    useFactory: (request) => new DeleteApplicationService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: ServiceDITokens.ServiceApplicationsService,
+    useFactory: (request) => new ServiceApplicationsService(request),
+    inject: [RequestDITokens.Request]
+  }
+];
+
+const service_providers: Array<Provider> = [
+  {
+    provide: ServiceDITokens.CreateServiceService,
+    useFactory: (request) => new CreateServiceService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: ServiceDITokens.DeleteServiceService,
+    useFactory: (request) => new DeleteServiceService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: ServiceDITokens.ListServiceService,
+    useFactory: (request) => new ListServiceService(request),
+    inject: [RequestDITokens.Request]
+  }
+]
+
 const resolvers: Array<Provider> = [
   AccountResolver,
   SocialResolver,
@@ -255,6 +300,8 @@ const resolvers: Array<Provider> = [
   InnerCommentResolver,
   StoryResolver,
   NotificationResolver,
+  ApplicationResolver,
+  ServiceResolver
 ];
 
 @Module({
@@ -273,6 +320,8 @@ const resolvers: Array<Provider> = [
     ...resolvers,
     ...comment_providers,
     ...notification_providers,
+    ...application_providers,
+    ...service_providers,
     ...resolvers,
   ],
 })
