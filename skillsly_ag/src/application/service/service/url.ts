@@ -1,0 +1,1 @@
+export const SERVICE_MS_URL = 'http://localhost:8000'
