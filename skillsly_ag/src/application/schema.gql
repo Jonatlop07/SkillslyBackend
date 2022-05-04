@@ -224,6 +224,10 @@ type Mutation {
   deleteInnerComment(inner_comment_id: ID!): String!
   createApplication(application_details: ApplicationDetails!): Application!
   deleteApplication(id: Float!): String!
+  updateApplication(application_id: Float!, updates: ApplicationUpdates!): String!
+  updatePhaseService(service_id: Float!, updates: PhaseUpdates!): String!
+  updateProviderService(service_id: Float!, updates: ProviderUpdates!): String!
+  updateStatusService(service_id: Float!, updates: StatusUpdates!): String!
   createService(service_details: ServiceDetails!): Service!
   deleteService(id: Float!): String!
   createPrivateConversation(private_conversation: PrivateConversation!): String!
@@ -298,6 +302,22 @@ input ApplicationDetails {
   idService: ID!
   applicant_id: ID!
   message: String
+}
+
+input ApplicationUpdates {
+  message: String!
+}
+
+input PhaseUpdates {
+  phase: String!
+}
+
+input ProviderUpdates {
+  provider_id: String!
+}
+
+input StatusUpdates {
+  canceled: Boolean!
 }
 
 input ServiceDetails {
