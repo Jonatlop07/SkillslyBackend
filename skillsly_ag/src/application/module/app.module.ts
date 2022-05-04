@@ -1,105 +1,76 @@
-import { Module, Provider } from '@nestjs/common';
-import { AccountResolver } from '@application/api/graphql/resolver/account.resolver';
-import { QueryUserService } from '@application/service/user/requester/query_user.service';
-import { CreateAccountService as AuthCreateUserAccountService } from '@application/service/auth/requester/create_account.service';
-import { CreateAccountService as UserCreateUserAccountService } from '@application/service/user/requester/create_account.service';
-import { Request } from '@application/common/request/request';
-import { HttpModule } from '@nestjs/axios';
-import { RequestDITokens } from '@application/common/request/request_di_tokens';
-import { AuthDITokens } from '@application/service/auth/di/auth_di_tokens';
-import { UserDITokens } from '@application/service/user/di/user_di_tokens';
-import { UpdateAccountService } from '@application/service/user/requester/update_account.service';
-import { UpdateCredentialsService } from '@application/service/auth/requester/update_credentials.service';
-import { DeleteUserService } from '@application/service/auth/requester/delete_user.service';
-import { DeleteAccountService } from '@application/service/user/requester/delete_account.service';
-import { SearchUsersService } from '@application/service/user/requester/search_users.service';
-import { SocialResolver } from '@application/api/graphql/resolver/social.resolver';
-import { QueryFollowRelationshipsService } from '@application/service/user/requester/query_follow_relationships.service';
-import { CreateFollowUserRequestService } from '@application/service/user/requester/create_follow_user_request.service';
-import { UpdateFollowUserRequestService } from '@application/service/user/requester/update_follow_user_request.service';
-import { DeleteFollowUserRequestService } from '@application/service/user/requester/delete_follow_user_request.service';
-import { StoryDITokens } from '@application/service/story/di/story_di_tokens';
-import { QueryStoryService } from '@application/service/story/requester/query_story.service';
-import { QueryUserStoryCollectionService } from '@application/service/story/requester/query_user_story_collection.service';
-import { CreateStoryService } from '@application/service/story/requester/create_story.service';
-import { DeleteStoryService } from '@application/service/story/requester/delete_story.service';
-import { StoryResolver } from '@application/api/graphql/resolver/story.resolver';
-import { PostResolver } from '@application/api/graphql/resolver/post.resolver';
-import { PostDITokens } from '@application/service/post/di/post_di_tokens';
-import { CreatePostService } from '@application/service/post/requester/create_post.service';
-import { UpdatePostService } from '@application/service/post/requester/update_post.service';
-import { QueryPostService } from '@application/service/post/requester/query_post.service';
-import { QueryPostCollectionService } from '@application/service/post/requester/query_post_collection.service';
-import { DeletePostService } from '@application/service/post/requester/delete_post.service';
-import { DeleteUserStoryCollectionService } from '@application/service/story/requester/delete_user_story_collection.service';
-import { CommentDITokens } from '@application/service/comments/comment/di/comment_di_tokens';
-import { CreateCommentService } from '@application/service/comments/comment/requester/create_comment.service';
-import { DeleteCommentService } from '@application/service/comments/comment/requester/delete_comment.service';
-import { QueryCommentsService } from '@application/service/comments/comment/requester/query_comments.service';
-import { UpdateCommentService } from '@application/service/comments/comment/requester/update_comment.service';
-import { CreateInnerCommentService } from '@application/service/comments/inner_comment/requester/create_comment.service';
-import { DeleteInnerCommentService } from '@application/service/comments/inner_comment/requester/delete_comment.service';
-import { QueryInnerCommentsService } from '@application/service/comments/inner_comment/requester/query_comments.service';
-import { UpdateInnerCommentService } from '@application/service/comments/inner_comment/requester/update_comment.service';
-import { InnerCommentDITokens } from '@application/service/comments/inner_comment/di/inner_comment_di_tokens';
-import { DeleteCommentsByOwnerService } from '@application/service/comments/comment/requester/delete_owner_comments.service';
-import { DeleteInnerCommentsByOwnerService } from '@application/service/comments/inner_comment/requester/delete_owner_inner_comments.service';
-import { CommentResolver } from '@application/api/graphql/resolver/comment.resolver';
-import { InnerCommentResolver } from '@application/api/graphql/resolver/inner_comment.resolver';
-import { NotificationDITokens } from '@application/service/notification/di/notification_di_tokens';
-import { SendNotificationService } from '@application/service/notification/requester/send_notification.service';
-import { QueryNotificationsService } from '@application/service/notification/requester/query_notifications.service';
-import { NotificationResolver } from '@application/api/graphql/resolver/notification.resolver';
-import { ApplicationResolver } from '@application/api/graphql/resolver/application.resolver';
-import { ServiceResolver } from '@application/api/graphql/resolver/service.resolver';
-import { ServiceDITokens } from '@application/service/service/di/service_di_tokens';
-import { CreateApplicationService } from '@application/service/service/requester/create_application.service';
-import { DeleteApplicationService } from '@application/service/service/requester/delete_application.service';
-import { ServiceApplicationsService } from '@application/service/service/requester/service_applications.service';
-import { CreateServiceService } from '@application/service/service/requester/create_service.service';
-import { DeleteServiceService } from '@application/service/service/requester/delete_service.service';
-import { ListServiceService } from '@application/service/service/requester/list_service.service';
-import {Module, Provider} from '@nestjs/common';
-import {AccountResolver} from '@application/api/graphql/resolver/account.resolver';
-import {QueryUserService} from '@application/service/user/requester/query_user.service';
-import {
-  CreateAccountService as AuthCreateUserAccountService
-} from '@application/service/auth/requester/create_account.service';
-import {
-  CreateAccountService as UserCreateUserAccountService
-} from '@application/service/user/requester/create_account.service';
-import {Request} from '@application/common/request/request';
-import {HttpModule} from '@nestjs/axios';
-import {RequestDITokens} from '@application/common/request/request_di_tokens';
-import {AuthDITokens} from '@application/service/auth/di/auth_di_tokens';
-import {UserDITokens} from '@application/service/user/di/user_di_tokens';
-import {UpdateAccountService} from '@application/service/user/requester/update_account.service';
-import {UpdateCredentialsService} from '@application/service/auth/requester/update_credentials.service';
-import {DeleteUserService} from '@application/service/auth/requester/delete_user.service';
-import {DeleteAccountService} from '@application/service/user/requester/delete_account.service';
-import {SearchUsersService} from '@application/service/user/requester/search_users.service';
-import {SocialResolver} from '@application/api/graphql/resolver/social.resolver';
-import {ChatDITokens} from '@application/service/chat/di/chat_di_tokens';
-import {
-  CreatePrivateConversationService
-} from '@application/service/chat/requester/create_private_conversation.service';
-import {ConversationResolver} from '@application/api/graphql/resolver/conversation.resolver';
-import {CreateGroupConversationService} from '@application/service/chat/requester/create_group_conversation.service';
-import {DeleteConversationService} from '@application/service/chat/requester/delete_conversation.service';
-import {ExitGroupConversationService} from '@application/service/chat/requester/exit_group_conversation.service';
-import {
-  GetConversationsCollectionService
-} from '@application/service/chat/requester/get_conversations_collection.service';
-import {
-  AddMembersGroupConversationService
-} from '@application/service/chat/requester/add_members_group_conversation.service';
-import {
-  SendMessageToConversationService
-} from '@application/service/chat/requester/send_message_to_conversation.service';
-import {GetConversationMessagesService} from '@application/service/chat/requester/get_conversation_messages.service';
-import {
-  UpdateGroupConversationDetailsService
-} from '@application/service/chat/requester/update_group_conversation_details.service';
+import { CreateAccountService as AuthCreateAccountService } from '@application/service/auth/requester/create_account.service';
+import { CreateAccountService as UserCreateAccountService } from '@application/service/user/requester/create_account.service';
+import { CreateGroupConversationService } from '@application/service/chat/requester/create_group_conversation.service'
+import { ConversationResolver } from '@application/api/graphql/resolver/conversation.resolver'
+import { CreateCommentService } from '@application/service/comments/comment/requester/create_comment.service'
+import { UpdateGroupConversationDetailsService } from '@application/service/chat/requester/update_group_conversation_details.service'
+import { UpdateAccountService } from '@application/service/user/requester/update_account.service'
+import { UpdateCommentService } from '@application/service/comments/comment/requester/update_comment.service'
+import { DeleteInnerCommentService } from '@application/service/comments/inner_comment/requester/delete_comment.service'
+import { DeleteServiceService } from '@application/service/service/requester/delete_service.service'
+import { CreateStoryService } from '@application/service/story/requester/create_story.service'
+import { CreateInnerCommentService } from '@application/service/comments/inner_comment/requester/create_comment.service'
+import { AuthDITokens } from '@application/service/auth/di/auth_di_tokens'
+import { UpdateInnerCommentService } from '@application/service/comments/inner_comment/requester/update_comment.service'
+import { StoryDITokens } from '@application/service/story/di/story_di_tokens'
+import { UpdateCredentialsService } from '@application/service/auth/requester/update_credentials.service'
+import { CreateApplicationService } from '@application/service/service/requester/create_application.service'
+import { GetConversationMessagesService } from '@application/service/chat/requester/get_conversation_messages.service'
+import { GetConversationsCollectionService } from '@application/service/chat/requester/get_conversations_collection.service'
+import { CreateServiceService } from '@application/service/service/requester/create_service.service'
+import { UserDITokens } from '@application/service/user/di/user_di_tokens'
+import { ChatDITokens } from '@application/service/chat/di/chat_di_tokens'
+import { ServiceResolver } from '@application/api/graphql/resolver/service.resolver'
+import { QueryUserStoryCollectionService } from '@application/service/story/requester/query_user_story_collection.service'
+import { NotificationDITokens } from '@application/service/notification/di/notification_di_tokens'
+import { ApplicationResolver } from '@application/api/graphql/resolver/application.resolver'
+import { CreatePostService } from '@application/service/post/requester/create_post.service'
+import { UpdatePostService } from '@application/service/post/requester/update_post.service'
+import { UpdateFollowUserRequestService } from '@application/service/user/requester/update_follow_user_request.service'
+import { CreatePrivateConversationService } from '@application/service/chat/requester/create_private_conversation.service'
+import { CommentResolver } from '@application/api/graphql/resolver/comment.resolver'
+import { DeleteCommentService } from '@application/service/comments/comment/requester/delete_comment.service'
+import { DeleteCommentsByOwnerService } from '@application/service/comments/comment/requester/delete_owner_comments.service'
+import { DeleteAccountService } from '@application/service/user/requester/delete_account.service'
+import { InnerCommentDITokens } from '@application/service/comments/inner_comment/di/inner_comment_di_tokens'
+import { InnerCommentResolver } from '@application/api/graphql/resolver/inner_comment.resolver'
+import { CreateFollowUserRequestService } from '@application/service/user/requester/create_follow_user_request.service'
+import { NotificationResolver } from '@application/api/graphql/resolver/notification.resolver'
+import { ServiceDITokens } from '@application/service/service/di/service_di_tokens'
+import { SendMessageToConversationService } from '@application/service/chat/requester/send_message_to_conversation.service'
+import { ExitGroupConversationService } from '@application/service/chat/requester/exit_group_conversation.service'
+import { ServiceApplicationsService } from '@application/service/service/requester/service_applications.service'
+import { StoryResolver } from '@application/api/graphql/resolver/story.resolver'
+import { PostResolver } from '@application/api/graphql/resolver/post.resolver'
+import { RequestDITokens } from '@application/common/request/request_di_tokens'
+import { SendNotificationService } from '@application/service/notification/requester/send_notification.service'
+import { QueryUserService } from '@application/service/user/requester/query_user.service'
+import { DeleteUserStoryCollectionService } from '@application/service/story/requester/delete_user_story_collection.service'
+import { CommentDITokens } from '@application/service/comments/comment/di/comment_di_tokens'
+import { QueryInnerCommentsService } from '@application/service/comments/inner_comment/requester/query_comments.service'
+import { DeleteApplicationService } from '@application/service/service/requester/delete_application.service'
+import { SocialResolver } from '@application/api/graphql/resolver/social.resolver'
+import { DeleteConversationService } from '@application/service/chat/requester/delete_conversation.service'
+import { QueryNotificationsService } from '@application/service/notification/requester/query_notifications.service'
+import { QueryFollowRelationshipsService } from '@application/service/user/requester/query_follow_relationships.service'
+import { ListServiceService } from '@application/service/service/requester/list_service.service'
+import { QueryStoryService } from '@application/service/story/requester/query_story.service'
+import { DeleteInnerCommentsByOwnerService } from '@application/service/comments/inner_comment/requester/delete_owner_inner_comments.service'
+import { SearchUsersService } from '@application/service/user/requester/search_users.service'
+import { DeleteStoryService } from '@application/service/story/requester/delete_story.service'
+import { QueryPostCollectionService } from '@application/service/post/requester/query_post_collection.service'
+import { DeletePostService } from '@application/service/post/requester/delete_post.service'
+import { Module, Provider } from '@nestjs/common'
+import { AddMembersGroupConversationService } from '@application/service/chat/requester/add_members_group_conversation.service'
+import { QueryCommentsService } from '@application/service/comments/comment/requester/query_comments.service'
+import { DeleteFollowUserRequestService } from '@application/service/user/requester/delete_follow_user_request.service'
+import { PostDITokens } from '@application/service/post/di/post_di_tokens'
+import { AccountResolver } from '@application/api/graphql/resolver/account.resolver'
+import { QueryPostService } from '@application/service/post/requester/query_post.service'
+import { DeleteUserService } from '@application/service/auth/requester/delete_user.service'
+import { HttpModule } from '@nestjs/axios'
+import { Request } from '@application/common/request/request'
+
 
 const request_providers = [
   {
@@ -111,7 +82,7 @@ const request_providers = [
 const auth_providers: Array<Provider> = [
   {
     provide: AuthDITokens.CreateUserService,
-    useFactory: (request) => new AuthCreateUserAccountService(request),
+    useFactory: (request) => new AuthCreateAccountService(request),
     inject: [RequestDITokens.Request],
   },
   {
@@ -129,7 +100,7 @@ const auth_providers: Array<Provider> = [
 const user_providers: Array<Provider> = [
   {
     provide: UserDITokens.CreateUserService,
-    useFactory: (request) => new UserCreateUserAccountService(request),
+    useFactory: (request) => new UserCreateAccountService(request),
     inject: [RequestDITokens.Request],
   },
   {
@@ -389,7 +360,7 @@ const resolvers: Array<Provider> = [
   StoryResolver,
   NotificationResolver,
   ApplicationResolver,
-  ServiceResolver
+  ServiceResolver,
   ConversationResolver,
 ];
 

@@ -2,29 +2,94 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-"""Defines the information of a user's account"""
-type User {
-  id: ID!
-  email: String!
+"""Defines the information of a chat message"""
+type Message {
+  content: String!
+  path: String!
+  owner_user_id: String!
+  created_at: String!
+  updated_at: String!
+}
+
+"""Defines the information of a chat member"""
+type Member {
+  user_id: ID!
+  is_active: Boolean!
+  is_admin: Boolean!
+  joined_at: String!
+}
+
+"""Defines the information of a chat"""
+type Conversation {
+  conversation_id: ID!
+  creator_user_id: String!
   name: String!
-  date_of_birth: String!
-  gender: String!
+  description: String!
+  members: [Member!]!
+  messages: [Message!]
+  created_at: String!
+  updated_at: String
+  is_private: Boolean!
+}
+
+type Service {
+  id: ID!
+  requester_id: ID!
+  title: String!
+  description: String!
+  contact_info: String!
+  category: String!
+  phase: String!
+  created_at: String!
+  updated_at: String
+  provider_id: ID
+  canceled: Boolean!
+}
+
+type Application {
+  id: ID!
+  applicant_id: ID!
+  message: String
+  created_at: String!
+  updated_at: String
+  service_id: ID!
+}
+
+"""Defines the information of a comment"""
+type Comment {
+  _id: ID!
+  owner_id: String!
+  post_id: String
+  description: String
+  media_locator: String
+  inner_comment_count: Int
   created_at: String!
   updated_at: String
 }
 
-type FollowRelationships {
-  pending_followers: [User!]!
-  pending_users_to_follow: [User!]!
-  followers: [User!]!
-  following_users: [User!]!
+type CommentContent {
+  description: String
+  media_locator: String
 }
 
-type FollowRequestDetails {
-  id: ID!
-  name: String!
-  email: String!
-  gender: String!
+"""Defines the information of a comment"""
+type InnerComment {
+  _id: ID!
+  owner_id: String!
+  comment_id: String
+  description: String
+  media_locator: String
+  created_at: String!
+  updated_at: String
+}
+
+"""Defines the information of a notification to be shown to the user"""
+type Notifications {
+  notifier_id: ID!
+  actor_id: ID!
+  entity_id: ID!
+  resource_type: String!
+  created_at: String!
 }
 
 """Defines the content of a story view"""
@@ -67,64 +132,29 @@ type Post {
   content_element: [ContentElement!]!
 }
 
-"""Defines the information of a comment"""
-type Comment {
-  _id: ID!
-  owner_id: String!
-  post_id: String
-  description: String
-  media_locator: String
-  inner_comment_count: Int
-  created_at: String!
-  updated_at: String
-}
-
-type CommentContent {
-  description: String
-  media_locator: String
-}
-
-"""Defines the information of a comment"""
-type InnerComment {
-  _id: ID!
-  owner_id: String!
-  comment_id: String
-  description: String
-  media_locator: String
-  created_at: String!
-  updated_at: String
-}
-
-"""Defines the information of a notification to be shown to the user"""
-type Notifications {
-  notifier_id: ID!
-  actor_id: ID!
-  entity_id: ID!
-  resource_type: String!
-  created_at: String!
-}
-
-type Application {
+"""Defines the information of a user's account"""
+type User {
   id: ID!
-  applicant_id: ID!
-  message: String
+  email: String!
+  name: String!
+  date_of_birth: String!
+  gender: String!
   created_at: String!
   updated_at: String
-  service_id: ID!
 }
 
-type Service {
+type FollowRelationships {
+  pending_followers: [User!]!
+  pending_users_to_follow: [User!]!
+  followers: [User!]!
+  following_users: [User!]!
+}
+
+type FollowRequestDetails {
   id: ID!
-  requester_id: ID!
-  title: String!
-  description: String!
-  contact_info: String!
-  category: String!
-  phase: String!
-  created_at: String!
-  updated_at: String
-  provider_id: ID
-  canceled: Boolean!
+  name: String!
+  email: String!
+  gender: String!
 }
 
 type Query {
@@ -140,39 +170,6 @@ type Query {
   queryNotifications(notifier_id: ID!, notifications_pagination: NotificationQueryParams!): [Notifications!]!
   serviceApplications(service_id: Float!): [Application!]!
   listService(list_service_params: ListServiceParams!): [Service!]!
-"""Defines the information of a chat message"""
-type Message {
-  content: String!
-  path: String!
-  owner_user_id: String!
-  created_at: String!
-  updated_at: String!
-}
-
-"""Defines the information of a chat member"""
-type Member {
-  user_id: ID!
-  is_active: Boolean!
-  is_admin: Boolean!
-  joined_at: String!
-}
-
-"""Defines the information of a chat"""
-type Conversation {
-  conversation_id: ID!
-  creator_user_id: String!
-  name: String!
-  description: String!
-  members: [Member!]!
-  messages: [Message!]
-  created_at: String!
-  updated_at: String
-  is_private: Boolean!
-}
-
-type Query {
-  queryUser(id: String!): User!
-  searchUsers(search_params: SearchParams!): [User!]!
   getConversationsCollection(get_conversations_collection: GetConversations!): [Conversation!]!
   getConversationMessages(get_messages: GetConversationMessages!): [Message!]!
 }
@@ -197,6 +194,8 @@ input NotificationQueryParams {
 input ListServiceParams {
   category: String
   requester_id: String
+}
+
 input GetConversations {
   user_id: String!
 }
@@ -307,6 +306,8 @@ input ServiceDetails {
   description: String!
   contact_info: String!
   category: String!
+}
+
 input PrivateConversation {
   creator_user_id: String!
   member_user_id: String!

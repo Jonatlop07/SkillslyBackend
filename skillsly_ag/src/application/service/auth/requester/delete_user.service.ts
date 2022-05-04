@@ -18,8 +18,7 @@ export class DeleteUserService implements Requester<DeleteUserRequestInput, Dele
       url: `${AUTH_MS_URL}/auth/user/${user_id}`,
       params: {
         password
-      },
-      body: {}
+      }
     });
   }
 }
