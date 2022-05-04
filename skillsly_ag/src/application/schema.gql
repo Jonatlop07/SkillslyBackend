@@ -225,11 +225,12 @@ type Mutation {
   createApplication(application_details: ApplicationDetails!): Application!
   deleteApplication(id: Float!): String!
   updateApplication(application_id: Float!, updates: ApplicationUpdates!): String!
+  createService(service_details: ServiceDetails!): Service!
+  deleteService(id: Float!): String!
   updatePhaseService(service_id: Float!, updates: PhaseUpdates!): String!
   updateProviderService(service_id: Float!, updates: ProviderUpdates!): String!
   updateStatusService(service_id: Float!, updates: StatusUpdates!): String!
-  createService(service_details: ServiceDetails!): Service!
-  deleteService(id: Float!): String!
+  updateService(service_id: Float!, updates: ServiceUpdates!): String!
   createPrivateConversation(private_conversation: PrivateConversation!): String!
   createGroupConversation(group_conversation: GroupConversation!): String!
   deleteConversation(delete_conversation: DeleteConversation!): String!
@@ -308,6 +309,14 @@ input ApplicationUpdates {
   message: String!
 }
 
+input ServiceDetails {
+  requester_id: ID!
+  title: String!
+  description: String!
+  contact_info: String!
+  category: String!
+}
+
 input PhaseUpdates {
   phase: String!
 }
@@ -320,12 +329,11 @@ input StatusUpdates {
   canceled: Boolean!
 }
 
-input ServiceDetails {
-  requester_id: ID!
-  title: String!
-  description: String!
-  contact_info: String!
-  category: String!
+input ServiceUpdates {
+  title: String
+  description: String
+  contact_info: String
+  category: String
 }
 
 input PrivateConversation {

@@ -74,6 +74,7 @@ import { UpdateApplicationService } from '@application/service/service/requester
 import { UpdatedPhaseServiceService } from '@application/service/service/requester/update_phase_service.service';
 import { UpdateProviderServiceService } from '@application/service/service/requester/update_provider_service.service';
 import { UpdateStatusServiceService } from '@application/service/service/requester/update_status_service.service';
+import { UpdateServiceService } from '@application/service/service/requester/update_service.service';
 
 
 const request_providers = [
@@ -323,6 +324,11 @@ const service_providers: Array<Provider> = [
   {
     provide: ServiceDITokens.UpdateStatusServiceService,
     useFactory: (request) => new UpdateStatusServiceService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: ServiceDITokens.UpdateServiceService,
+    useFactory: (request) => new UpdateServiceService(request),
     inject: [RequestDITokens.Request]
   }
 ]
