@@ -124,11 +124,12 @@ export class ServiceResolver {
             @Args({ name: 'updates', type: () => ServiceUpdates }) updates: ServiceUpdates
         ) {
             this.logger.log('Updating service...');
-            this.logger.log(updates.title);
-            this.logger.log(updates.description);
 
             await this.update_service_service.execute({
                 service_id,
+                title: updates.title,
+                description: updates.description,
+                contact_info: updates.contact_info,
                 category: updates.category
             });
 
