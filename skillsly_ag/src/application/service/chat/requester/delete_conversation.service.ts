@@ -14,8 +14,7 @@ export class DeleteConversationService implements Requester<DeleteConversationRe
   public async execute(input: DeleteConversationRequestInput): Promise<void> {
     return await this.request.deleteRequest<void>({
       url: `${CHAT_MS_URL}/conversation`,
-      params: {},
-      body: input
+      params: { ...input }
     });
   }
 }
