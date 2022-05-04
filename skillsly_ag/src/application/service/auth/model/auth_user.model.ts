@@ -8,5 +8,4 @@ export default interface AuthUserModel {
   two_factor_auth_secret: Nullable<string>;
   updated_at: Nullable<Date>;
   is_two_factor_auth_enabled: boolean;
-  reset_password_token: Nullable<string>;
 }

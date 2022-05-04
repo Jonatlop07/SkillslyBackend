@@ -16,7 +16,9 @@ implements
   ): Promise<SendNotificationRequestResponse> {
     return await this.request.postRequest<SendNotificationRequestResponse>({
       url: `${NOTIFICATION_MS_URL}/notification`,
-      body: { ...input },
+      body: {
+        ...input.notification_details
+      },
       params: {},
     });
   }

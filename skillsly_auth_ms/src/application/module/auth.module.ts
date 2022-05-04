@@ -10,17 +10,16 @@ import { ValidateCredentialsService } from '@core/service/validate_credentials.s
 import { UpdateCredentialsService } from '@core/service/update_credentials.service';
 import { DeleteUserService } from '@core/service/delete_user.service';
 import { TwoFactorAuthController } from '@application/api/http-rest/controller/two_factor_auth.controller';
-import { HttpTwoFactorAuthService } from '@application/api/http-rest/authentication/service/http_two_factor_auth.service';
-import { HttpAuthenticationService } from '@application/api/http-rest/authentication/service/http_authentication.service';
-import { HttpResetPasswordService } from '@application/api/http-rest/authentication/service/http_reset_password.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { MailerModule } from '@nestjs-modules/mailer';
 import { HttpModule } from '@nestjs/axios';
-import { HttpLocalStrategy } from '@application/api/http-rest/authentication/passport/http_local.strategy';
-import { HttpJwtStrategy } from '@application/api/http-rest/authentication/passport/http_jwt.strategy';
-import { HttpJwtTwoFactorAuthStrategy } from '@application/api/http-rest/authentication/passport/http_jwt_two_factor_auth.strategy';
+import { UpdateUserService } from '@core/service/update_user.service'
+import { QueryUserService } from '@core/service/query_user.service'
+import { MailerMailRepositoryAdapter } from '@infrastructure/adapter/mail/mailer/repository/mailer_mail.repository_adapter'
+import { RequestResetPasswordService } from '@core/service/request_reset_password.service'
+import { MailerService } from '@nestjs-modules/mailer'
+import { ResetPasswordService } from '@core/service/reset_password.service'
 
 const persistence_providers: Array<Provider> = [
   {
@@ -35,10 +34,23 @@ const persistence_providers: Array<Provider> = [
   }
 ];
 
+const mail_providers: Array<Provider> = [
+  {
+    provide: UserDITokens.MailRepository,
+    useFactory: (repository) => new MailerMailRepositoryAdapter(repository),
+    inject: [MailerService]
+  }
+];
+
 const use_case_providers: Array<Provider> = [
   {
     provide: UserDITokens.CreateUserInteractor,
     useFactory: (gateway) => new CreateUserService(gateway),
+    inject: [UserDITokens.UserRepository]
+  },
+  {
+    provide: UserDITokens.QueryUserInteractor,
+    useFactory: (gateway) => new QueryUserService(gateway),
     inject: [UserDITokens.UserRepository]
   },
   {
@@ -52,8 +64,23 @@ const use_case_providers: Array<Provider> = [
     inject: [UserDITokens.UserRepository]
   },
   {
+    provide: UserDITokens.UpdateUserInteractor,
+    useFactory: (gateway) => new UpdateUserService(gateway),
+    inject: [UserDITokens.UserRepository]
+  },
+  {
     provide: UserDITokens.DeleteUserInteractor,
     useFactory: (gateway) => new DeleteUserService(gateway),
+    inject: [UserDITokens.UserRepository]
+  },
+  {
+    provide: UserDITokens.RequestResetPasswordInteractor,
+    useFactory: (gateway, mail_gateway) => new RequestResetPasswordService(gateway, mail_gateway),
+    inject: [UserDITokens.UserRepository, UserDITokens.MailRepository]
+  },
+  {
+    provide: UserDITokens.ResetPasswordInteractor,
+    useFactory: (gateway) => new ResetPasswordService(gateway),
     inject: [UserDITokens.UserRepository]
   }
 ];
@@ -73,43 +100,12 @@ const use_case_providers: Array<Provider> = [
         },
       }),
     }),
-    MailerModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config_service: ConfigService) => ({
-        transport: {
-          host: config_service.get<string>('MAILER_HOST'),
-          port: config_service.get<string>('MAILER_PORT'),
-          ignoreTLS: config_service.get<boolean>('MAILER_IGNORE_TLS'),
-          secure: config_service.get<boolean>('MAILER_SECURE'),
-          secureConnection: false,
-          tls: {
-            ciphers: 'SSLv3',
-          },
-          auth: {
-            user: config_service.get<boolean>('USER_MAILER'),
-            pass: config_service.get<boolean>('PASS_MAILER'),
-          },
-        },
-        defaults: {
-          from: '"No Reply" <no-reply@localhost>',
-        },
-        preview: true,
-      }),
-    }),
-    MailerModule,
-    HttpModule,
+    HttpModule
   ],
   providers: [
-    HttpTwoFactorAuthService,
-    HttpAuthenticationService,
-    HttpResetPasswordService,
-    HttpLocalStrategy,
-    HttpJwtStrategy,
-    HttpJwtTwoFactorAuthStrategy,
     ...persistence_providers,
+    ...mail_providers,
     ...use_case_providers,
-  ],
-  exports: [HttpAuthenticationService]
+  ]
 })
 export class AuthModule {}

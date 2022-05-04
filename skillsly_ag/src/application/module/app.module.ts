@@ -70,7 +70,19 @@ import { QueryPostService } from '@application/service/post/requester/query_post
 import { DeleteUserService } from '@application/service/auth/requester/delete_user.service'
 import { HttpModule } from '@nestjs/axios'
 import { Request } from '@application/common/request/request'
-
+import { AuthQueryUserService } from '@application/service/auth/requester/query_user.service'
+import { ValidateCredentialsService } from '@application/service/auth/requester/validate_credentials.service'
+import { UpdateUserService } from '@application/service/auth/requester/update_user.service'
+import { GraphQLTwoFactorAuthService } from '@application/api/graphql/authentication/service/graphql_two_factor_auth.service'
+import { GraphQLAuthenticationService } from '@application/api/graphql/authentication/service/graphql_authentication.service'
+import { GraphQLLocalStrategy } from '@application/api/graphql/authentication/passport/graphql_local.strategy'
+import { GraphQLJwtStrategy } from '@application/api/graphql/authentication/passport/graphql_jwt.strategy'
+import { GraphQLJwtTwoFactorAuthStrategy } from '@application/api/graphql/authentication/passport/graphql_jwt_two_factor_auth.strategy'
+import { JwtModule } from '@nestjs/jwt'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { RequestResetPasswordService } from '@application/service/auth/requester/request_reset_password.service'
+import { ResetPasswordService } from '@application/service/auth/requester/reset_password.service'
+import { AuthResolver } from '@application/api/graphql/resolver/auth.resolver'
 
 const request_providers = [
   {
@@ -91,10 +103,35 @@ const auth_providers: Array<Provider> = [
     inject: [RequestDITokens.Request],
   },
   {
+    provide: AuthDITokens.UpdateUserService,
+    useFactory: (request) => new UpdateUserService(request),
+    inject: [RequestDITokens.Request],
+  },
+  {
     provide: AuthDITokens.DeleteUserService,
     useFactory: (request) => new DeleteUserService(request),
     inject: [RequestDITokens.Request],
   },
+  {
+    provide: AuthDITokens.QueryUserService,
+    useFactory: (request) => new AuthQueryUserService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: AuthDITokens.ValidateCredentialsService,
+    useFactory: (request) => new ValidateCredentialsService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: AuthDITokens.RequestResetPasswordService,
+    useFactory: (request) => new RequestResetPasswordService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: AuthDITokens.ResetPasswordService,
+    useFactory: (request) => new ResetPasswordService(request),
+    inject: [RequestDITokens.Request]
+  }
 ];
 
 const user_providers: Array<Provider> = [
@@ -347,10 +384,11 @@ const chat_providers: Array<Provider> = [
     provide: ChatDITokens.UpdateGroupConversationDetailsService,
     useFactory: (request) => new UpdateGroupConversationDetailsService(request),
     inject: [RequestDITokens.Request]
-  },
+  }
 ];
 
 const resolvers: Array<Provider> = [
+  AuthResolver,
   AccountResolver,
   SocialResolver,
   StoryResolver,
@@ -370,8 +408,23 @@ const resolvers: Array<Provider> = [
       timeout: 5000,
       maxRedirects: 5,
     }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config_service: ConfigService) => ({
+        secret: config_service.get<string>('JWT_SECRET'),
+        signOptions: {
+          expiresIn: `${config_service.get<string>('JWT_EXPIRATION_TIME')}m`,
+        },
+      }),
+    }),
   ],
   providers: [
+    GraphQLTwoFactorAuthService,
+    GraphQLAuthenticationService,
+    GraphQLLocalStrategy,
+    GraphQLJwtStrategy,
+    GraphQLJwtTwoFactorAuthStrategy,
     ...request_providers,
     ...auth_providers,
     ...user_providers,
