@@ -4,14 +4,14 @@ In case where the image is not in dockerhub:
 - `cd skillsly_notification_ms`
 - `docker build -t skillsly-notification-ms .`
 - `docker tag skillsly-notification-ms jonatlop07/skillsly-notification-ms`
-- `docker push jonathan07/skillsly-notification-ms`
+- `docker push jonatlop07/skillsly-notification-ms`
 
 Shortcut (in Powershell):
 
 ```
 docker build -t skillsly-notification-ms . ;`
 docker tag skillsly-notification-ms jonatlop07/skillsly-notification-ms ;`
-docker push jonathan07/skillsly-notification-ms ;
+docker push jonatlop07/skillsly-notification-ms ;
 ```
 
 If not, create the notification db deployment:

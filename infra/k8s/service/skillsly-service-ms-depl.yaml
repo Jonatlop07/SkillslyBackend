@@ -14,7 +14,10 @@ spec:
     spec:
       containers:
         - name: skillsly-service-ms
-          image: skillsly-service-ms
+          image: jonatlop07/skillsly-service-ms
+          env:
+            - name: URL
+              value: 0.0.0.0:7000
 ---
 apiVersion: v1
 kind: Service

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: skillsly-storage-ms
-          image: skillsly-storage-ms
+          image: jonatlop07/skillsly-storage-ms
 ---
 apiVersion: v1
 kind: Service
