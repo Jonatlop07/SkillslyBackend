@@ -8,6 +8,8 @@ import { ApplicationDetails } from '../model/service/input/application_details'
 import { ApplicationMapper } from '../mapper/application.mapper'
 import { DeleteApplicationService } from '@application/service/service/requester/delete_application.service'
 import { ServiceApplicationsService } from '@application/service/service/requester/service_applications.service'
+import { UpdateApplicationService } from '@application/service/service/requester/update_application.service'
+import { ApplicationUpdates } from '../model/service/input/update_application_input'
 
 @Resolver(() => Application)
 export class ApplicationResolver {
@@ -19,7 +21,9 @@ export class ApplicationResolver {
         @Inject(ServiceDITokens.DeleteApplicationService)
         private readonly delete_application_service: DeleteApplicationService,
         @Inject(ServiceDITokens.ServiceApplicationsService)
-        private readonly service_applications_service: ServiceApplicationsService
+        private readonly service_applications_service: ServiceApplicationsService,
+        @Inject(ServiceDITokens.UpdateApplicationService)
+        private readonly update_application_service: UpdateApplicationService
     ) {
     }
 
@@ -56,4 +60,18 @@ export class ApplicationResolver {
             this.logger.log('Listed applications succesfully');
             return applications.map(ApplicationMapper.toGraphQLModel);
         }
+
+    @Mutation(() => String)
+    public async updateApplication(
+        @Args({ name: 'application_id', type: () => Number }) application_id: number,
+        @Args({ name: 'updates', type: () => ApplicationUpdates }) updates: ApplicationUpdates
+    ) {
+        this.logger.log('Updating application...');
+        await this.update_application_service.execute({
+            application_id,
+            message: updates.message
+        });
+        this.logger.log('Application updated succesfully');
+        return 'Application updated';
+    }
 }

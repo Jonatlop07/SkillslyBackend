@@ -85,6 +85,12 @@ import { ResetPasswordService } from '@application/service/auth/requester/reset_
 import { AuthResolver } from '@application/api/graphql/resolver/auth.resolver'
 import { APP_GUARD } from '@nestjs/core'
 import { GraphQLJwtTwoFactorAuthGuard } from '@application/api/graphql/authentication/guard/graphql_jwt_two_factor_auth.guard'
+import { UpdateApplicationService } from '@application/service/service/requester/update_application.service';
+import { UpdatedPhaseServiceService } from '@application/service/service/requester/update_phase_service.service';
+import { UpdateProviderServiceService } from '@application/service/service/requester/update_provider_service.service';
+import { UpdateStatusServiceService } from '@application/service/service/requester/update_status_service.service';
+import { UpdateServiceService } from '@application/service/service/requester/update_service.service';
+
 
 const request_providers = [
   {
@@ -321,6 +327,11 @@ const application_providers: Array<Provider> = [
     provide: ServiceDITokens.ServiceApplicationsService,
     useFactory: (request) => new ServiceApplicationsService(request),
     inject: [RequestDITokens.Request]
+  },
+  {
+    provide: ServiceDITokens.UpdateApplicationService,
+    useFactory: (request) => new UpdateApplicationService(request),
+    inject: [RequestDITokens.Request]
   }
 ];
 
@@ -338,6 +349,26 @@ const service_providers: Array<Provider> = [
   {
     provide: ServiceDITokens.ListServiceService,
     useFactory: (request) => new ListServiceService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: ServiceDITokens.UpdatePhaseServiceService,
+    useFactory: (request) => new UpdatedPhaseServiceService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: ServiceDITokens.UpdateProviderServiceService,
+    useFactory: (request) => new UpdateProviderServiceService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: ServiceDITokens.UpdateStatusServiceService,
+    useFactory: (request) => new UpdateStatusServiceService(request),
+    inject: [RequestDITokens.Request]
+  },
+  {
+    provide: ServiceDITokens.UpdateServiceService,
+    useFactory: (request) => new UpdateServiceService(request),
     inject: [RequestDITokens.Request]
   }
 ]
