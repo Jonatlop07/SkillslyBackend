@@ -2,6 +2,7 @@
 ### Chat service
 In case where the image is not in dockerhub:
 - `cd skillsly_chat_ms`
+- `go mod download && CGO_ENABLED=0 GOOS=linux go build -o ./.bin/app ./cmd/api/main.go`
 - `docker build -t skillsly-chat-ms .`
 - `docker tag skillsly-chat-ms jonatlop07/skillsly-chat-ms`
 - `docker push jonatlop07/skillsly-chat-ms`
@@ -11,7 +12,7 @@ Shortcut (in Powershell):
 ```
 docker build -t skillsly-chat-ms . ;`
 docker tag skillsly-chat-ms jonatlop07/skillsly-chat-ms ;`
-docker push jonathan07/skillsly-chat-ms ;
+docker push jonatlop07/skillsly-chat-ms ;
 ```
 
 If not, create the chat db deployment:
