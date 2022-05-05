@@ -20,6 +20,7 @@ import { AppModule } from '@application/module/app.module'
       formatError: (error: GraphQLError) => {
         return error.toJSON();
       },
+      context: ({ req, res }) => ({ req, res })
     }),
     InfrastructureModule,
     AppModule

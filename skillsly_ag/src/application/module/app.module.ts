@@ -83,6 +83,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { RequestResetPasswordService } from '@application/service/auth/requester/request_reset_password.service'
 import { ResetPasswordService } from '@application/service/auth/requester/reset_password.service'
 import { AuthResolver } from '@application/api/graphql/resolver/auth.resolver'
+import { APP_GUARD } from '@nestjs/core'
+import { GraphQLJwtTwoFactorAuthGuard } from '@application/api/graphql/authentication/guard/graphql_jwt_two_factor_auth.guard'
 
 const request_providers = [
   {
@@ -437,7 +439,11 @@ const resolvers: Array<Provider> = [
     ...service_providers,
     ...resolvers,
     ...chat_providers,
-    ...resolvers
+    ...resolvers,
+    {
+      provide: APP_GUARD,
+      useClass: GraphQLJwtTwoFactorAuthGuard,
+    },
   ]
 })
 export class AppModule {}

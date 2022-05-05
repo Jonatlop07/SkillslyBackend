@@ -38,7 +38,7 @@ export class ResetPasswordService implements ResetPasswordInteractor {
         email,
       },
       {
-        password: generateHashedPassword(password),
+        password: await generateHashedPassword(password),
         reset_password_token: null,
       },
     );

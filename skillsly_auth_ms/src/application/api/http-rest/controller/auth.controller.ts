@@ -26,9 +26,8 @@ import {
 } from '@application/api/http-rest/http-adapter/create_user.adapter';
 import { CreateUserDTO } from '@application/api/http-rest/http-dto/http_create_user.dto';
 import { HttpExceptionMapper } from '@application/api/http-rest/exception/http_exception.mapper';
-import { RequestResetPasswordDTO } from '@application/api/http-rest/authentication/types/request_reset_password.dto';
-import { ResetPasswordDTO } from '@application/api/http-rest/authentication/types/reset_password.dto';
-import { Observable } from 'rxjs';
+import { RequestResetPasswordDTO } from '@application/api/http-rest/http-dto/http_request_reset_password.dto';
+import { ResetPasswordDTO } from '@application/api/http-rest/http-dto/http_reset_password.dto';
 import { UpdateCredentialsDTO } from '@application/api/http-rest/http-dto/http_update_credentials.dto';
 import { UpdateCredentialsResponseDTO } from '@application/api/http-rest/http-dto/http_update_credentials_response.dto';
 import { UpdateCredentialsAdapter } from '@application/api/http-rest/http-adapter/update_credentials.adapter';

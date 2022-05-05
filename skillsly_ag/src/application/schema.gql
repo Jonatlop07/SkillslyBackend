@@ -219,8 +219,8 @@ input GetConversationMessages {
 }
 
 type Mutation {
-  login: AuthPayload!
-  generateQRCode: Upload!
+  login(credentials: AuthCredentials!): AuthPayload!
+  generateQRCode: Upload
   turnOnTwoFactorAuth(code: String!): Int
   authenticate(code: String!): TFAuthPayload!
   requestResetPassword(email: String!): Int
@@ -253,6 +253,11 @@ type Mutation {
   addMembersGroupConversation(add_members_conversation: AddMembersConversation!): String!
   sendMessageToConversation(message_to_conversation: SendMessage!): String!
   updateConversationDetails(update_conversation: UpdateConversation!): String!
+}
+
+input AuthCredentials {
+  email: String
+  password: String
 }
 
 """The `Upload` scalar type represents a file upload."""

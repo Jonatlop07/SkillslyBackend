@@ -14,7 +14,7 @@ export class AuthQueryUserService implements Requester<AuthQueryUserRequestInput
 
   public async execute(input: AuthQueryUserRequestInput): Promise<AuthQueryUserRequestResponse> {
     return await this.request.getRequest({
-      url: `${AUTH_MS_URL}/user/${input.user_id}`,
+      url: `${AUTH_MS_URL}/auth/user/${input.user_id}`,
       params: {}
     });
   }

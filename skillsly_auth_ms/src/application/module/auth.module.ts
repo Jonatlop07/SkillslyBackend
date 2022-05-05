@@ -9,16 +9,13 @@ import { TypeOrmUserRepository } from '@infrastructure/adapter/persistence/typeo
 import { ValidateCredentialsService } from '@core/service/validate_credentials.service';
 import { UpdateCredentialsService } from '@core/service/update_credentials.service';
 import { DeleteUserService } from '@core/service/delete_user.service';
-import { TwoFactorAuthController } from '@application/api/http-rest/controller/two_factor_auth.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
 import { HttpModule } from '@nestjs/axios';
 import { UpdateUserService } from '@core/service/update_user.service'
 import { QueryUserService } from '@core/service/query_user.service'
 import { MailerMailRepositoryAdapter } from '@infrastructure/adapter/mail/mailer/repository/mailer_mail.repository_adapter'
 import { RequestResetPasswordService } from '@core/service/request_reset_password.service'
-import { MailerService } from '@nestjs-modules/mailer'
+import { MailerModule, MailerService } from '@nestjs-modules/mailer'
 import { ResetPasswordService } from '@core/service/reset_password.service'
 
 const persistence_providers: Array<Provider> = [
@@ -86,21 +83,34 @@ const use_case_providers: Array<Provider> = [
 ];
 
 @Module({
-  controllers: [AuthController, TwoFactorAuthController],
+  controllers: [AuthController],
   imports: [
     ConfigModule,
-    PassportModule,
-    JwtModule.registerAsync({
+    HttpModule,
+    MailerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config_service: ConfigService) => ({
-        secret: config_service.get<string>('JWT_SECRET'),
-        signOptions: {
-          expiresIn: `${config_service.get<string>('JWT_EXPIRATION_TIME')}m`,
+        transport: {
+          host: config_service.get<string>('MAILER_HOST'),
+          port: config_service.get<string>('MAILER_PORT'),
+          ignoreTLS: config_service.get<boolean>('MAILER_IGNORE_TLS'),
+          secure: config_service.get<boolean>('MAILER_SECURE'),
+          secureConnection: false,
+          tls: {
+            ciphers: 'SSLv3',
+          },
+          auth: {
+            user: config_service.get<boolean>('USER_MAILER'),
+            pass: config_service.get<boolean>('PASS_MAILER'),
+          },
         },
+        defaults: {
+          from: '"No Reply" <no-reply@localhost>',
+        },
+        preview: true,
       }),
-    }),
-    HttpModule
+    })
   ],
   providers: [
     ...persistence_providers,

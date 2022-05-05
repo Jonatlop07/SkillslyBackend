@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common'
+import { Inject, Injectable, Logger, UnauthorizedException } from '@nestjs/common'
 import { Nullable, Optional } from '@application/common/type/common_types'
 import {
   GraphQLJwtPayload,
@@ -11,6 +11,7 @@ import { ValidateCredentialsService } from '@application/service/auth/requester/
 import { AuthQueryUserService } from '@application/service/auth/requester/query_user.service'
 import AuthUserModel from '@application/service/auth/model/auth_user.model'
 import { UpdateUserService } from '@application/service/auth/requester/update_user.service'
+import { AuthCredentials } from '@application/api/graphql/model/auth/input/auth_credentials'
 
 
 @Injectable()
@@ -34,7 +35,11 @@ export class GraphQLAuthenticationService {
     });
   }
 
-  public async login(user: GraphQLUserPayload): Promise<GraphQLLoggedInUser> {
+  public async login(credentials: AuthCredentials): Promise<GraphQLLoggedInUser> {
+    const user = await this.validateUser(credentials.email, credentials.password);
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
     const payload: GraphQLJwtPayload = { id: user.id };
     const access_token = this.jwt_service.sign(payload);
     await this.update_user_service.execute({ user_id: user.id , access_token });

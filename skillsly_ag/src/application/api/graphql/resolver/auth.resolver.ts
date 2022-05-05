@@ -1,10 +1,9 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { Args, Context, Int, Mutation, Resolver } from '@nestjs/graphql'
 import { Public } from '@application/api/graphql/authentication/decorator/public'
-import { Inject, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common'
-import { GraphQLLocalAuthenticationGuard } from '@application/api/graphql/authentication/guard/graphql_local_authentication.guard'
+import { ExecutionContext, Inject, Res, UnauthorizedException } from '@nestjs/common'
 import {
   GraphQLLoggedInUser,
-  GraphQLRequestWithUser, GraphQLTFALoggedInUser,
+  GraphQLTFALoggedInUser,
   GraphQLUserPayload
 } from '@application/api/graphql/authentication/types/graphql_authentication_types'
 import { GraphQLAuthenticationService } from '@application/api/graphql/authentication/service/graphql_authentication.service'
@@ -21,6 +20,7 @@ import { AuthMapper } from '@application/api/graphql/mapper/auth.mapper'
 import { TFAuthMapper } from '@application/api/graphql/mapper/tf_auth.mapper'
 import { TFAuthPayload } from '@application/api/graphql/model/auth/tf_auth_payload'
 import { GraphQLUpload } from 'graphql-upload'
+import { AuthCredentials } from '@application/api/graphql/model/auth/input/auth_credentials'
 
 @Resolver()
 export class AuthResolver {
@@ -35,21 +35,25 @@ export class AuthResolver {
   }
 
   @Public()
-  @UseGuards(GraphQLLocalAuthenticationGuard)
   @Mutation(() => AuthPayload)
-  public async login(@Req() request: GraphQLRequestWithUser) {
-    const result: GraphQLLoggedInUser = await this.authentication_service.login(request.user);
+  public async login(
+    @Args({ name: 'credentials', type: () => AuthCredentials }) credentials: AuthCredentials
+  ) {
+    const result: GraphQLLoggedInUser = await this.authentication_service.login(credentials);
     return AuthMapper.toGraphQLModel(result);
   }
 
-  @Mutation(() => GraphQLUpload)
+  @DeactivateTwoFactorAuth()
+  @JwtAuth()
+  @Mutation(() => GraphQLUpload, { nullable: true })
   public async generateQRCode(
     @CurrentUser() graphql_user: GraphQLUserPayload,
-    @Res() response: Response
+    @Context() context
   ) {
     const { otp_auth_url } = await this.two_factor_auth_service.generateTwoFactorAuthSecret(graphql_user.id);
+    const response = context.res;
     response.setHeader('content-type', 'image/png');
-    return this.two_factor_auth_service.pipeQRCodeStream(response, otp_auth_url);
+    return await this.two_factor_auth_service.pipeQRCodeStream(response, otp_auth_url);
   }
 
   @DeactivateTwoFactorAuth()
