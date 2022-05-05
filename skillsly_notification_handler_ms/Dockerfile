@@ -12,5 +12,4 @@ ENV ENABLE_LOG=true
 
 RUN npm run build
 
-EXPOSE 8012
 CMD ["node", "dist/main"]

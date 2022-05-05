@@ -19,9 +19,10 @@ services:
       API_HOST: '0.0.0.0'
       API_PORT: '3000'
       API_ENABLE_LOG: 'true'
+      ORIGIN: '0.0.0.0'
       REDIS_HOST: redis
     depends_on:
       - redis
     ports:
-      - "8010:3000"
-      - "9232:9229"
+      - "8000:3000"
+      - "9234:9229"

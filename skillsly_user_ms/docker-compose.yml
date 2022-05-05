@@ -1,4 +1,4 @@
-version: "3.6"
+version: "3.7"
 
 services:
   skillsly_user_db:
@@ -19,7 +19,13 @@ services:
     depends_on:
       - skillsly_user_db
     environment:
-      DATABASE_URL: postgres://skillsly:user@skillsly_user_db:5432/skillsly_user_db
+      API_HOST: '0.0.0.0'
+      API_PORT: '3000'
+      API_ENABLE_LOG: 'true'
+      DATABASE_URL: 'postgres://skillsly:user@skillsly_user_db:5432/skillsly_user_db'
+      USER_DB_ENABLE_LOG: 'true'
+      THROTTLE_TTL: '60'
+      THROTTLE_LIMIT: '200'
     ports:
-      - "8001:3000"
+      - "8002:3000"
       - "9230:9229"

@@ -34,13 +34,14 @@ export class CreateUserService implements CreateUserInteractor {
       is_two_factor_auth_enabled: false,
       reset_password_token: null
     });
+    this.logger.log(password);
     const credentials_have_valid_format = user_to_create.hasValidEmail() && user_to_create.hasValidPassword();
     if (!credentials_have_valid_format)
       throw new InvalidCredentialsFormatException();
     if (await this.gateway.exists({ email: user_to_create.email }))
       throw new UserAlreadyExistsException();
     const user_to_create_dto = UserMapper.toUserDTO(user_to_create);
-    user_to_create_dto.password = generateHashedPassword(user_to_create_dto.password);
+    user_to_create_dto.password = await generateHashedPassword(user_to_create_dto.password);
     const created_user: UserDTO = await this.gateway.create(user_to_create_dto);
     return { id: created_user.id, email: created_user.email };
   }

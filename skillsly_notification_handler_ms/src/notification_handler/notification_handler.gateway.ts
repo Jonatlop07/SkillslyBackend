@@ -50,6 +50,7 @@ export class NotificationHandlerGateway implements OnGatewayConnection, OnGatewa
   public async sendNotification(notification: NotificationDTO) {
     const { notifier_id } = notification;
     if (await this.cache_manager.get(notifier_id)) {
+      this.logger.log("Sending notification...");
       this.server
         .to(await this.cache_manager.get(notifier_id))
         .emit(SocketEvents.NewNotification, notification);

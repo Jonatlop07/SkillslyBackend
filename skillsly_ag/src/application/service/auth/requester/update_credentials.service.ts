@@ -16,9 +16,13 @@ implements Requester<UpdateCredentialsRequestInput, UpdateCredentialsRequestResp
   }
 
   public async execute(input: UpdateCredentialsRequestInput): Promise<UpdateCredentialsRequestResponse> {
-    const { user_id, email, password } = input;
+    const {
+      user_id,
+      email,
+      password
+    } = input;
     return await this.request.patchRequest({
-      url: `${AUTH_MS_URL}/auth/user/${user_id}`,
+      url: `${AUTH_MS_URL}/auth/user/credentials/${user_id}`,
       body: {
         email,
         password

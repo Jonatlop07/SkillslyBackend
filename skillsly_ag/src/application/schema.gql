@@ -157,6 +157,20 @@ type FollowRequestDetails {
   gender: String!
 }
 
+"""Contains the information the user obtains when login"""
+type AuthPayload {
+  id: ID
+  email: String
+  access_token: String!
+}
+
+type TFAuthPayload {
+  id: ID!
+  email: String!
+  access_token: String!
+  is_two_factor_auth_enabled: Boolean!
+}
+
 type Query {
   user(id: String!): User!
   users(search_params: SearchParams!): [User!]!
@@ -205,6 +219,12 @@ input GetConversationMessages {
 }
 
 type Mutation {
+  login(credentials: AuthCredentials!): AuthPayload!
+  generateQRCode: Upload
+  turnOnTwoFactorAuth(code: String!): Int
+  authenticate(code: String!): TFAuthPayload!
+  requestResetPassword(email: String!): Int
+  resetPassword(token: String!, password: String!): Int
   createUserAccount(account_details: NewUser!): User!
   updateUserAccount(user_id: ID!, updates: UserAccountUpdates!): User!
   deleteUserAccount(user_id: ID!, password: String): User!
@@ -239,6 +259,14 @@ type Mutation {
   sendMessageToConversation(message_to_conversation: SendMessage!): String!
   updateConversationDetails(update_conversation: UpdateConversation!): String!
 }
+
+input AuthCredentials {
+  email: String
+  password: String
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 input NewUser {
   email: String!

@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcryptjs';
 
-export default function generateHashedPassword(password: string): string {
+export default async function generateHashedPassword(password: string): Promise<string> {
   const SALT_ROUNDS = 10;
-  const salt = bcrypt.genSaltSync(SALT_ROUNDS);
-  return bcrypt.hashSync(password, salt);
+  const salt = await bcrypt.genSalt(SALT_ROUNDS);
+  return await bcrypt.hash(password, salt);
 }
