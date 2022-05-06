@@ -9,7 +9,7 @@ data:
   DATABASE_URL: 'postgres://skillsly:notification@skillsly-notification-db-srv:5432/skillsly_notification_db'
   NOTIFICATION_DB_ENABLE_LOG: 'true'
   MQ_PROTOCOL: 'amqp'
-  MQ_HOST: 'skillsly-notification-mq-srv'
+  MQ_HOST: 'skillsly-notification-mq-0.skillsly-notification-mq-srv.default.svc.cluster.local'
   MQ_PORT: '5672'
   MQ_USERNAME: 'skillsly_notification'
   MQ_PASSWORD: 'notification'

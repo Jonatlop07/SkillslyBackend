@@ -5,7 +5,7 @@ metadata:
 data:
   API_ENABLE_LOG: 'true'
   MQ_PROTOCOL: 'amqp'
-  MQ_HOST: 'skillsly-notification-mq-srv'
+  MQ_HOST: 'skillsly-notification-mq-0.skillsly-notification-mq-srv.default.svc.cluster.local'
   MQ_PORT: '5672'
   MQ_USERNAME: 'skillsly_notification'
   MQ_PASSWORD: 'skillsly'

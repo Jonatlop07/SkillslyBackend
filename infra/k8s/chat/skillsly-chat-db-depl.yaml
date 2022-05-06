@@ -30,8 +30,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: skillsly-chat-db-env-config
-          command: ['mongod']
-          args: ['--logpath=/dev/null']
+          command: [ 'mongod' ]
+          args: [ '--logpath=/dev/null' ]
           volumeMounts:
             - name: skillsly-chat-db-volume
               mountPath: '/data/db'
@@ -48,7 +48,7 @@ spec:
   selector:
     app: skillsly-chat-db
   ports:
-    - name: db
+    - name: chat
       protocol: TCP
       port: 27017
       targetPort: 27017

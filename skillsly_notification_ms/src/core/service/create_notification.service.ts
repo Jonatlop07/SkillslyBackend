@@ -24,14 +24,12 @@ export class CreateNotificationService implements CreateNotificationInteractor {
     const notifications: Array<NotificationDTO> = await this.gateway.create(
       notification_details,
     );
-    this.logger.log(notifications);
-    // await Promise.all(
-    //   notifications.map(
-    //     (notification) =>
-    //       this.message_client.sendMessage(notification)
-    //   )
-    // );
-
+    await Promise.all(
+      notifications.map(
+        (notification) =>
+          this.message_client.sendMessage(notification)
+      )
+    );
     return {};
   }
 }

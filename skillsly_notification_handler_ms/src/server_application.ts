@@ -16,7 +16,11 @@ export class ServerApplication {
 
   public async run(): Promise<void> {
     try {
-      const microservice_options: RmqOptions = {
+      const options = {};
+      if (!this.enable_log) {
+        options['logger'] = false;
+      }
+      const app = await NestFactory.createMicroservice<MicroserviceOptions>(RootModule, {
         transport: Transport.RMQ,
         options: {
           urls: [{
@@ -27,16 +31,12 @@ export class ServerApplication {
             password: this.mq_password
           }],
           queue: this.mq_queue,
+          noAck: false,
           queueOptions: {
             durable: true
           }
         }
-      };
-      const options = {};
-      if (!this.enable_log) {
-        options['logger'] = false;
-      }
-      const app = await NestFactory.createMicroservice<MicroserviceOptions>(RootModule, microservice_options);
+      });
       await app.listen();
       Logger.log(
         `Environment: ${chalk
