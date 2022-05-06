@@ -8,7 +8,7 @@ export class NotificationHandlerService {
 
   constructor(private readonly web_socket: NotificationHandlerGateway) {}
 
-  public async sendNotification(notification: NotificationDTO) {
-    await this.web_socket.sendNotification(notification);
+  public async sendNotification(notification: NotificationDTO): Promise<boolean> {
+    return await this.web_socket.sendNotification(notification);
   }
 }

@@ -7,6 +7,12 @@ In case where the image is not in dockerhub:
 - `docker push jonatlop07/skillsly-notification-handler-ms`
 
 ```
+docker build -t skillsly-notification-handler-ms . ;`
+docker tag skillsly-notification-handler-ms jonatlop07/skillsly-notification-handler-ms ;`
+docker push jonatlop07/skillsly-notification-handler-ms ;
+```
+
+```
 kubectl apply -f skillsly-notification-handler-redis-config-map.yaml ;`
 kubectl apply -f skillsly-notification-handler-redis-depl.yaml ;`
 kubectl apply -f skillsly-notification-handler-ms-env-config-map.yaml ;`

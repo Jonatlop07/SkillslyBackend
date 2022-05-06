@@ -52,6 +52,9 @@ kubectl apply -f skillsly-notification-mq-persistent-volume.yaml ;`
 kubectl apply -f skillsly-notification-mq-depl.yaml
 ```
 
+To execute cli: 
+- `kubectl exec -it skillsly-notification-mq-depl-0 bash`
+
 Create the notification microservice deployment:
 
 - `kubectl apply -f skillsly-notification-ms-env-config-map.yaml`

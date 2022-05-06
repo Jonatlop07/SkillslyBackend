@@ -47,13 +47,16 @@ export class NotificationHandlerGateway implements OnGatewayConnection, OnGatewa
     await this.cache_manager.del(payload.user_id);
   }
 
-  public async sendNotification(notification: NotificationDTO) {
+  public async sendNotification(notification: NotificationDTO): Promise<boolean> {
     const { notifier_id } = notification;
-    if (await this.cache_manager.get(notifier_id)) {
+    this.logger.log("Sending notification...");
+    const destination_socket_id = await this.cache_manager.get(notifier_id);
+    if (destination_socket_id) {
       this.logger.log("Sending notification...");
       this.server
         .to(await this.cache_manager.get(notifier_id))
         .emit(SocketEvents.NewNotification, notification);
     }
+    return !!destination_socket_id;
   }
 }

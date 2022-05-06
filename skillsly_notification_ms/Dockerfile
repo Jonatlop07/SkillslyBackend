@@ -12,4 +12,5 @@ COPY . .
 
 RUN npm run build
 
+EXPOSE 8011
 CMD ["node", "dist/main"]
