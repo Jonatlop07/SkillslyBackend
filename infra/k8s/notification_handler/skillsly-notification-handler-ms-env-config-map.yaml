@@ -8,7 +8,7 @@ data:
   MQ_HOST: 'skillsly-notification-mq-0.skillsly-notification-mq-srv.default.svc.cluster.local'
   MQ_PORT: '5672'
   MQ_USERNAME: 'skillsly_notification'
-  MQ_PASSWORD: 'skillsly'
+  MQ_PASSWORD: 'notification'
   MQ_QUEUE: 'notifications_queue'
   REDIS_HOST: 'skillsly-notification-handler-redis-srv'
   REDIS_PORT: '6379'
