@@ -6,7 +6,7 @@ data:
   API_HOST: '0.0.0.0'
   API_PORT: '3000'
   API_ENABLE_LOG: 'true'
-  ORIGIN: '0.0.0.0'
+  ORIGIN: 'http://localhost:4200'
   REDIS_HOST: skillsly-ag-redis-srv
   JWT_SECRET: 'Rx334Juo_a2'
   JWT_EXPIRATION_TIME: '60'
