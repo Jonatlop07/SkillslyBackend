@@ -25,12 +25,11 @@ export class CreateNotificationService implements CreateNotificationInteractor {
       notification_details,
     );
     this.logger.log(notifications);
-    // await Promise.all(
-    //   notifications.map(
-    //     (notification) =>
-    //       this.message_client.sendMessage(notification)
-    //   )
-    // );
+    await Promise.all(
+      notifications.map((notification) =>
+        this.message_client.sendMessage(notification),
+      ),
+    );
 
     return {};
   }

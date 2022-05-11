@@ -1,15 +1,15 @@
-version: "3.7"
+version: '3.7'
 services:
   redis:
-    image: "redis:alpine"
+    image: 'redis:alpine'
     ports:
-      - "6379:6379"
+      - '6379:6379'
   redis-commander:
-    image: "rediscommander/redis-commander:latest"
+    image: 'rediscommander/redis-commander:latest'
     environment:
       - REDIS_HOSTS=local:redis:6379
     ports:
-      - "8081:8081"
+      - '8081:8081'
     depends_on:
       - redis
   skillsly_ag:
@@ -20,5 +20,5 @@ services:
     depends_on:
       - redis
     ports:
-      - "8010:3000"
-      - "9232:9229"
+      - '8010:3000'
+      - '9229:9229'
