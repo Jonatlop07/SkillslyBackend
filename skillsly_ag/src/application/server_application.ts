@@ -9,7 +9,6 @@ export class ServerApplication {
   private readonly host: string = APIServerConfiguration.HOST;
   private readonly port: number = APIServerConfiguration.PORT;
   private readonly enable_log: boolean = APIServerConfiguration.ENABLE_LOG;
-  private readonly origin: string = APIServerConfiguration.ORIGIN;
 
   public async run(): Promise<void> {
     try {
@@ -21,9 +20,6 @@ export class ServerApplication {
         RootModule,
         options
       );
-      app.enableCors({
-        origin: this.origin
-      });
       app.setGlobalPrefix('api/v1');
       app.useGlobalPipes(new ValidationPipe());
 
