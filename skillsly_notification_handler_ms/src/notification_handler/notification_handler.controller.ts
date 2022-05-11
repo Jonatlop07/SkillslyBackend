@@ -1,6 +1,6 @@
 import { Controller, Logger } from '@nestjs/common'
 import { NotificationHandlerService } from './notification_handler.service'
-import { MessagePattern } from '@nestjs/microservices'
+import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices'
 import { MessagePatterns } from './constants/message_patterns'
 import NotificationDTO from './dto/notification.dto'
 
@@ -11,7 +11,14 @@ export class NotificationHandlerController {
   constructor(private readonly service: NotificationHandlerService) {}
 
   @MessagePattern(MessagePatterns.NotificationCreated)
-  public async notificationCreated(notification: NotificationDTO): Promise<void> {
-    await this.service.sendNotification(notification);
+  public async notificationCreated(
+    @Payload() notification: NotificationDTO,
+    @Ctx() context: RmqContext
+  ): Promise<void> {
+    const channel = context.getChannelRef();
+    const sent: boolean = await this.service.sendNotification(notification);
+    if (sent) {
+      channel.ack(context.getMessage());
+    }
   }
 }

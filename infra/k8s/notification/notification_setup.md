@@ -4,14 +4,14 @@ In case where the image is not in dockerhub:
 - `cd skillsly_notification_ms`
 - `docker build -t skillsly-notification-ms .`
 - `docker tag skillsly-notification-ms jonatlop07/skillsly-notification-ms`
-- `docker push jonathan07/skillsly-notification-ms`
+- `docker push jonatlop07/skillsly-notification-ms`
 
 Shortcut (in Powershell):
 
 ```
 docker build -t skillsly-notification-ms . ;`
 docker tag skillsly-notification-ms jonatlop07/skillsly-notification-ms ;`
-docker push jonathan07/skillsly-notification-ms ;
+docker push jonatlop07/skillsly-notification-ms ;
 ```
 
 If not, create the notification db deployment:
@@ -28,7 +28,7 @@ Shortcut (in Powershell):
 kubectl apply -f skillsly-notification-db-secret.yaml ;`
 kubectl apply -f skillsly-notification-db-env-config-map.yaml ;`
 kubectl apply -f skillsly-notification-db-persistent-volume.yaml ;`
-kubectl apply -f skillsly-notification-db-depl.yaml ;
+kubectl apply -f skillsly-notification-db-depl.yaml
 ```
 
 Get the notification-db pod ID:
@@ -37,6 +37,23 @@ Get the notification-db pod ID:
 - `kubectl exec -it <pod-id> -- psql -d skillsly_notification_db -U skillsly`
 
 Paste the content of `skillsly-notification-initdb.sql`, press enter, and then type `\q`
+
+Deploy the message queue:
+
+- `kubectl apply -f skillsly-notification-mq-secret.yaml`
+- `kubectl apply -f skillsly-notification-mq-persistent-volume.yaml`
+- `kubectl apply -f skillsly-notification-mq-depl.yaml`
+
+Shortcut (in Powershell):
+
+```
+kubectl apply -f skillsly-notification-mq-secret.yaml ;`
+kubectl apply -f skillsly-notification-mq-persistent-volume.yaml ;`
+kubectl apply -f skillsly-notification-mq-depl.yaml
+```
+
+To execute cli: 
+- `kubectl exec -it skillsly-notification-mq-depl-0 bash`
 
 Create the notification microservice deployment:
 
@@ -47,13 +64,21 @@ Shortcut (in Powershell):
 
 ```
 kubectl apply -f skillsly-notification-ms-env-config-map.yaml ;`
-kubectl apply -f skillsly-notification-ms-depl.yaml ;
+kubectl apply -f skillsly-notification-ms-depl.yaml
 ```
 
 To display pods' logs:
 
 - `kubectl get pods`
 - `kubectl logs <pod-id>`
+
+To delete rabbitmq message queue resources:
+
+- `kubectl delete service skillsly-notification-mq-srv`
+- `kubectl delete statefulsets skillsly-notification-mq-depl`
+- `kubectl delete persistentvolumeclaims skillsly-notification-mq-pv-claim`
+- `kubectl delete persistentvolume skillsly-notification-mq-persistent-volume`
+- `kubectl delete secret skillsly-notification-mq-secret`
 
 To delete notification microservice resources:
 
@@ -65,7 +90,7 @@ To delete notification db resources:
 
 - `kubectl delete service skillsly-notification-db-srv`
 - `kubectl delete deployment skillsly-notification-db-depl`
-- `kubectl delete persistentvolumeclaims skillsly-notification-pv-claim`
+- `kubectl delete persistentvolumeclaims skillsly-notification-db-pv-claim`
 - `kubectl delete persistentvolume skillsly-notification-db-persistent-volume`
 - `kubectl delete secret skillsly-notification-db-secret`
 - `kubectl delete configmap skillsly-notification-db-env-config`
@@ -73,12 +98,18 @@ To delete notification db resources:
 Shortcut to delete all (in Powershell):
 
 ```
+kubectl delete service skillsly-notification-mq-srv ;`
+kubectl delete statefulsets skillsly-notification-mq-depl ;`
+kubectl delete persistentvolumeclaims skillsly-notification-mq-pv-claim ;`
+kubectl delete persistentvolume skillsly-notification-mq-persistent-volume ;`
+kubectl delete secret skillsly-notification-mq-secret ;`
 kubectl delete service skillsly-notification-ms-srv ;`
 kubectl delete deployment skillsly-notification-ms-depl ;`
 kubectl delete configmap skillsly-notification-ms-env-config ;`
 kubectl delete service skillsly-notification-db-srv ;`
 kubectl delete deployment skillsly-notification-db-depl ;`
-kubectl delete persistentvolumeclaims skillsly-notification-pv-claim ;`
+kubectl delete persistentvolumeclaims skillsly-notification-db-pv-claim ;`
+kubectl delete persistentvolume skillsly-notification-db-persistent-volume ;`
 kubectl delete secret skillsly-notification-db-secret ;`
-kubectl delete configmap skillsly-notification-db-env-config ; 
+kubectl delete configmap skillsly-notification-db-env-config
 ```

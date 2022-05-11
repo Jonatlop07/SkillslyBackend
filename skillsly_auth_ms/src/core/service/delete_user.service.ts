@@ -22,7 +22,7 @@ export class DeleteUserService implements DeleteUserInteractor {
     if (!user) {
       throw new UserNotFoundException();
     }
-    if (!bcrypt.compareSync(password, user.password))
+    if (!await bcrypt.compare(password, user.password))
       throw new InvalidCredentialsException();
     await this.gateway.delete({ id });
     return {

@@ -16,9 +16,18 @@ services:
     build: .
     container_name: skillsly_ag
     environment:
+      API_HOST: '0.0.0.0'
+      API_PORT: '3000'
+      API_ENABLE_LOG: 'true'
+      ORIGIN: '0.0.0.0'
       REDIS_HOST: redis
     depends_on:
       - redis
     ports:
+<<<<<<< HEAD
       - '8010:3000'
       - '9229:9229'
+=======
+      - "8000:3000"
+      - "9234:9229"
+>>>>>>> 6ded3d205eb0971750fbd7b5878cd57b25120ecd

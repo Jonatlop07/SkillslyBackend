@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: skillsly-chat-ms
-          image: skillsly-chat-ms
+          image: jonatlop07/skillsly-chat-ms
           command: ['./app']
 ---
 apiVersion: v1
@@ -25,7 +25,7 @@ spec:
   selector:
     app: skillsly-chat-ms
   ports:
-    - name: chat
+    - name: chat-ms
       protocol: TCP
-      port: 8000
-      targetPort: 8000
+      port: 8002
+      targetPort: 8002

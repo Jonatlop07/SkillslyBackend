@@ -14,7 +14,10 @@ spec:
     spec:
       containers:
         - name: skillsly-ag
-          image: jonathan07/skillsly-ag
+          image: jonatlop07/skillsly-ag
+          envFrom:
+            - configMapRef:
+                name: skillsly-ag-env-config
 ---
 apiVersion: v1
 kind: Service
@@ -27,4 +30,5 @@ spec:
     - name: api-gateway
       protocol: TCP
       port: 3000
-      targetPort: 8000
+      targetPort: 3000
+  type: LoadBalancer

@@ -1,3 +1,15 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: skillsly-posts-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Mi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,13 +27,18 @@ spec:
       containers:
         - name: skillsly-posts-db
           image: mongo:latest
-          env:
-            - name: MONGO_DATA_PATH
-              value: /data/db
-            - name: MONGO_LOG_PATH
-              value: /dev/null
-            - name: MONGODB_DATABASE
-              value: skillsly_posts_db
+          envFrom:
+            - configMapRef:
+                name: skillsly-posts-db-env-config
+          command: ['mongod']
+          args: ['--logpath=/dev/null']
+          volumeMounts:
+            - name: skillsly-posts-db-volume
+              mountPath: '/data/db'
+      volumes:
+        - name: skillsly-posts-db-volume
+          persistentVolumeClaim:
+            claimName: skillsly-posts-pv-claim
 ---
 apiVersion: v1
 kind: Service

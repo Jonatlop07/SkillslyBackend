@@ -21,7 +21,7 @@ export class ValidateCredentialsService implements ValidateCredentialsInteractor
     const resulting_user: UserDTO = await this.gateway.findOne({ email: input.email });
     if (!resulting_user)
       throw new UserNotFoundException();
-    if (!bcrypt.compareSync(input.password, resulting_user.password))
+    if (!await bcrypt.compare(input.password, resulting_user.password))
       throw new InvalidCredentialsException();
     return {
       id: resulting_user.id,

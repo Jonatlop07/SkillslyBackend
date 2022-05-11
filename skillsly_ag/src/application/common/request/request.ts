@@ -2,14 +2,15 @@ import {
   RequestParamsWithBody,
   RequestParamsWithoutBody,
 } from '@application/common/request/request_params';
+import { catchError, firstValueFrom, map } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { catchError, firstValueFrom, map } from 'rxjs';
 import { AxiosResponse } from 'axios';
 
 @Injectable()
 export class Request {
-  constructor(private readonly http_service: HttpService) {}
+  constructor(private readonly http_service: HttpService) {
+  }
 
   public getRequest<T>(get_params: RequestParamsWithoutBody): Promise<T> {
     const { url, params } = get_params;

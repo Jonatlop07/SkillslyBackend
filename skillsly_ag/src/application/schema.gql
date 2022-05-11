@@ -2,29 +2,94 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-"""Defines the information of a user's account"""
-type User {
-  id: ID!
-  email: String!
+"""Defines the information of a chat message"""
+type Message {
+  content: String!
+  path: String!
+  owner_user_id: String!
+  created_at: String!
+  updated_at: String!
+}
+
+"""Defines the information of a chat member"""
+type Member {
+  user_id: ID!
+  is_active: Boolean!
+  is_admin: Boolean!
+  joined_at: String!
+}
+
+"""Defines the information of a chat"""
+type Conversation {
+  conversation_id: ID!
+  creator_user_id: String!
   name: String!
-  date_of_birth: String!
-  gender: String!
+  description: String!
+  members: [Member!]!
+  messages: [Message!]
+  created_at: String!
+  updated_at: String
+  is_private: Boolean!
+}
+
+type Service {
+  id: ID!
+  requester_id: ID!
+  title: String!
+  description: String!
+  contact_info: String!
+  category: String!
+  phase: String!
+  created_at: String!
+  updated_at: String
+  provider_id: ID
+  canceled: Boolean!
+}
+
+type Application {
+  id: ID!
+  applicant_id: ID!
+  message: String
+  created_at: String!
+  updated_at: String
+  service_id: ID!
+}
+
+"""Defines the information of a comment"""
+type Comment {
+  _id: ID!
+  owner_id: String!
+  post_id: String
+  description: String
+  media_locator: String
+  inner_comment_count: Int
   created_at: String!
   updated_at: String
 }
 
-type FollowRelationships {
-  pending_followers: [User!]!
-  pending_users_to_follow: [User!]!
-  followers: [User!]!
-  following_users: [User!]!
+type CommentContent {
+  description: String
+  media_locator: String
 }
 
-type FollowRequestDetails {
-  id: ID!
-  name: String!
-  email: String!
-  gender: String!
+"""Defines the information of a comment"""
+type InnerComment {
+  _id: ID!
+  owner_id: String!
+  comment_id: String
+  description: String
+  media_locator: String
+  created_at: String!
+  updated_at: String
+}
+
+"""Defines the information of a notification to be shown to the user"""
+type Notifications {
+  notifier_id: ID!
+  actor_id: ID!
+  entity_id: ID!
+  resource_type: String!
+  created_at: String!
 }
 
 """Defines the content of a story view"""
@@ -67,41 +132,43 @@ type Post {
   content_element: [ContentElement!]!
 }
 
-"""Defines the information of a comment"""
-type Comment {
-  _id: ID!
-  owner_id: String!
-  post_id: String
-  description: String
-  media_locator: String
-  inner_comment_count: Int
+"""Defines the information of a user's account"""
+type User {
+  id: ID!
+  email: String!
+  name: String!
+  date_of_birth: String!
+  gender: String!
   created_at: String!
   updated_at: String
 }
 
-type CommentContent {
-  description: String
-  media_locator: String
+type FollowRelationships {
+  pending_followers: [User!]!
+  pending_users_to_follow: [User!]!
+  followers: [User!]!
+  following_users: [User!]!
 }
 
-"""Defines the information of a comment"""
-type InnerComment {
-  _id: ID!
-  owner_id: String!
-  comment_id: String
-  description: String
-  media_locator: String
-  created_at: String!
-  updated_at: String
+type FollowRequestDetails {
+  id: ID!
+  name: String!
+  email: String!
+  gender: String!
 }
 
-"""Defines the information of a notification to be shown to the user"""
-type Notifications {
-  notifier_id: ID!
-  actor_id: ID!
-  entity_id: ID!
-  resource_type: String!
-  created_at: String!
+"""Contains the information the user obtains when login"""
+type AuthPayload {
+  id: ID
+  email: String
+  access_token: String!
+}
+
+type TFAuthPayload {
+  id: ID!
+  email: String!
+  access_token: String!
+  is_two_factor_auth_enabled: Boolean!
 }
 
 type Query {
@@ -115,6 +182,10 @@ type Query {
   queryComments(post_id: ID!, comments_pagination: PaginationParams!): [Comment!]!
   queryInnerComments(inner_comments_pagination: PaginationParams!, comment_id: ID!): [InnerComment!]!
   queryNotifications(notifier_id: ID!, notifications_pagination: NotificationQueryParams!): [Notifications!]!
+  serviceApplications(service_id: Float!): [Application!]!
+  listService(list_service_params: ListServiceParams!): [Service!]!
+  getConversationsCollection(get_conversations_collection: GetConversations!): [Conversation!]!
+  getConversationMessages(get_messages: GetConversationMessages!): [Message!]!
 }
 
 input SearchParams {
@@ -134,7 +205,26 @@ input NotificationQueryParams {
   offset: Int
 }
 
+input ListServiceParams {
+  category: String
+  requester_id: String
+}
+
+input GetConversations {
+  user_id: String!
+}
+
+input GetConversationMessages {
+  conversation_id: String!
+}
+
 type Mutation {
+  login(credentials: AuthCredentials!): AuthPayload!
+  generateQRCode: Upload
+  turnOnTwoFactorAuth(code: String!): Int
+  authenticate(code: String!): TFAuthPayload!
+  requestResetPassword(email: String!): Int
+  resetPassword(token: String!, password: String!): Int
   createUserAccount(account_details: NewUser!): User!
   updateUserAccount(user_id: ID!, updates: UserAccountUpdates!): User!
   deleteUserAccount(user_id: ID!, password: String): User!
@@ -152,7 +242,31 @@ type Mutation {
   createInnerComment(inner_comment_details: NewInnerComment!, comment_id: ID!): InnerComment!
   updateInnerComment(inner_comment_id: ID!, new_content: CommentContentUpdate!): CommentContent!
   deleteInnerComment(inner_comment_id: ID!): String!
+  createApplication(application_details: ApplicationDetails!): Application!
+  deleteApplication(id: Float!): String!
+  updateApplication(application_id: Float!, updates: ApplicationUpdates!): String!
+  createService(service_details: ServiceDetails!): Service!
+  deleteService(id: Float!): String!
+  updatePhaseService(service_id: Float!, updates: PhaseUpdates!): String!
+  updateProviderService(service_id: Float!, updates: ProviderUpdates!): String!
+  updateStatusService(service_id: Float!, updates: StatusUpdates!): String!
+  updateService(service_id: Float!, updates: ServiceUpdates!): String!
+  createPrivateConversation(private_conversation: PrivateConversation!): String!
+  createGroupConversation(group_conversation: GroupConversation!): String!
+  deleteConversation(delete_conversation: DeleteConversation!): String!
+  exitGroupConversation(exit_group_conversation: DeleteConversation!): String!
+  addMembersGroupConversation(add_members_conversation: AddMembersConversation!): String!
+  sendMessageToConversation(message_to_conversation: SendMessage!): String!
+  updateConversationDetails(update_conversation: UpdateConversation!): String!
 }
+
+input AuthCredentials {
+  email: String
+  password: String
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 input NewUser {
   email: String!
@@ -211,4 +325,85 @@ input NewInnerComment {
   owner_id: ID!
   description: String
   media_locator: String
+}
+
+input ApplicationDetails {
+  idService: ID!
+  applicant_id: ID!
+  message: String
+}
+
+input ApplicationUpdates {
+  message: String!
+}
+
+input ServiceDetails {
+  requester_id: ID!
+  title: String!
+  description: String!
+  contact_info: String!
+  category: String!
+}
+
+input PhaseUpdates {
+  phase: String!
+}
+
+input ProviderUpdates {
+  provider_id: String!
+}
+
+input StatusUpdates {
+  canceled: Boolean!
+}
+
+input ServiceUpdates {
+  title: String
+  description: String
+  contact_info: String
+  category: String
+}
+
+input PrivateConversation {
+  creator_user_id: String!
+  member_user_id: String!
+}
+
+input GroupConversation {
+  request_user_id: String!
+  name: String!
+  description: String!
+  members: [InputMember!]!
+  is_private: Boolean!
+}
+
+"""Defines the information of a chat member"""
+input InputMember {
+  UserID: ID!
+  IsActive: Boolean!
+  IsAdmin: Boolean!
+  JoinedAt: String
+}
+
+input DeleteConversation {
+  conversation_id: String!
+  user_id: String!
+}
+
+input AddMembersConversation {
+  users_ids: [String!]!
+  conversation_id: String!
+}
+
+input SendMessage {
+  content: String!
+  owner_user_id: String!
+  conversation_id: String!
+}
+
+input UpdateConversation {
+  conversation_id: String!
+  name: String!
+  is_private: Boolean!
+  description: String!
 }

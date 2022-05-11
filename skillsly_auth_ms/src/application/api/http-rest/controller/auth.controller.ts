@@ -1,23 +1,18 @@
 import {
   Body,
-  Controller, Delete,
-  HttpCode, HttpException,
+  Controller, Delete, Get,
+  HttpCode,
   HttpStatus,
   Inject,
   Logger, Param, Patch,
   Post, Query,
-  Req,
-  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { UserDITokens } from '@core/domain/di/user_di_tokens';
 import CreateUserInteractor from '@core/domain/use-case/interactor/create_user.interactor';
 import UpdateCredentialsInteractor from '@core/domain/use-case/interactor/update_credentials.interactor';
 import DeleteUserInteractor from '@core/domain/use-case/interactor/delete_user.interactor';
-import { HttpAuthenticationService } from '@application/api/http-rest/authentication/service/http_authentication.service';
-import { HttpResetPasswordService } from '@application/api/http-rest/authentication/service/http_reset_password.service';
 import {
-  ApiBearerAuth,
   ApiConflictResponse,
   ApiCreatedResponse,
   ApiForbiddenResponse,
@@ -31,18 +26,19 @@ import {
 } from '@application/api/http-rest/http-adapter/create_user.adapter';
 import { CreateUserDTO } from '@application/api/http-rest/http-dto/http_create_user.dto';
 import { HttpExceptionMapper } from '@application/api/http-rest/exception/http_exception.mapper';
-import { HttpLocalAuthenticationGuard } from '@application/api/http-rest/authentication/guard/http_local_authentication.guard';
-import {
-  HttpLoggedInUser,
-  HttpRequestWithUser, HttpUserPayload,
-} from '@application/api/http-rest/authentication/types/http_authentication_types';
-import { RequestResetPasswordDTO } from '@application/api/http-rest/authentication/types/request_reset_password.dto';
-import { ResetPasswordDTO } from '@application/api/http-rest/authentication/types/reset_password.dto';
-import { Observable } from 'rxjs';
-import { HttpUser } from '@application/api/http-rest/authentication/decorator/http_user';
+import { RequestResetPasswordDTO } from '@application/api/http-rest/http-dto/http_request_reset_password.dto';
+import { ResetPasswordDTO } from '@application/api/http-rest/http-dto/http_reset_password.dto';
 import { UpdateCredentialsDTO } from '@application/api/http-rest/http-dto/http_update_credentials.dto';
 import { UpdateCredentialsResponseDTO } from '@application/api/http-rest/http-dto/http_update_credentials_response.dto';
 import { UpdateCredentialsAdapter } from '@application/api/http-rest/http-adapter/update_credentials.adapter';
+import ValidateCredentialsInteractor from '@core/domain/use-case/interactor/validate_credentials.interactor'
+import { UpdateUserDTO } from '@application/api/http-rest/http-dto/http_update_user.dto'
+import { UpdateUserResponseDTO } from '@application/api/http-rest/http-dto/http_update_user_response.dto'
+import { UpdateUserAdapter } from '@application/api/http-rest/http-adapter/update_user.adapter'
+import UpdateUserInteractor from '@core/domain/use-case/interactor/update_user.interactor'
+import QueryUserInteractor from '@core/domain/use-case/interactor/query_user.interactor'
+import RequestResetPasswordInteractor from '@core/domain/use-case/interactor/request_reset_password.interactor'
+import ResetPasswordInteractor from '@core/domain/use-case/interactor/reset_password.interactor'
 
 @Controller('auth')
 @ApiTags('auth')
@@ -53,14 +49,22 @@ export class AuthController {
   private readonly logger: Logger = new Logger(AuthController.name);
 
   constructor(
-    private readonly authentication_service: HttpAuthenticationService,
-    private readonly reset_password_service: HttpResetPasswordService,
+    @Inject(UserDITokens.ValidateCredentialsInteractor)
+    private readonly validate_credentials_interactor: ValidateCredentialsInteractor,
     @Inject(UserDITokens.CreateUserInteractor)
     private readonly create_user_interactor: CreateUserInteractor,
     @Inject(UserDITokens.UpdateCredentialsInteractor)
     private readonly update_credentials_interactor: UpdateCredentialsInteractor,
+    @Inject(UserDITokens.UpdateUserInteractor)
+    private readonly update_user_interactor: UpdateUserInteractor,
     @Inject(UserDITokens.DeleteUserInteractor)
-    private readonly delete_user_interactor: DeleteUserInteractor
+    private readonly delete_user_interactor: DeleteUserInteractor,
+    @Inject(UserDITokens.QueryUserInteractor)
+    private readonly query_user_interactor: QueryUserInteractor,
+    @Inject(UserDITokens.RequestResetPasswordInteractor)
+    private readonly request_reset_password_service: RequestResetPasswordInteractor,
+    @Inject(UserDITokens.ResetPasswordInteractor)
+    private readonly reset_password_service: ResetPasswordInteractor,
   ) {
   }
 
@@ -89,14 +93,36 @@ export class AuthController {
     }
   }
 
-  @Post('login')
+  @Get('validate-credentials')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(HttpLocalAuthenticationGuard)
-  public async login(@Req() request: HttpRequestWithUser): Promise<HttpLoggedInUser> {
-    return await this.authentication_service.login(request.user);
+  public async validateCredentials(
+    @Query('email', new ValidationPipe()) email: string,
+    @Query('password', new ValidationPipe()) password: string
+  ) {
+    try {
+      return await this.validate_credentials_interactor.execute({
+        email,
+        password
+      });
+    } catch (e) {
+      throw HttpExceptionMapper.toHttpException(e);
+    }
   }
 
-  @Patch('user/:user_id')
+  @Get('user/:user_id')
+  public async queryUser(
+    @Param('user_id', new ValidationPipe()) user_id: string
+ ) {
+    try {
+      return await this.query_user_interactor.execute({
+        user_id
+      });
+    } catch (e) {
+      throw HttpExceptionMapper.toHttpException(e);
+    }
+  }
+
+  @Patch('user/credentials/:user_id')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'User login credentials successfully updated' })
   @ApiUnauthorizedResponse({
@@ -121,6 +147,25 @@ export class AuthController {
     }
   }
 
+  @Patch('user/:user_id')
+  public async updateUser(
+    @Param('user_id') user_id: string,
+    @Body(new ValidationPipe()) update_user_details: UpdateUserDTO,
+  ): Promise<UpdateUserResponseDTO> {
+    try {
+      return UpdateUserAdapter.toResponseDTO(
+        await this.update_user_interactor.execute(
+          UpdateUserAdapter.toInputModel(
+            user_id,
+            update_user_details,
+          ),
+        ),
+      );
+    } catch (e) {
+      throw HttpExceptionMapper.toHttpException(e);
+    }
+  }
+
   @Delete('user/:user_id')
   @HttpCode(HttpStatus.NO_CONTENT)
   public async deleteUser(
@@ -137,12 +182,12 @@ export class AuthController {
   @Patch('/request-reset-password')
   @HttpCode(HttpStatus.OK)
   public async requestResetPassword(
-    @Body() requestResetPasswordDTO: RequestResetPasswordDTO
-  ): Promise<void> {
+    @Body() request_reset_password_dto: RequestResetPasswordDTO
+  ) {
     try {
-      return await this.reset_password_service.requestResetPassword(
-        requestResetPasswordDTO
-      );
+      return await this.request_reset_password_service.execute({
+        email: request_reset_password_dto.email
+      });
     } catch (e) {
       throw HttpExceptionMapper.toHttpException(e);
     }
@@ -153,22 +198,18 @@ export class AuthController {
   public async resetPassword(
     @Param('token') token: string,
     @Body() body
-  ): Promise<void> {
-    const resetPassword: ResetPasswordDTO = {
+  ) {
+    const { reset_password_token, password }: ResetPasswordDTO = {
       reset_password_token: token,
       password: body.password
     };
     try {
-      return await this.reset_password_service.resetPassword(resetPassword);
+      return await this.reset_password_service.execute({
+        reset_password_token,
+        password
+      });
     } catch (e) {
       throw HttpExceptionMapper.toHttpException(e);
     }
-
-  }
-
-  @Post('val-captcha')
-  @HttpCode(HttpStatus.OK)
-  public validateCaptcha(@Body() details): Observable<any> {
-    return this.authentication_service.validateCaptcha(details.response);
   }
 }

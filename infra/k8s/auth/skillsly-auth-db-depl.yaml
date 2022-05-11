@@ -32,12 +32,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: skillsly-auth-db-secret
-                  key: username
+                  key: user
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: skillsly-auth-db-secret
-                  key: password
+                  key: pass
             - name: POSTGRES_DB
               valueFrom:
                 configMapKeyRef:

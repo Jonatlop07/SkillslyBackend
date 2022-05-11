@@ -21,6 +21,7 @@ import { CommentDITokens } from '@application/service/comments/comment/di/commen
 import { DeleteCommentsByOwnerService } from '@application/service/comments/comment/requester/delete_owner_comments.service';
 import { DeleteInnerCommentsByOwnerService } from '@application/service/comments/inner_comment/requester/delete_owner_inner_comments.service';
 import { InnerCommentDITokens } from '@application/service/comments/inner_comment/di/inner_comment_di_tokens';
+import { Public } from '@application/api/graphql/authentication/decorator/public'
 
 @Resolver(() => User)
 export class AccountResolver {
@@ -51,6 +52,7 @@ export class AccountResolver {
     private readonly delete_user_inner_comments_service: DeleteInnerCommentsByOwnerService,
   ) {}
 
+  @Public()
   @Mutation(() => User)
   public async createUserAccount(
   @Args({

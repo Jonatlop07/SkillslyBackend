@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: skillsly-notification-pv-claim
+  name: skillsly-notification-db-pv-claim
 spec:
   storageClassName: manual
   accessModes:
@@ -49,7 +49,7 @@ spec:
       volumes:
         - name: skillsly-notification-db-volume
           persistentVolumeClaim:
-            claimName: skillsly-notification-pv-claim
+            claimName: skillsly-notification-db-pv-claim
 ---
 apiVersion: v1
 kind: Service

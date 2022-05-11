@@ -7,8 +7,8 @@ class Application(models.Model):
         Service, on_delete=models.CASCADE, null=False, blank=False
     )
 
-    applicant_id = models.IntegerField(
-        "applicant_id", null=False, blank=False
+    applicant_id = models.CharField(
+        "applicant_id", null=False, blank=False, max_length=50
     )
 
     message = models.CharField(
