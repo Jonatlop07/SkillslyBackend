@@ -24,6 +24,7 @@ import (
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 type App struct {
@@ -86,17 +87,22 @@ func initDB() *mongo.Database {
 	clientOptions := options.Client().ApplyURI(viper.GetString("mongo.uri"))
 
 	// Connect to MongoDB
-	client, err := mongo.Connect(context.TODO(), clientOptions)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	client, err := mongo.Connect(ctx, clientOptions)
 
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("Error while trying to connecting database")
+		panic(err)
 	}
 
-	// Check the connection
-	err = client.Ping(context.TODO(), nil)
+	ctx, cancel = context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	err = client.Ping(ctx, readpref.Primary())
 
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("Error while pinging database")
+		panic(err)
 	}
 
 	fmt.Println("Connected to mongoDB")
