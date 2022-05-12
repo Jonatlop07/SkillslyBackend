@@ -22,7 +22,7 @@ import { AppModule } from '@application/module/app.module'
         },
         context: ({ req, res }) => ({ req, res }),
         cors: {
-          origin: process.env.ORIGIN,
+          origin: '*',
           credentials: true
         }
       }
