@@ -51,6 +51,9 @@ public class PostModel {
     @JsonProperty("privacy")
     private String privacy;
 
+    @NotNull
+    @NotEmpty
+    @NotBlank
     @JsonProperty("content_element")
     private ArrayList<ContentElementModel> contentElements;
 }
