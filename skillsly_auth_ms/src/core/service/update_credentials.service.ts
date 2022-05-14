@@ -37,7 +37,12 @@ export class UpdateCredentialsService implements UpdateCredentialsInteractor {
     if (!new_credentials_have_valid_format)
       throw new InvalidCredentialsFormatException();
     const email_unchanged = user_to_update.email === existing_user.email;
-    const password_unchanged = await bcrypt.compare(user_to_update.password, existing_user.password);
+    let password_unchanged;
+    if (!password) {
+      password_unchanged = true;
+    } else {
+      password_unchanged = await bcrypt.compare(user_to_update.password, existing_user.password);
+    }
     if (email_unchanged && password_unchanged) {
       const { id, email, is_two_factor_auth_enabled } = existing_user;
       return { id, email, is_two_factor_auth_enabled }
@@ -47,9 +52,11 @@ export class UpdateCredentialsService implements UpdateCredentialsInteractor {
       if (exists_user_with_email)
         throw new UserAlreadyExistsException();
     }
-    const hashed_password = await generateHashedPassword(user_to_update.password);
     const updated_user: UserDTO = await this.gateway.partialUpdate({ id },  {
-      email: user_to_update.email, password: hashed_password
+      email: user_to_update.email,
+      password: password_unchanged ?
+        user_to_update.password
+        : await generateHashedPassword(user_to_update.password)
     });
     return {
       id: updated_user.id,
