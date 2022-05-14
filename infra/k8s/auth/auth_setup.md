@@ -11,7 +11,7 @@ Shortcut (in Powershell):
 ```
 docker build -t skillsly-auth-ms . ;`
 docker tag skillsly-auth-ms jonatlop07/skillsly-auth-ms ;`
-docker push jonathan07/skillsly-auth-ms ;
+docker push jonatlop07/skillsly-auth-ms ;
 ```
 
 If not, create the auth db deployment:

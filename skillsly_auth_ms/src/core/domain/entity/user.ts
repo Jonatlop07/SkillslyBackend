@@ -34,7 +34,7 @@ export class User extends Entity {
   }
 
   public hasValidPassword(): boolean {
-    return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/
+    return /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$&*~_]).{8,}$/
       .test(this._password);
   }
 
