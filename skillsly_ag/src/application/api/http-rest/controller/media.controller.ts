@@ -21,6 +21,35 @@ class PostComponent {
   ) {
   }
 
+  public async createPost() {
+    this.posts_service.createPost({
+      ...post,
+      content_elements: await Promise.all(
+        post.content_elements.map(async ({ description, media, media_type }) => {
+          const map_media = ({ media_locator }) => ({
+            description,
+            media_type,
+            media_locator
+          });
+          return firstValueFrom((
+              media_type === 'image' ?
+                this.uploadPostImage(media)
+                : this.uploadPostVideo(media)
+            ).pipe(
+              map(map_media),
+              catchError((err) => {
+                throw err
+              })
+            )
+          );
+        })
+      )
+    })
+      .subscribe(() => {
+
+      });
+  }
+
   public createComment() {
     this.uploadPostImage(file)
       .subscribe(({ media_locator }) => {
@@ -34,6 +63,14 @@ class PostComponent {
       contentType: 'image/*'
     });
     return this.media_service.uploadImage(file);
+  }
+
+  private uploadPostVideo(file: File) {
+    const form_data = new FormData();
+    form_data.append('media', file, {
+      contentType: 'image/*'
+    });
+    return this.media_service.uploadVideo(file);
   }
 }
 
@@ -51,6 +88,7 @@ class MediaService {
     );
   }
 }
+
 */
 
 @Controller('media')
