@@ -4,7 +4,7 @@ import {Nullable} from '@application/common/type/common_types';
 @InputType()
 export class PostContentElement {
   @Field()
-  public description: Nullable<string>;
+  public description: string;
 
   @Field()
   public media_locator: string;

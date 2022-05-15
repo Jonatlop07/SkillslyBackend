@@ -116,9 +116,9 @@ type FollowingUsersStories {
 
 """Defines the content of a post"""
 type ContentElement {
-  content_element_id: ID!
   description: String!
   media_locator: String!
+  media_type: String!
 }
 
 """Defines the structure of stories"""
@@ -298,9 +298,9 @@ input UpdatePostInputData {
 }
 
 input PostContentElement {
-  content_element_id: ID!
   description: String!
   media_locator: String!
+  media_type: String!
 }
 
 input NewPostInputData {
