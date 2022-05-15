@@ -1,8 +1,8 @@
 import { Strategy } from 'passport-local';
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { GraphQLUserPayload } from '@application/api/graphql/authentication/types/graphql_authentication_types'
-import { GraphQLAuthenticationService } from '@application/api/graphql/authentication/service/graphql_authentication.service'
+import { GraphQLUserPayload } from '@application/api/graphql/authentication/types/graphql_authentication_types';
+import { GraphQLAuthenticationService } from '@application/api/graphql/authentication/service/graphql_authentication.service';
 
 @Injectable()
 export class GraphQLLocalStrategy extends PassportStrategy(Strategy) {

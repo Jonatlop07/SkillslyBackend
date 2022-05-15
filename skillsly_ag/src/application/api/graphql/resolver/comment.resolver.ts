@@ -34,10 +34,10 @@ export class CommentResolver {
 
   @Mutation(() => Comment)
   public async createComment(
-    @Args({
-      name: 'comment_details',
-      type: () => NewComment,
-    })
+  @Args({
+    name: 'comment_details',
+    type: () => NewComment,
+  })
     comment_details: NewComment,
     @Args({ name: 'post_id', type: () => ID }) post_id: Id,
   ) {
@@ -64,7 +64,7 @@ export class CommentResolver {
 
   @Query(() => [Comment])
   public async queryComments(
-    @Args({ name: 'post_id', type: () => ID }) post_id: Id,
+  @Args({ name: 'post_id', type: () => ID }) post_id: Id,
     @Args({ name: 'comments_pagination', type: () => PaginationParams })
     search_params?: PaginationParams,
   ) {
@@ -79,7 +79,7 @@ export class CommentResolver {
 
   @Mutation(() => CommentContent)
   public async updateComment(
-    @Args({ name: 'comment_id', type: () => ID }) comment_id: Id,
+  @Args({ name: 'comment_id', type: () => ID }) comment_id: Id,
     @Args({ name: 'new_content', type: () => CommentContentUpdate })
     updates: CommentContentUpdate,
   ) {
@@ -99,7 +99,7 @@ export class CommentResolver {
 
   @Mutation(() => String)
   public async deleteComment(
-    @Args({ name: 'comment_id', type: () => ID }) comment_id: Id,
+  @Args({ name: 'comment_id', type: () => ID }) comment_id: Id,
   ) {
     this.logger.log('Deleting comment in comment ms');
     const deleted = await this.delete_comment_service.execute({

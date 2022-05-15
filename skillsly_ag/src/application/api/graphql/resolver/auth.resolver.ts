@@ -1,26 +1,26 @@
-import { Args, Context, Int, Mutation, Resolver } from '@nestjs/graphql'
-import { Public } from '@application/api/graphql/authentication/decorator/public'
-import { ExecutionContext, Inject, Res, UnauthorizedException } from '@nestjs/common'
+import { Args, Context, Int, Mutation, Resolver } from '@nestjs/graphql';
+import { Public } from '@application/api/graphql/authentication/decorator/public';
+import { ExecutionContext, Inject, Res, UnauthorizedException } from '@nestjs/common';
 import {
   GraphQLLoggedInUser,
   GraphQLTFALoggedInUser,
   GraphQLUserPayload
-} from '@application/api/graphql/authentication/types/graphql_authentication_types'
-import { GraphQLAuthenticationService } from '@application/api/graphql/authentication/service/graphql_authentication.service'
-import { GraphQLTwoFactorAuthService } from '@application/api/graphql/authentication/service/graphql_two_factor_auth.service'
-import { CurrentUser } from '@application/api/graphql/authentication/decorator/current_user'
-import { Response } from 'express'
-import { JwtAuth } from '@application/api/graphql/authentication/decorator/jwt_auth'
-import { DeactivateTwoFactorAuth } from '@application/api/graphql/authentication/decorator/deactivate_two_factor_auth'
-import { AuthDITokens } from '@application/service/auth/di/auth_di_tokens'
-import { RequestResetPasswordService } from '@application/service/auth/requester/request_reset_password.service'
-import { ResetPasswordService } from '@application/service/auth/requester/reset_password.service'
-import { AuthPayload } from '@application/api/graphql/model/auth/auth_payload'
-import { AuthMapper } from '@application/api/graphql/mapper/auth.mapper'
-import { TFAuthMapper } from '@application/api/graphql/mapper/tf_auth.mapper'
-import { TFAuthPayload } from '@application/api/graphql/model/auth/tf_auth_payload'
-import { GraphQLUpload } from 'graphql-upload'
-import { AuthCredentials } from '@application/api/graphql/model/auth/input/auth_credentials'
+} from '@application/api/graphql/authentication/types/graphql_authentication_types';
+import { GraphQLAuthenticationService } from '@application/api/graphql/authentication/service/graphql_authentication.service';
+import { GraphQLTwoFactorAuthService } from '@application/api/graphql/authentication/service/graphql_two_factor_auth.service';
+import { CurrentUser } from '@application/api/graphql/authentication/decorator/current_user';
+import { Response } from 'express';
+import { JwtAuth } from '@application/api/graphql/authentication/decorator/jwt_auth';
+import { DeactivateTwoFactorAuth } from '@application/api/graphql/authentication/decorator/deactivate_two_factor_auth';
+import { AuthDITokens } from '@application/service/auth/di/auth_di_tokens';
+import { RequestResetPasswordService } from '@application/service/auth/requester/request_reset_password.service';
+import { ResetPasswordService } from '@application/service/auth/requester/reset_password.service';
+import { AuthPayload } from '@application/api/graphql/model/auth/auth_payload';
+import { AuthMapper } from '@application/api/graphql/mapper/auth.mapper';
+import { TFAuthMapper } from '@application/api/graphql/mapper/tf_auth.mapper';
+import { TFAuthPayload } from '@application/api/graphql/model/auth/tf_auth_payload';
+import { GraphQLUpload } from 'graphql-upload';
+import { AuthCredentials } from '@application/api/graphql/model/auth/input/auth_credentials';
 
 @Resolver()
 export class AuthResolver {
@@ -37,7 +37,7 @@ export class AuthResolver {
   @Public()
   @Mutation(() => AuthPayload)
   public async login(
-    @Args({ name: 'credentials', type: () => AuthCredentials }) credentials: AuthCredentials
+  @Args({ name: 'credentials', type: () => AuthCredentials }) credentials: AuthCredentials
   ) {
     const result: GraphQLLoggedInUser = await this.authentication_service.login(credentials);
     return AuthMapper.toGraphQLModel(result);
@@ -47,7 +47,7 @@ export class AuthResolver {
   @JwtAuth()
   @Mutation(() => GraphQLUpload, { nullable: true })
   public async generateQRCode(
-    @CurrentUser() graphql_user: GraphQLUserPayload,
+  @CurrentUser() graphql_user: GraphQLUserPayload,
     @Context() context
   ) {
     const { otp_auth_url } = await this.two_factor_auth_service.generateTwoFactorAuthSecret(graphql_user.id);
@@ -60,7 +60,7 @@ export class AuthResolver {
   @JwtAuth()
   @Mutation(() => Int, { nullable: true })
   public async turnOnTwoFactorAuth(
-    @CurrentUser() graphql_user: GraphQLUserPayload,
+  @CurrentUser() graphql_user: GraphQLUserPayload,
     @Args({ name: 'code' }) code: string
   ) {
     const is_valid_code = await this.two_factor_auth_service.isValidTwoFactorAuthCode(graphql_user.id, code);
@@ -74,7 +74,7 @@ export class AuthResolver {
   @JwtAuth()
   @Mutation(() => TFAuthPayload)
   public async authenticate(
-    @CurrentUser() graphql_user: GraphQLUserPayload,
+  @CurrentUser() graphql_user: GraphQLUserPayload,
     @Args({ name: 'code' }) code: string
   ) {
     const is_valid_code = this.two_factor_auth_service.isValidTwoFactorAuthCode(graphql_user.id, code);
@@ -94,7 +94,7 @@ export class AuthResolver {
   @Public()
   @Mutation(() => Int, { nullable: true })
   public async resetPassword(
-    @Args({ name: 'token' }) reset_password_token: string,
+  @Args({ name: 'token' }) reset_password_token: string,
     @Args({ name: 'password' }) password: string
   ) {
     await this.reset_password_service.execute({

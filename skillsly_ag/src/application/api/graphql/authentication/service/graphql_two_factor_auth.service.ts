@@ -4,13 +4,13 @@ import { toFileStream } from 'qrcode';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
-import { AuthDITokens } from '@application/service/auth/di/auth_di_tokens'
+import { AuthDITokens } from '@application/service/auth/di/auth_di_tokens';
 import {
   GraphQLJwtPayload, GraphQLTFALoggedInUser,
   GraphQLUserPayload
-} from '@application/api/graphql/authentication/types/graphql_authentication_types'
-import { AuthQueryUserService } from '@application/service/auth/requester/query_user.service'
-import { UpdateUserService } from '@application/service/auth/requester/update_user.service'
+} from '@application/api/graphql/authentication/types/graphql_authentication_types';
+import { AuthQueryUserService } from '@application/service/auth/requester/query_user.service';
+import { UpdateUserService } from '@application/service/auth/requester/update_user.service';
 
 @Injectable()
 export class GraphQLTwoFactorAuthService {
