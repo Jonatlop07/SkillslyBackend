@@ -1,8 +1,5 @@
 #!/bin/sh
 
-kubectl delete service skillsly-storage-ms-srv
-kubectl delete deployment skillsly-storage-ms-depl
-
 kubectl delete service skillsly-service-ms-srv
 kubectl delete deployment skillsly-service-ms-depl
 
