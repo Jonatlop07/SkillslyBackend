@@ -220,6 +220,7 @@ input GetConversationMessages {
 
 type Mutation {
   login(credentials: AuthCredentials!): AuthPayload!
+  updateCredentials(user_id: ID!, email: String, password: String): Int
   generateQRCode: Upload
   turnOnTwoFactorAuth(code: String!): Int
   authenticate(code: String!): TFAuthPayload!
