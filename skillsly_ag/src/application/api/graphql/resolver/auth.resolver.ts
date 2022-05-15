@@ -54,8 +54,8 @@ export class AuthResolver {
   @Mutation(() => Int, { nullable: true })
   public async updateCredentials(
     @Args({ name: 'user_id', type: () => ID }) user_id: Id,
-    @Args({ name: 'email' }) email: string,
-    @Args({ name: 'password' }) password: string,
+    @Args({ name: 'email', nullable: true }) email: string,
+    @Args({ name: 'password', nullable: true }) password: string,
   ) {
     this.logger.log('Updating credentials in auth service...');
     await this.update_credentials_service.execute({
