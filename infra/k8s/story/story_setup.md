@@ -12,7 +12,7 @@ Shortcut (in Powershell):
 ```
 docker build -t skillsly-story-ms . ;`
 docker tag skillsly-story-ms jonatlop07/skillsly-story-ms ;`
-docker push jonathan07/skillsly-story-ms ;
+docker push jonatlop07/skillsly-story-ms ;
 ```
 
 If not, create the story db deployment:
