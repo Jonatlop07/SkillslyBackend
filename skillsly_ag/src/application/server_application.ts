@@ -4,6 +4,7 @@ import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import { RootModule } from '@application/module/.root.module';
 import { APIServerConfiguration } from '@application/config/api_server.config';
 import * as chalk from 'chalk';
+import * as cors from 'cors';
 
 export class ServerApplication {
   private readonly host: string = APIServerConfiguration.HOST;
@@ -21,6 +22,9 @@ export class ServerApplication {
         options
       );
       app.setGlobalPrefix('api/v1');
+      app.use(cors({
+        origin: '*'
+      }));
       app.useGlobalPipes(new ValidationPipe());
 
       this.buildAPIDocumentation(app);

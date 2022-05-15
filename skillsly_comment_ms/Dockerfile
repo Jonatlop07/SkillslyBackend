@@ -8,5 +8,3 @@ RUN npm install --only=production
 USER node
 
 CMD ["npm", "start"]
-
-EXPOSE 8005
