@@ -90,7 +90,6 @@ import { UpdatedPhaseServiceService } from '@application/service/service/request
 import { UpdateProviderServiceService } from '@application/service/service/requester/update_provider_service.service';
 import { UpdateStatusServiceService } from '@application/service/service/requester/update_status_service.service';
 import { UpdateServiceService } from '@application/service/service/requester/update_service.service';
-import { MediaController } from '@application/api/http-rest/controller/media.controller'
 
 const request_providers = [
   {
@@ -476,8 +475,5 @@ const resolvers: Array<Provider> = [
       useClass: GraphQLJwtTwoFactorAuthGuard,
     },
   ],
-  controllers: [
-    MediaController
-  ]
 })
 export class AppModule {}

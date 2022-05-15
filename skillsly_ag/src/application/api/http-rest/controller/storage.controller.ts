@@ -1,12 +1,31 @@
 import { Controller, Logger, Post, UploadedFile, UseInterceptors } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
-import { HttpService } from '@nestjs/axios'
 import { Express } from 'express'
-import FormData from 'form-data'
-import { catchError, firstValueFrom, map } from 'rxjs'
-import { AxiosResponse } from 'axios'
+import { Public } from '@application/api/graphql/authentication/decorator/public'
+import { CloudStorageService } from '@application/api/http-rest/service/cloud_storage.service'
 
-const STORAGE_MS_URL = 'http://skillsly-storage-ms-srv:4000';
+@Controller('media')
+export class StorageController {
+  private readonly logger: Logger = new Logger(StorageController.name);
+
+  constructor(private readonly storage_service: CloudStorageService) {
+  }
+
+  @Public()
+  @Post('image')
+  @UseInterceptors(FileInterceptor('media'))
+  public async uploadImage(@UploadedFile() media: Express.Multer.File) {
+    return await this.storage_service.uploadFile(media, 'images/');
+  }
+
+  @Public()
+  @Post('video')
+  @UseInterceptors(FileInterceptor('media'))
+  public async uploadVideo(@UploadedFile() media: Express.Multer.File) {
+    return await this.storage_service.uploadFile(media, 'videos/');
+  }
+}
+
 
 /*
 
@@ -90,49 +109,3 @@ class MediaService {
 }
 
 */
-
-@Controller('media')
-export class MediaController {
-  private readonly logger: Logger = new Logger(MediaController.name);
-
-  constructor(private readonly http_service: HttpService) {
-  }
-
-  @Post('image')
-  @UseInterceptors(FileInterceptor('media'))
-  public async uploadImage(@UploadedFile() media: Express.Multer.File) {
-    const bodyFormData = new FormData();
-    bodyFormData.append('image', media, {
-      contentType: 'image/*'
-    });
-    return await firstValueFrom(this.http_service.post(`${STORAGE_MS_URL}/upload-image`, bodyFormData, {
-        headers: bodyFormData.getHeaders()
-      })
-        .pipe(
-          map((response: AxiosResponse) => response.data),
-          catchError((err) => {
-            throw err;
-          }),
-        )
-    );
-  }
-
-  @Post('video')
-  @UseInterceptors(FileInterceptor('media'))
-  public async uploadVideo(@UploadedFile() media: Express.Multer.File) {
-    const bodyFormData = new FormData();
-    bodyFormData.append('video', media, {
-      contentType: 'video/*'
-    });
-    return await firstValueFrom(this.http_service.post(`${STORAGE_MS_URL}/upload-video`, bodyFormData, {
-        headers: bodyFormData.getHeaders()
-      })
-        .pipe(
-          map((response: AxiosResponse) => response.data),
-          catchError((err) => {
-            throw err;
-          }),
-        )
-    );
-  }
-}
