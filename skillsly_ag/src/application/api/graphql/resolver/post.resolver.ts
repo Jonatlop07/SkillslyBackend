@@ -64,6 +64,7 @@ export class PostResolver{
       id: owner_id,
     };
     const {account_details} = await this.query_user_service.execute(input);
+    console.log(account_details);
     this.logger.log('Queried successfully in user service');
     return PostCollectionMapper.toGraphQLModel(account_details, posts);
   }
