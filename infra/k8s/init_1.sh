@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# Storage MS deployment
-
-kubectl apply -f ./storage/skillsly-storage-ms-depl.yaml
-
 # Service MS deployment
 
 kubectl apply -f ./service/skillsly-service-ms-depl.yaml
