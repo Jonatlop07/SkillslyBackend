@@ -68,7 +68,7 @@ class PostComponent {
   private uploadPostVideo(file: File) {
     const form_data = new FormData();
     form_data.append('media', file, {
-      contentType: 'image/*'
+      contentType: 'video/*'
     });
     return this.media_service.uploadVideo(file);
   }
