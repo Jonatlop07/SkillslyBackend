@@ -7,7 +7,7 @@ data:
   API_PORT: '3000'
   API_ENABLE_LOG: 'true'
   DATABASE_URL: 'postgres://skillsly:auth@skillsly-auth-db-srv:5432/skillsly_auth_db'
-  AUTH_DB_ENABLE_LOG: 'true'
+  AUTH_DB_ENABLE_LOG: 'false'
   THROTTLE_TTL: '60'
   THROTTLE_LIMIT: '200'
   CAPTCHA_SITE_KEY: '6Le-PfMdAAAAAPbJ8IEDDRkETuRyWBbDViisYyIe'

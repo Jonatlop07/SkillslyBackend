@@ -7,6 +7,7 @@ import { setEnvironment } from '@application/environments';
 import { join } from 'path';
 import { GraphQLError } from 'graphql'
 import { AppModule } from '@application/module/app.module'
+import { StorageModule } from '@application/module/storage.module'
 
 @Module({
   imports: [
@@ -22,13 +23,14 @@ import { AppModule } from '@application/module/app.module'
         },
         context: ({ req, res }) => ({ req, res }),
         cors: {
-          origin: process.env.ORIGIN,
+          origin: '*',
           credentials: true
         }
       }
     ),
     InfrastructureModule,
-    AppModule
+    AppModule,
+    StorageModule
   ]
 })
 export class RootModule {

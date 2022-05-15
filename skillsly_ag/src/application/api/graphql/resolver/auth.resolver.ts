@@ -1,6 +1,6 @@
-import { Args, Context, Int, Mutation, Resolver } from '@nestjs/graphql'
+import { Args, Context, ID, Int, Mutation, Resolver } from '@nestjs/graphql'
 import { Public } from '@application/api/graphql/authentication/decorator/public'
-import { ExecutionContext, Inject, Res, UnauthorizedException } from '@nestjs/common'
+import { ExecutionContext, Inject, Logger, Res, UnauthorizedException } from '@nestjs/common'
 import {
   GraphQLLoggedInUser,
   GraphQLTFALoggedInUser,
@@ -21,11 +21,18 @@ import { TFAuthMapper } from '@application/api/graphql/mapper/tf_auth.mapper'
 import { TFAuthPayload } from '@application/api/graphql/model/auth/tf_auth_payload'
 import { GraphQLUpload } from 'graphql-upload'
 import { AuthCredentials } from '@application/api/graphql/model/auth/input/auth_credentials'
+import { UpdateCredentialsService } from '@application/service/auth/requester/update_credentials.service'
+import { Id } from '@application/common/type/common_types'
+import { UserMapper } from '@application/api/graphql/mapper/user.mapper'
 
 @Resolver()
 export class AuthResolver {
+  private readonly logger: Logger = new Logger(AuthResolver.name);
+
   constructor(
     private readonly authentication_service: GraphQLAuthenticationService,
+    @Inject(AuthDITokens.UpdateCredentialsService)
+    private readonly update_credentials_service: UpdateCredentialsService,
     private readonly two_factor_auth_service: GraphQLTwoFactorAuthService,
     @Inject(AuthDITokens.RequestResetPasswordService)
     private readonly request_reset_password_service: RequestResetPasswordService,
@@ -41,6 +48,23 @@ export class AuthResolver {
   ) {
     const result: GraphQLLoggedInUser = await this.authentication_service.login(credentials);
     return AuthMapper.toGraphQLModel(result);
+  }
+
+  @JwtAuth()
+  @Mutation(() => Int, { nullable: true })
+  public async updateCredentials(
+    @Args({ name: 'user_id', type: () => ID }) user_id: Id,
+    @Args({ name: 'email', nullable: true }) email: string,
+    @Args({ name: 'password', nullable: true }) password: string,
+  ) {
+    this.logger.log('Updating credentials in auth service...');
+    await this.update_credentials_service.execute({
+      user_id,
+      email,
+      password
+    });
+    this.logger.log('Credentials in auth service successfully updated');
+    return null;
   }
 
   @DeactivateTwoFactorAuth()

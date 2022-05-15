@@ -91,7 +91,6 @@ import { UpdateProviderServiceService } from '@application/service/service/reque
 import { UpdateStatusServiceService } from '@application/service/service/requester/update_status_service.service';
 import { UpdateServiceService } from '@application/service/service/requester/update_service.service';
 
-
 const request_providers = [
   {
     provide: RequestDITokens.Request,
@@ -475,6 +474,6 @@ const resolvers: Array<Provider> = [
       provide: APP_GUARD,
       useClass: GraphQLJwtTwoFactorAuthGuard,
     },
-  ]
+  ],
 })
 export class AppModule {}
