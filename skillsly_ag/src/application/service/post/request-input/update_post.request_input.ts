@@ -7,5 +7,5 @@ export default interface UpdatePostRequestInput {
   owner_id: string;
   description: Nullable<string>;
   privacy: string;
-  content_element: Array<PostContentElement>;
+  content_element: Array<ContentElement>;
 }
