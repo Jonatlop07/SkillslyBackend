@@ -3,12 +3,12 @@ import {Nullable} from '@application/common/type/common_types';
 
 @InputType()
 export class PostContentElement {
-  @Field()
+  @Field({ nullable: true })
   public description: string;
 
-  @Field()
+  @Field({ nullable: true })
   public media_locator: string;
 
-  @Field()
+  @Field({ nullable: false })
   public media_type: string;
 }

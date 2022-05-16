@@ -2,9 +2,9 @@ import {ContentElement} from '@application/api/graphql/model/post/post_content_e
 import {Nullable} from '@application/common/type/common_types';
 
 export default interface UpdatePostRequestInput {
-  post_id: string;
-  owner_id: string;
+  post_id: NonNullable<string>;
+  owner_id: NonNullable<string>;
   description: Nullable<string>;
-  privacy: string;
-  content_element: Array<ContentElement>;
+  privacy: NonNullable<string>;
+  content_element: NonNullable<Array<ContentElement>>;
 }

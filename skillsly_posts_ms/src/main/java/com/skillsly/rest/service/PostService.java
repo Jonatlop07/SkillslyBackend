@@ -26,7 +26,7 @@ public class PostService {
                 post.setCreatedAt(Date.from(new Date().toInstant()));
                 post.setUpdatedAt(Date.from(new Date().toInstant()));
                 postRepository.save(post);
-                LOGGER.info("Post created successfully with id: " + post.getPostId());
+                LOGGER.info("Post created successfully with content: " + post);
                 return ResponseEntity.ok().body(post);
             }
             throw new RuntimeException("Post already exists");
@@ -42,7 +42,7 @@ public class PostService {
                 post.setCreatedAt(postRepository.findByPostId(post.getPostId()).getCreatedAt());
                 post.setUpdatedAt(Date.from(new Date().toInstant()));
                 postRepository.save(post);
-                LOGGER.info("Post updated successfully with id: " + post.getPostId());
+                LOGGER.info("Post updated successfully with content: " + post);
                 return ResponseEntity.ok().body(post);
             }
             throw new RuntimeException("Post not found");
