@@ -31,8 +31,8 @@ services:
       - redis
       - skillsly_notification_mq
     environment:
-      API_HOST: localhost
-      API_PORT: 3000
+      MS_HOST: localhost
+      MS_PORT: 3000
       API_ENABLE_LOG: true
       MQ_PROTOCOL: amqp
       MQ_HOST: skillsly_notification_mq

@@ -1,0 +1,13 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: skillsly-notification-handler-ingress
+  annotations:
+    cloud.google.com/backend-config: '{"default": "skillsly-notification-handler-backend-config"}'
+    kubernetes.io/ingress.global-static-ip-name: 'server-ip-address'
+spec:
+  defaultBackend:
+    service:
+      name: skillsly-notification-handler-ms-srv
+      port:
+        number: 3001
