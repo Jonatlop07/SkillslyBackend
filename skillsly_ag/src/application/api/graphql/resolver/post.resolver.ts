@@ -12,6 +12,11 @@ import {PostCollectionMapper} from '@application/api/graphql/mapper/post_collect
 import {UpdatePostInputData} from '@application/api/graphql/model/post/input/update_post_data';
 import {UpdatePostService} from '@application/service/post/requester/update_post.service';
 import {NewPostInputData} from '@application/api/graphql/model/post/input/new_post_data';
+import {UserDITokens} from '@application/service/user/di/user_di_tokens';
+import {QueryUserService} from '@application/service/user/requester/query_user.service';
+import QueryUserRequestInput from '@application/service/user/request-input/query_user.request_input';
+import {User} from '@application/api/graphql/model/user/user';
+import {PostCollection} from "@application/api/graphql/model/post/post_collection";
 
 @Resolver(()=> Post)
 export class PostResolver{
@@ -28,6 +33,8 @@ export class PostResolver{
     private readonly  query_post_service: QueryPostService,
     @Inject(PostDITokens.QueryPostCollectionService)
     private readonly query_post_collection_service: QueryPostCollectionService,
+    @Inject(UserDITokens.QueryUserService)
+    private readonly query_user_service: QueryUserService,
   ) {
   }
     
@@ -43,7 +50,7 @@ export class PostResolver{
     return PostMapper.toGraphQLModel(query_post);
   }
 
-  @Query(() => [Post])
+  @Query(() => PostCollection)
   public async postsByOwnerId (
   @Args({ name: 'owner_id' }) owner_id: Id
   ) {
@@ -52,8 +59,14 @@ export class PostResolver{
       owner_id
     });
     this.logger.log('Post collection queried successfully in post collection service');
-    const aux = PostCollectionMapper.toGraphQLModel(posts);
-    return aux.posts;
+    this.logger.log('Querying User name by id');
+    const input: QueryUserRequestInput = {
+      id: owner_id,
+    };
+    const {account_details} = await this.query_user_service.execute(input);
+    console.log(account_details);
+    this.logger.log('Queried successfully in user service');
+    return PostCollectionMapper.toGraphQLModel(account_details, posts);
   }
   
   @Mutation( () => Post )

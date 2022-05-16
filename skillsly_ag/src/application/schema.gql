@@ -143,6 +143,11 @@ type User {
   updated_at: String
 }
 
+type PostCollection {
+  posts: [Post!]!
+  owner: User!
+}
+
 type FollowRelationships {
   pending_followers: [User!]!
   pending_users_to_follow: [User!]!
@@ -178,7 +183,7 @@ type Query {
   story(id: ID!, viewer_id: ID!): Story!
   storiesOfFollowingUsers(user_id: String!): [FollowingUsersStories!]!
   postById(post_id: ID!): Post!
-  postsByOwnerId(owner_id: String!): [Post!]!
+  postsByOwnerId(owner_id: String!): PostCollection!
   queryComments(post_id: ID!, comments_pagination: PaginationParams!): [Comment!]!
   queryInnerComments(inner_comments_pagination: PaginationParams!, comment_id: ID!): [InnerComment!]!
   queryNotifications(notifier_id: ID!, notifications_pagination: NotificationQueryParams!): [Notifications!]!

@@ -1,5 +1,5 @@
-import ServiceModel from "../model/service.model";
+import ServiceModel from '../model/service.model';
 
 export default interface UpdatePhaseServiceRequestResponse {
-    service_updated: ServiceModel
+  service_updated: ServiceModel
 }

@@ -1,3 +1,3 @@
 export default interface DeleteApplicationRequestInput {
-    application_id: number
+  application_id: number
 }
