@@ -16,9 +16,6 @@ public class ContentElementModel {
     @JsonProperty("description")
     private String description;
 
-    @NotNull
-    @NotEmpty
-    @NotBlank
     @JsonProperty("media_locator")
     private String media;
 
