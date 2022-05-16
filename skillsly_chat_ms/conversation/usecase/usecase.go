@@ -25,6 +25,10 @@ func (c ConversationUseCase) CreateGroupConversation(ctx context.Context, conver
 	return c.conversationRepo.CreateGroupConversation(ctx, conversation)
 }
 
+func (c ConversationUseCase) DeletePrivateConversation(ctx context.Context, conversationId string, userId string) error {
+	return c.conversationRepo.DeletePrivateConversation(ctx, conversationId, userId)
+}
+
 func (c ConversationUseCase) DeleteGroupConversation(ctx context.Context, conversationId string, userId string) error {
 	return c.conversationRepo.DeleteGroupConversation(ctx, conversationId, userId)
 }

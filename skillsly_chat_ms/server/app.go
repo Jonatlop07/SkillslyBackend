@@ -24,7 +24,6 @@ import (
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 type App struct {
@@ -83,29 +82,27 @@ func (a *App) Run(port string) error {
 
 func initDB() *mongo.Database {
 
-	// Set client options
-	clientOptions := options.Client().ApplyURI(viper.GetString("mongo.uri"))
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://admin:1234@skillslychatdb.ljndb.mongodb.net/?retryWrites=true&w=majority"))
+	if err != nil {
+		fmt.Println("Error creating DB client")
+		log.Fatal(err)
+	}
 
-	// Connect to MongoDB
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-	client, err := mongo.Connect(ctx, clientOptions)
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	err = client.Connect(ctx)
 
 	if err != nil {
 		fmt.Println("Error while trying to connecting database")
-		panic(err)
+		log.Fatal(err)
 	}
 
-	ctx, cancel = context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
-	err = client.Ping(ctx, readpref.Primary())
+	err = client.Ping(ctx, nil)
 
 	if err != nil {
 		fmt.Println("Error while pinging database")
-		panic(err)
+		log.Fatal(err)
 	}
-
-	fmt.Println("Connected to mongoDB")
+	fmt.Println("Connected to MongoDB")
 
 	return client.Database(viper.GetString("mongo.name"))
 }

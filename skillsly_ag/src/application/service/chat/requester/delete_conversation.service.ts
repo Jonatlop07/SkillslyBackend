@@ -6,15 +6,16 @@ import DeleteConversationRequestInput from '@application/service/chat/request-in
 
 @Injectable()
 export class DeleteConversationService implements Requester<DeleteConversationRequestInput, void> {
-  constructor(
-    private readonly request: Request
-  ) {
-  }
+    constructor(
+        private readonly request: Request
+    ) {
+    }
 
-  public async execute(input: DeleteConversationRequestInput): Promise<void> {
-    return await this.request.deleteRequest<void>({
-      url: `${CHAT_MS_URL}/conversation`,
-      params: { ...input }
-    });
-  }
+    public async execute(input: DeleteConversationRequestInput): Promise<void> {
+        console.log(input);
+        return await this.request.deleteRequest<void>({
+            url: `${CHAT_MS_URL}/conversation`,
+            params: input
+        });
+    }
 }

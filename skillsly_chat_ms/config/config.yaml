@@ -1,7 +1,7 @@
 port: 8002
 
 mongo:
-  uri: "mongodb+srv://angegonzalez:angegonzalez@skillslychatdb.ljndb.mongodb.net/skillsly_chat_db?retryWrites=true&w=majority"
+  uri: "mongodb://10.1.0.82:27017"
   name: "skillsly_chat_db"
   conversations_collection: "conversations"
   messages_collection: "messages"
