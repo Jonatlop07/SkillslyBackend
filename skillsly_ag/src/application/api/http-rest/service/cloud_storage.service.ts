@@ -1,9 +1,11 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable, Logger } from '@nestjs/common'
 import { Bucket, Storage } from '@google-cloud/storage'
 import { parse } from 'path';
 
 @Injectable()
 export class CloudStorageService {
+  private readonly logger = new Logger(CloudStorageService.name);
+
   private bucket: Bucket;
   private storage: Storage;
 
@@ -32,10 +34,12 @@ export class CloudStorageService {
 
   async uploadFile(uploaded_file: Express.Multer.File, destination: string): Promise<any> {
     const fileName = this.setDestination(destination) + this.setFilename(uploaded_file);
+    this.logger.log(fileName);
     const file = this.bucket.file(fileName);
     try {
       await file.save(uploaded_file.buffer, { contentType: uploaded_file.mimetype });
     } catch (error) {
+      this.logger.log(error);
       throw new BadRequestException(error?.message);
     }
     return { ...file.metadata, media_locator: `https://storage.googleapis.com/${this.bucket.name}/${file.name}` };

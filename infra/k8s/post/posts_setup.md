@@ -11,7 +11,7 @@ Shortcut (in Powershell):
 ```
 docker build -t skillsly-posts-ms . ;`
 docker tag skillsly-posts-ms jonatlop07/skillsly-posts-ms ;`
-docker push jonathan07/skillsly-posts-ms ;
+docker push jonatlop07/skillsly-posts-ms ;
 ```
 
 If not, create the posts db deployment:
