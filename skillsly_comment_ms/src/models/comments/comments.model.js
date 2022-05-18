@@ -25,6 +25,7 @@ async function createComment(comment) {
     content: {
       description: comment.content.description,
       media_locator: comment.content.media_locator,
+      media_type: comment.content.media_type,
     },
     created_at: new Date(),
   };
@@ -33,7 +34,7 @@ async function createComment(comment) {
 }
 
 async function updateComment(comment) {
-  const { description, media_locator, comment_id } = comment;
+  const { description, media_locator, media_type, comment_id } = comment;
   if (isInvalidCommentContent({ description, media_locator })) {
     throw customException("Invalid comment content", "INVALID_COMMENT_CONTENT");
   }
@@ -42,6 +43,7 @@ async function updateComment(comment) {
     content: {
       description,
       media_locator,
+      media_type,
     },
     updated_at: new Date(),
   });

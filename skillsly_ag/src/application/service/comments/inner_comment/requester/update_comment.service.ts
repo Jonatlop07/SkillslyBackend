@@ -7,20 +7,21 @@ import UpdateInnerCommentRequestResponse from '../request-response/update_inner_
 
 @Injectable()
 export class UpdateInnerCommentService
-implements
+  implements
     Requester<
-    UpdateInnerCommentRequestInput,
-    UpdateInnerCommentRequestResponse
-    > {
+      UpdateInnerCommentRequestInput,
+      UpdateInnerCommentRequestResponse
+    >
+{
   constructor(private readonly request: Request) {}
 
   public async execute(
     input: UpdateInnerCommentRequestInput,
   ): Promise<UpdateInnerCommentRequestResponse> {
-    const { description, media_locator, id } = input;
+    const { description, media_locator, media_type, id } = input;
     return await this.request.putRequest<UpdateInnerCommentRequestResponse>({
       url: `${COMMENT_MS_URL}/inner-comments/${id}`,
-      body: { description, media_locator },
+      body: { description, media_locator, media_type },
       params: {},
     });
   }
