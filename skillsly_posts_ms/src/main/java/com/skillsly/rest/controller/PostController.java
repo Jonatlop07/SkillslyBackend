@@ -35,7 +35,7 @@ public class PostController {
     @Operation(summary = " Get all posts by owner_id", description = " Get all posts by owner_id", tags = {"Post"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = PostModel.class))),
-            @ApiResponse(responseCode = "404", description = "Post not found"),
+            @ApiResponse(responseCode = "204", description = "No content"),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/posts/{owner_id}")//get all posts by owner_id
