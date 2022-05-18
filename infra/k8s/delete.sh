@@ -11,7 +11,7 @@ kubectl delete rolebinding.rbac.authorization.k8s.io skillsly-notification-rabbi
 kubectl delete role.rbac.authorization.k8s.io skillsly-notification-rabbitmq-role
 kubectl delete serviceaccount skillsly-notification-rabbitmq-sa
 
-kubectl delete ingress skillsly-notification-handler-ingress
+
 kubectl delete service skillsly-notification-handler-ms-srv
 kubectl delete deployment skillsly-notification-handler-ms-depl
 kubectl delete configmap skillsly-notification-handler-ms-env-config
@@ -71,10 +71,13 @@ kubectl delete persistentvolume skillsly-auth-db-persistent-volume
 kubectl delete secret skillsly-auth-db-secret
 kubectl delete configmap skillsly-auth-db-env-config
 
-
 kubectl delete service skillsly-ag-srv
 kubectl delete deployment skillsly-ag-depl
 kubectl delete configmap skillsly-ag-env-config
 kubectl delete service skillsly-ag-redis-srv
 kubectl delete deployment skillsly-ag-redis-depl
 kubectl delete configmap skillsly-ag-redis-config
+
+kubectl delete ingress skillsly-backend-ingress
+kubectl delete ingress skillsly-frontend-ingress
+kubectl delete all  --all -n ingress-nginx

@@ -17,3 +17,8 @@ pod_name=$(kubectl get pods --no-headers -o custom-columns=":metadata.name" | gr
 cat ./auth/skillsly-auth-initdb.sql | kubectl exec -i "${pod_name}" -- psql -d skillsly_auth_db -U skillsly
 kubectl apply -f ./auth/skillsly-auth-ms-env-config-map.yaml
 kubectl apply -f ./auth/skillsly-auth-ms-depl.yaml
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.2.0/deploy/static/provider/cloud/deploy.yaml
+kubectl apply -f ./ingress/skillsly-ingress-class.yaml
+kubectl apply -f ./ingress/skillsly-ingress.yaml
+

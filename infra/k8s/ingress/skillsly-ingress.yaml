@@ -1,0 +1,48 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: skillsly-backend-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
+    nginx.ingress.kubernetes.io/enable-cors: 'true'
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "api.skillsly.dev"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: skillsly-ag-srv
+                port:
+                  number: 3000
+#          - pathType: Prefix
+#            path: /notification
+#            backend:
+#              service:
+#                name: skillsly-notification-handler-ms-srv
+#                port:
+#                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: skillsly-frontend-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
+    nginx.ingress.kubernetes.io/enable-cors: 'true'
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "skillsly.dev"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: skillsly-wa-srv
+                port:
+                  number: 4200
