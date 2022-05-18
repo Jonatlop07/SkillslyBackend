@@ -122,15 +122,51 @@ func (h *Handler) CreateGroupConversation(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
-func (h *Handler) DeleteGroupConversation(c *gin.Context) {
-	body := new(deleteConversationInput)
+func (h *Handler) DeletePrivateConversation(c *gin.Context) {
+	conversationID := c.Query("ConversationID")
+	userID := c.Query("UserID")
+	fmt.Println(conversationID)
+	fmt.Println(userID)
 
-	if err := c.MustBindWith(body, binding.JSON); err != nil {
+	if conversationID == "" || userID == "" {
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
-	if err := h.useCase.DeleteGroupConversation(c.Request.Context(), body.ConversationID, body.UserID); err != nil {
+	if err := h.useCase.DeletePrivateConversation(c.Request.Context(), conversationID, userID); err != nil {
+		if err == conversation.ErrNoConversation {
+			c.JSON(404, gin.H{"message": "No Conversation found!"})
+			return
+		} else if err == conversation.ErrCannotDeleteConversation {
+			c.JSON(404, gin.H{"message": "This member can't delete this conversation!"})
+			return
+		}
+
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	c.Status(http.StatusOK)
+}
+
+func (h *Handler) DeleteGroupConversation(c *gin.Context) {
+
+	conversationID := c.Param("ConversationID")
+	userID := c.Param("UserID")
+
+	if conversationID == "" || userID == "" {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	//body := new(deleteConversationInput)
+	//
+	//if err := c.MustBindWith(body, binding.JSON); err != nil {
+	//	c.AbortWithStatus(http.StatusBadRequest)
+	//	return
+	//}
+
+	if err := h.useCase.DeleteGroupConversation(c.Request.Context(), conversationID, userID); err != nil {
 		if err == conversation.ErrNoConversation {
 			c.JSON(404, gin.H{"message": "No Conversation found!"})
 			return

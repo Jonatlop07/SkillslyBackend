@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: skillsly-chat-ms
-          image: jonatlop07/skillsly-chat-ms
+          image: angegonzalez/skillsly-chat-ms
           command: ['./app']
 ---
 apiVersion: v1

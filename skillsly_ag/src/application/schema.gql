@@ -55,6 +55,12 @@ type Application {
   service_id: ID!
 }
 
+"""Defines the information of a comment user"""
+type CommentUser {
+  email: String!
+  name: String!
+}
+
 """Defines the information of a comment"""
 type Comment {
   _id: ID!
@@ -62,9 +68,11 @@ type Comment {
   post_id: String
   description: String
   media_locator: String
+  media_type: String
   inner_comment_count: Int
   created_at: String!
   updated_at: String
+  owner: CommentUser!
 }
 
 type CommentContent {
@@ -79,8 +87,10 @@ type InnerComment {
   comment_id: String
   description: String
   media_locator: String
+  media_type: String
   created_at: String!
   updated_at: String
+  owner: CommentUser!
 }
 
 """Defines the information of a notification to be shown to the user"""
@@ -320,17 +330,20 @@ input NewComment {
   owner_id: ID!
   description: String
   media_locator: String
+  media_type: String
 }
 
 input CommentContentUpdate {
   description: String
   media_locator: String
+  media_type: String
 }
 
 input NewInnerComment {
   owner_id: ID!
   description: String
   media_locator: String
+  media_type: String
 }
 
 input ApplicationDetails {
