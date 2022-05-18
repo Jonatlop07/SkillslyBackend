@@ -134,7 +134,19 @@ func (c ConversationRepository) GetConversationsCollection(ctx context.Context, 
 		return nil, err
 	}
 	if conversations == nil {
-		return nil, conversation.ErrNoConversations
+		filter := bson.D{{"Members.UserID", userId}}
+		cursor, err := c.db.Find(ctx, filter)
+
+		var conversations []models.Conversation
+
+		if err = cursor.All(ctx, &conversations); err != nil {
+			return nil, err
+		}
+		// fmt.Print(conversations)
+		if conversations == nil {
+			return nil, conversation.ErrNoConversations
+		}
+		return conversations, nil
 	}
 
 	return conversations, nil
