@@ -6,6 +6,7 @@ const content_schema = new mongoose.Schema({
     maxlength: 500,
   },
   media_locator: String,
+  media_type: String,
   _id: false,
 });
 

@@ -116,8 +116,8 @@ type FollowingUsersStories {
 
 """Defines the content of a post"""
 type ContentElement {
-  description: String!
-  media_locator: String!
+  description: String
+  media_locator: String
   media_type: String!
 }
 
@@ -141,6 +141,11 @@ type User {
   gender: String!
   created_at: String!
   updated_at: String
+}
+
+type PostCollection {
+  posts: [Post!]!
+  owner: User!
 }
 
 type FollowRelationships {
@@ -178,7 +183,7 @@ type Query {
   story(id: ID!, viewer_id: ID!): Story!
   storiesOfFollowingUsers(user_id: String!): [FollowingUsersStories!]!
   postById(post_id: ID!): Post!
-  postsByOwnerId(owner_id: String!): [Post!]!
+  postsByOwnerId(owner_id: String!): PostCollection!
   queryComments(post_id: ID!, comments_pagination: PaginationParams!): [Comment!]!
   queryInnerComments(inner_comments_pagination: PaginationParams!, comment_id: ID!): [InnerComment!]!
   queryNotifications(notifier_id: ID!, notifications_pagination: NotificationQueryParams!): [Notifications!]!
@@ -293,20 +298,20 @@ input StoryDetails {
 input UpdatePostInputData {
   post_id: ID!
   owner_id: ID!
-  description: String!
+  description: String
   privacy: String!
   content_element: [PostContentElement!]!
 }
 
 input PostContentElement {
-  description: String!
-  media_locator: String!
+  description: String
+  media_locator: String
   media_type: String!
 }
 
 input NewPostInputData {
   owner_id: ID!
-  description: String!
+  description: String
   privacy: String!
   content_element: [PostContentElement!]!
 }

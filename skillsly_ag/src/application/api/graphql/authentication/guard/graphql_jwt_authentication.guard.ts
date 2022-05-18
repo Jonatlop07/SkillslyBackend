@@ -1,8 +1,8 @@
 import { AuthGuard } from '@nestjs/passport';
 import { ExecutionContext, HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from '@application/api/graphql/authentication/decorator/public'
-import { GqlExecutionContext } from '@nestjs/graphql'
+import { IS_PUBLIC_KEY } from '@application/api/graphql/authentication/decorator/public';
+import { GqlExecutionContext } from '@nestjs/graphql';
 
 @Injectable()
 export class GraphQLJwtAuthenticationGuard extends AuthGuard('jwt') {

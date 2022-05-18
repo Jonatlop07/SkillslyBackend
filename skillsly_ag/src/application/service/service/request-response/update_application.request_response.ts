@@ -1,5 +1,5 @@
-import ApplicationModel from "../model/application.model";
+import ApplicationModel from '../model/application.model';
 
 export default interface UpdateApplicationRequestResponse {
-    application_updated: ApplicationModel
+  application_updated: ApplicationModel
 }

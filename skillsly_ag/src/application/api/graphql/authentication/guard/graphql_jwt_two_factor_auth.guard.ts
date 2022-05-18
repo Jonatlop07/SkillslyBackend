@@ -1,9 +1,9 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from '@application/api/graphql/authentication/decorator/public'
-import { DEACTIVATE_TWO_FACTOR_AUTH } from '@application/api/graphql/authentication/decorator/deactivate_two_factor_auth'
-import { GqlExecutionContext } from '@nestjs/graphql'
+import { IS_PUBLIC_KEY } from '@application/api/graphql/authentication/decorator/public';
+import { DEACTIVATE_TWO_FACTOR_AUTH } from '@application/api/graphql/authentication/decorator/deactivate_two_factor_auth';
+import { GqlExecutionContext } from '@nestjs/graphql';
 
 @Injectable()
 export class GraphQLJwtTwoFactorAuthGuard extends AuthGuard('jwt-two-factor') {

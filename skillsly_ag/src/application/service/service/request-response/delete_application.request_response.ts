@@ -1,5 +1,5 @@
-import ApplicationModel from "../model/application.model";
+import ApplicationModel from '../model/application.model';
 
 export default interface DeleteApplicationRequestResponse {
-    deleted_application: ApplicationModel
+  deleted_application: ApplicationModel
 }

@@ -19,7 +19,7 @@ export class Post{
   @Field()
   public updated_at: string;
 
-  @Field()
+  @Field({ nullable: false })
   public privacy: string;
 
   @Field (()=>[ContentElement])

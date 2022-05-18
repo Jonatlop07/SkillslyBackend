@@ -4,18 +4,18 @@ import {PostContentElement} from '@application/api/graphql/model/post/input/cont
 
 @InputType()
 export class UpdatePostInputData {
-  @Field(() => ID)
+  @Field(() => ID, { nullable: false })
   public post_id: Id;
 
-  @Field(() => ID)
+  @Field(() => ID, { nullable: false })
   public owner_id: Id;
 
-  @Field()
+  @Field({ nullable: true })
   public description: string;
 
-  @Field()
+  @Field({ nullable: false })
   public privacy: string;
 
-  @Field(() => [PostContentElement])
+  @Field(() => [PostContentElement],{ nullable: false })
   public content_element: Array<PostContentElement>;
 }

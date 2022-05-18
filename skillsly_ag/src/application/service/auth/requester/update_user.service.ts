@@ -2,12 +2,12 @@ import Requester from '@application/common/requester/requester';
 import { Request } from '@application/common/request/request';
 import { AUTH_MS_URL } from '@application/service/auth/url';
 import { Injectable } from '@nestjs/common';
-import UpdateUserRequestInput from '@application/service/auth/request-input/update_user.request_input'
-import UpdateUserRequestResponse from '@application/service/auth/request-response/update_user.request_response'
+import UpdateUserRequestInput from '@application/service/auth/request-input/update_user.request_input';
+import UpdateUserRequestResponse from '@application/service/auth/request-response/update_user.request_response';
 
 @Injectable()
 export class UpdateUserService
-  implements Requester<UpdateUserRequestInput, UpdateUserRequestResponse> {
+implements Requester<UpdateUserRequestInput, UpdateUserRequestResponse> {
 
   constructor(
     private readonly request: Request

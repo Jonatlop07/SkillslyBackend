@@ -5,8 +5,8 @@ import { PassportStrategy } from '@nestjs/passport';
 import {
   GraphQLJwtPayload,
   GraphQLUserPayload
-} from '@application/api/graphql/authentication/types/graphql_authentication_types'
-import { GraphQLAuthenticationService } from '@application/api/graphql/authentication/service/graphql_authentication.service'
+} from '@application/api/graphql/authentication/types/graphql_authentication_types';
+import { GraphQLAuthenticationService } from '@application/api/graphql/authentication/service/graphql_authentication.service';
 
 @Injectable()
 export class GraphQLJwtTwoFactorAuthStrategy extends PassportStrategy(Strategy, 'jwt-two-factor') {

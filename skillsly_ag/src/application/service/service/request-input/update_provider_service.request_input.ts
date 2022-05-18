@@ -1,6 +1,6 @@
-import { Id } from "@application/common/type/common_types";
+import { Id } from '@application/common/type/common_types';
 
 export default interface UpdateProviderServiceRequestInput {
-    service_id: number,
-    provider_id?: Id
+  service_id: number,
+  provider_id?: Id
 }

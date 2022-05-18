@@ -14,6 +14,9 @@ import { DeleteCommentService } from '@application/service/comments/comment/requ
 import { CommentContent } from '../model/comment/comment_content';
 import { PostDITokens } from '@application/service/post/di/post_di_tokens';
 import { QueryPostService } from '@application/service/post/requester/query_post.service';
+import { UserDITokens } from '@application/service/user/di/user_di_tokens';
+import { QueryUserService } from '@application/service/user/requester/query_user.service';
+import QueryUserRequestInput from '@application/service/user/request-input/query_user.request_input';
 
 @Resolver(() => Comment)
 export class CommentResolver {
@@ -30,6 +33,8 @@ export class CommentResolver {
     private readonly delete_comment_service: DeleteCommentService,
     @Inject(PostDITokens.QueryPostService)
     private readonly query_post_service: QueryPostService,
+    @Inject(UserDITokens.QueryUserService)
+    private readonly query_user_service: QueryUserService,
   ) {}
 
   @Mutation(() => Comment)
@@ -54,12 +59,21 @@ export class CommentResolver {
         content: {
           description: comment_details.description,
           media_locator: comment_details.media_locator,
+          media_type: comment_details.media_type,
         },
         owner_id: comment_details.owner_id,
         post_id,
       });
     this.logger.log('Comment created with success');
-    return CommentMapper.toGraphQLModel({ _id, owner_id, content, created_at });
+    this.logger.log('Querying owner data in user service');
+    const { account_details } = await this.query_user_service.execute({
+      id: owner_id,
+    });
+    this.logger.log('User data queried');
+    return CommentMapper.toGraphQLModel(
+      { _id, owner_id, content, created_at },
+      { name: account_details.name, email: account_details.email },
+    );
   }
 
   @Query(() => [Comment])
@@ -74,7 +88,38 @@ export class CommentResolver {
       page,
       limit,
     });
-    return comments.map(CommentMapper.toGraphQLModel);
+
+    return comments
+      .map(async (comment) => {
+        this.logger.log('Querying owner data in user service');
+        const { account_details } = await this.query_user_service.execute({
+          id: comment.owner_id,
+        });
+        this.logger.log('User data queried');
+        return {
+          ...comment,
+          name: account_details.name,
+          email: account_details.email,
+        };
+      })
+      .map((data) =>
+        data.then((comment) => {
+          const user_data = {
+            name: comment.name,
+            email: comment.email,
+          };
+          const comment_data = {
+            _id: comment._id,
+            post_id: comment.post_id,
+            content: comment.content,
+            created_at: comment.created_at,
+            updated_at: comment.updated_at,
+            owner_id: comment.owner_id,
+            inner_comment_count: comment.inner_comment_count,
+          };
+          return CommentMapper.toGraphQLModel(comment_data, user_data);
+        }),
+      );
   }
 
   @Mutation(() => CommentContent)
@@ -83,17 +128,19 @@ export class CommentResolver {
     @Args({ name: 'new_content', type: () => CommentContentUpdate })
     updates: CommentContentUpdate,
   ) {
-    const { description, media_locator } = updates;
+    const { description, media_locator, media_type } = updates;
     this.logger.log('Updating comment in comment ms');
     const updated_comment = await this.update_comment_service.execute({
       id: comment_id,
       description,
       media_locator,
+      media_type,
     });
     this.logger.log('Comment updated with success');
     return {
       description: updated_comment.description,
       media_locator: updated_comment.media_locator,
+      media_type: updated_comment.media_type,
     };
   }
 
