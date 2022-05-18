@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "shining-env-347701",
+  "private_key_id": "f91115ed79483b1924fde88e8dbdd731d63e2163",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDFGlO2nHCF5Rwe\n8+Rs04xp6MkFUk0RSK8a07Bnt1xgC6k4XwNNVOU/IJ8Xefe1VnOMpZmar/czPnAU\n9NI0Ohdbuo7zQmU4dK8cteqvys+oXZoTFhqf5x7Nx4BIMRT3PflbZpsz4in3p7EA\ngEmoRtBxMNBJm8NFhSep5sh5MN8YE4wFRDWZL0Mg9lfk4uUnyqa/yFCQ1D7qHkJT\nxlXI1gNSeotFSalE78nQ/62sxhEfPH/LT2isLTOHjFX/92Z0SG/AcBHpUlmzr4YA\nBx75uPZBub5YowoJfURsghlnCPqaEkEEOnfFtKOG9KAC1KOpDfaJB+xbQGiupk0q\nAFj0Np9FAgMBAAECggEAE765rKU603r6aHJjy3Ac1J5EhwMx472dhwk2VomEmD2K\nz/IatVRAG+UTculdwn182VXcj6W5lJlYZo0JAsDgBqkneWCJHdD4mt5xendNeq8X\nyHoyJBsl15T4+aJrGIKNmJWsjhPFwwC6R1PSrSgc6P3sG7eeJfh7Gvba1eMqsjFT\n7D1GIfyEqUu+kwcVbEgIoGisFH44cgToul7QLw8fADWSMB4SVSgXrYjiLf4s87Jz\naibOjDNRBWcXutSXhxz2psgIWSbXC/MFMo1V0YgVeMkIywReE48WmJfQh1AcaFJ7\nodzSWEFlAc9OKPtrzGz6qDqUPfxYTvdDIDBPMU6nEQKBgQD1CzkFeLPuTIaa+SON\nn2EokL4aAgufwYH6vB8w6N6zNN1MPpd/2/CgQJhuaMBDk6XGCbagPfE7bkGUA8+I\nTeWZDgP1RPrKgkglxQ8dyEYCwF7H+SWZwhccAxFHStR5guaOQud9Bi/8dEDBzTLv\ndF9Eg2VhFGt6RPgnTn+Aezu/EQKBgQDN6l7aVOv1GVxQjtcKvbUsKfCL2VEynxtP\nT9ho6cfMI96uRq7yX0LXa4NrzP3rL1+psmF+GXzk1l2TmIj8XxUf6qcuduNcloou\nbGktfB/xvvbdJHUymDS82hN04dspiy4AKaR3l28ATQ2won9ZiHpJC1QXRPnnpSbg\ngA6cJUSE9QKBgHvIqYtcB/iu66hJhm46PshRJdbZham0BMb2VQNN/4GjiM7FJ57N\nKeap+tZ7T/RTF4DM01ZrM/sDnVj5+9ItF3iTneg+ajn2Sh/aReKTkto89yQpdZcQ\ndsANxKKw6Fhhibn/jhSYFZF/4F6GG97eeGmRvpqlyA1B3eFtQ/dRSUMhAoGBAK/O\nVKGwM60Vs/2LlwoyokZMoHWmW28O7PAwSaJ5Rv6B+ZNuAdwpfRYTUyds47YywkhO\nZnKVLE7svwRPDVX7kDupyocfNktMtDmikcIl4dgypO52PCGwVgaPYmE+nDHCBMpa\nw3LftgPZxcBzXKuCnHVU2LztRTiDhsfSTab/IpspAoGBAJX4niQE6t4gxcVwQ3zk\nIzvT/+f8qYIsw4SZBkuzElnXpUqQr7gue6a1M/j1+7igXsKn/500gkCDvyP/0OnZ\nh0C1r0V3HPGaFRi87iNUK9wK1pTEOCvGT/d+E8436RTohKWNw4i8c6Hi9A/ZlNvF\nJaLL9WdFBe0c17LVRUF3vWLO\n-----END PRIVATE KEY-----\n",
+  "client_email": "skillsly-storage-account@shining-env-347701.iam.gserviceaccount.com",
+  "client_id": "102521461332877019055",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/skillsly-storage-account%40shining-env-347701.iam.gserviceaccount.com"
+}

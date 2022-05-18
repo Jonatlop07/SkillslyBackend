@@ -16,8 +16,8 @@ import { initializeTransactionalContext } from 'typeorm-transactional-cls-hooked
         url: config.get('DATABASE_URL'),
         autoLoadEntities: true,
         synchronize: true,
-        logging: config.get('AUTH_DB_ENABLE_LOG') ? 'all' : false,
-        logger: config.get('AUTH_DB_ENABLE_LOG') ? TypeOrmLogger.new() : undefined,
+        logging: config.get('AUTH_DB_ENABLE_LOG') === 'true' ? 'all' : false,
+        logger: config.get('AUTH_DB_ENABLE_LOG') === 'true' ? TypeOrmLogger.new() : undefined,
         entities: [`${TypeOrmDirectory}/entity/**/*{.ts,.js}`]
       })
     })

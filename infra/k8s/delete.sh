@@ -1,8 +1,4 @@
 #!/bin/sh
-
-kubectl delete service skillsly-storage-ms-srv
-kubectl delete deployment skillsly-storage-ms-depl
-
 kubectl delete service skillsly-service-ms-srv
 kubectl delete deployment skillsly-service-ms-depl
 
@@ -73,6 +69,7 @@ kubectl delete persistentvolumeclaims skillsly-auth-pv-claim
 kubectl delete persistentvolume skillsly-auth-db-persistent-volume
 kubectl delete secret skillsly-auth-db-secret
 kubectl delete configmap skillsly-auth-db-env-config
+
 
 kubectl delete service skillsly-ag-srv
 kubectl delete deployment skillsly-ag-depl

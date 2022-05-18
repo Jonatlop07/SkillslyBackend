@@ -13,16 +13,15 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class ContentElementModel {
-    @Id
-    @JsonProperty("content_element_id")
-    private Integer ContentElementId;
-
     @JsonProperty("description")
     private String description;
+
+    @JsonProperty("media_locator")
+    private String media;
 
     @NotNull
     @NotEmpty
     @NotBlank
-    @JsonProperty("media_locator")
-    private String media;
+    @JsonProperty("media_type")
+    private String mediaType;
 }

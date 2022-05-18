@@ -1,3 +1,3 @@
 export default interface DeleteServiceRequestInput {
-    service_id: number
+  service_id: number
 }

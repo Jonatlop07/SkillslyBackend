@@ -1,8 +1,8 @@
-import Requester from '@application/common/requester/requester'
-import ResetPasswordRequestInput from '@application/service/auth/request-input/reset_password.request_input'
-import ResetPasswordRequestResponse from '@application/service/auth/request-response/reset_password.request_response'
-import { Request } from '@application/common/request/request'
-import { AUTH_MS_URL } from '@application/service/auth/url'
+import Requester from '@application/common/requester/requester';
+import ResetPasswordRequestInput from '@application/service/auth/request-input/reset_password.request_input';
+import ResetPasswordRequestResponse from '@application/service/auth/request-response/reset_password.request_response';
+import { Request } from '@application/common/request/request';
+import { AUTH_MS_URL } from '@application/service/auth/url';
 
 export class ResetPasswordService implements Requester<ResetPasswordRequestInput, ResetPasswordRequestResponse> {
   constructor(
@@ -17,6 +17,6 @@ export class ResetPasswordService implements Requester<ResetPasswordRequestInput
         password: input.password
       },
       params: {}
-    })
+    });
   }
 }

@@ -1,4 +1,4 @@
 export default interface UpdateApplicationRequestInput {
-    application_id: number,
-    message?: string
+  application_id: number,
+  message?: string
 }

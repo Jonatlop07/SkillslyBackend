@@ -34,7 +34,6 @@ export class CreateUserService implements CreateUserInteractor {
       is_two_factor_auth_enabled: false,
       reset_password_token: null
     });
-    this.logger.log(password);
     const credentials_have_valid_format = user_to_create.hasValidEmail() && user_to_create.hasValidPassword();
     if (!credentials_have_valid_format)
       throw new InvalidCredentialsFormatException();

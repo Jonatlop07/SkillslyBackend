@@ -35,6 +35,7 @@ public class PostController {
     @Operation(summary = " Get all posts by owner_id", description = " Get all posts by owner_id", tags = {"Post"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = PostModel.class))),
+            @ApiResponse(responseCode = "404", description = "Post not found"),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/posts/{owner_id}")//get all posts by owner_id
@@ -45,6 +46,7 @@ public class PostController {
     @Operation(summary = " Get a post by id", description = " Get a post by id", tags = {"Post"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = PostModel.class))),
+            @ApiResponse(responseCode = "404", description = "Post not found"),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @GetMapping("/post/{postId}")//get a post by id
     @ResponseStatus(HttpStatus.OK)
@@ -68,6 +70,7 @@ public class PostController {
     @Operation(summary = " Update a post by id", description = " Update a post by id", tags = {"Post"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "202", description = "successful operation", content = @Content(schema = @Schema(implementation = PostModel.class))),
+            @ApiResponse(responseCode = "404", description = "Post not found"),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PutMapping("/post")//update a post

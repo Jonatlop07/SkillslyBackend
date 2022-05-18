@@ -1,14 +1,13 @@
-import {Field, ID, ObjectType} from '@nestjs/graphql';
-import {Id} from '@application/common/type/common_types';
+import {Field, ObjectType} from '@nestjs/graphql';
 
 @ObjectType({ description: 'Defines the content of a post' })
 export class ContentElement {
-  @Field(() => ID)
-  public content_element_id: Id;
-
-  @Field()
+  @Field({ nullable: true })
   public description: string;
 
-  @Field()
+  @Field({ nullable: true })
   public media_locator: string;
+
+  @Field({ nullable: false })
+  public media_type: string;
 }

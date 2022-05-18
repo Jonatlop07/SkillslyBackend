@@ -1,10 +1,10 @@
-import Requester from '@application/common/requester/requester'
-import ValidateCredentialsRequestInput from '@application/service/auth/request-input/validate_credentials.request_input'
+import Requester from '@application/common/requester/requester';
+import ValidateCredentialsRequestInput from '@application/service/auth/request-input/validate_credentials.request_input';
 import ValidateCredentialsRequestResponse
-  from '@application/service/auth/request-response/validate_credentials.request_response'
-import { Injectable } from '@nestjs/common'
-import { Request } from '@application/common/request/request'
-import { AUTH_MS_URL } from '@application/service/auth/url'
+  from '@application/service/auth/request-response/validate_credentials.request_response';
+import { Injectable } from '@nestjs/common';
+import { Request } from '@application/common/request/request';
+import { AUTH_MS_URL } from '@application/service/auth/url';
 
 @Injectable()
 export class ValidateCredentialsService implements Requester<ValidateCredentialsRequestInput, ValidateCredentialsRequestResponse> {

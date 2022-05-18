@@ -3,11 +3,11 @@ import { ContentElement } from '@application/api/graphql/model/post/post_content
 
 export class PostContentElementMapper {
   public static toGraphQLModel(post_content_element_model: PostContentElementModel): ContentElement {
-    const { content_element_id, description, media_locator } = post_content_element_model;
+    const { description, media_locator, media_type } = post_content_element_model;
     return {
-      content_element_id,
       description,
-      media_locator
+      media_locator,
+      media_type
     };
   }
 }
