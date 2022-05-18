@@ -10,4 +10,7 @@ export class NewComment {
 
   @Field({ nullable: true })
   public media_locator: string;
+
+  @Field({ nullable: true })
+  public media_type: string;
 }

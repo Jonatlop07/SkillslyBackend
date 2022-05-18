@@ -1,5 +1,7 @@
 import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
 import { Id } from '@application/common/type/common_types';
+import { CommentUser } from './comment_user';
+import { CommentUserModel } from '@application/common/model/comment_user_data.model';
 
 @ObjectType({ description: 'Defines the information of a comment' })
 export class Comment {
@@ -18,6 +20,9 @@ export class Comment {
   @Field({ nullable: true })
   public media_locator: string;
 
+  @Field({ nullable: true })
+  public media_type: string;
+
   @Field(() => Int, { nullable: true })
   public inner_comment_count: number;
 
@@ -26,4 +31,7 @@ export class Comment {
 
   @Field({ nullable: true })
   public updated_at: string;
+
+  @Field(() => CommentUser)
+  public owner: CommentUserModel;
 }

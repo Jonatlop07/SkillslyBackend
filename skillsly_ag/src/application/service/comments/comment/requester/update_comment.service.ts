@@ -7,17 +7,18 @@ import UpdateCommentRequestResponse from '../request-response/update_comment.req
 
 @Injectable()
 export class UpdateCommentService
-implements Requester<UpdateCommentRequestInput, UpdateCommentRequestResponse> {
+  implements Requester<UpdateCommentRequestInput, UpdateCommentRequestResponse>
+{
   constructor(private readonly request: Request) {}
 
   public async execute(
     input: UpdateCommentRequestInput,
   ): Promise<UpdateCommentRequestResponse> {
-    const { description, media_locator, id } = input;
+    const { description, media_locator, media_type, id } = input;
 
     return await this.request.putRequest<UpdateCommentRequestResponse>({
       url: `${COMMENT_MS_URL}/comments/${id}`,
-      body: { description, media_locator },
+      body: { description, media_locator, media_type },
       params: {},
     });
   }
