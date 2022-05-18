@@ -16,6 +16,7 @@ func RegisterHTTPEndpoints(router *gin.RouterGroup, uc conversation.UseCase) {
 		conversation.PATCH("/group", h.UpdateGroupConversation)
 		conversation.PATCH("/group/add", h.AddMembersGroupConversation)
 		conversation.PATCH("/group/exit", h.ExitGroupConversation)
-		conversation.DELETE("", h.DeleteGroupConversation)
+		//conversation.DELETE("/group", h.DeleteGroupConversation)
+		conversation.DELETE("", h.DeletePrivateConversation)
 	}
 }
