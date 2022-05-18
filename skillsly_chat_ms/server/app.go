@@ -82,24 +82,27 @@ func (a *App) Run(port string) error {
 
 func initDB() *mongo.Database {
 
-	// Set client options
-	clientOptions := options.Client().ApplyURI(viper.GetString("mongo.uri"))
-
-	// Connect to MongoDB
-	client, err := mongo.Connect(context.TODO(), clientOptions)
-
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://admin:1234@skillslychatdb.ljndb.mongodb.net/?retryWrites=true&w=majority"))
 	if err != nil {
+		fmt.Println("Error creating DB client")
 		log.Fatal(err)
 	}
 
-	// Check the connection
-	err = client.Ping(context.TODO(), nil)
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	err = client.Connect(ctx)
 
 	if err != nil {
+		fmt.Println("Error while trying to connecting database")
 		log.Fatal(err)
 	}
 
-	fmt.Println("Connected to mongoDB")
+	err = client.Ping(ctx, nil)
+
+	if err != nil {
+		fmt.Println("Error while pinging database")
+		log.Fatal(err)
+	}
+	fmt.Println("Connected to MongoDB")
 
 	return client.Database(viper.GetString("mongo.name"))
 }

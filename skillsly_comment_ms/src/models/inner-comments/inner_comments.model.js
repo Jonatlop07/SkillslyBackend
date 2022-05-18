@@ -35,6 +35,7 @@ async function createInnerComment(inner_comment) {
     content: {
       description: inner_comment.content.description,
       media_locator: inner_comment.content.media_locator,
+      media_type: inner_comment.content.media_type,
     },
     created_at: new Date(),
   };
@@ -51,7 +52,8 @@ async function createInnerComment(inner_comment) {
 }
 
 async function updateInnerComment(inner_comment) {
-  const { inner_comment_id, description, media_locator } = inner_comment;
+  const { inner_comment_id, description, media_locator, media_type } =
+    inner_comment;
   if (isInvalidCommentContent({ description, media_locator })) {
     throw customException(
       "Invalid inner comment content",
@@ -62,6 +64,7 @@ async function updateInnerComment(inner_comment) {
     content: {
       description,
       media_locator,
+      media_type,
     },
     updated_at: new Date(),
   });

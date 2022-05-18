@@ -71,6 +71,24 @@ func (c ConversationRepository) CreateGroupConversation(ctx context.Context, con
 	return err
 }
 
+func (c ConversationRepository) DeletePrivateConversation(ctx context.Context, conversationId string, userId string) error {
+	var result Conversation
+	objID, _ := primitive.ObjectIDFromHex(conversationId)
+	filter := bson.D{{"_id", objID}}
+	err := c.db.FindOne(ctx, filter).Decode(&result)
+	if err != nil {
+		return conversation.ErrNoConversation
+	}
+	if result.CreatorUserID == userId {
+		_, err := c.db.DeleteOne(ctx, filter)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+	return conversation.ErrCannotDeleteConversation
+}
+
 func (c ConversationRepository) DeleteGroupConversation(ctx context.Context, conversationId string, userId string) error {
 	var result Conversation
 	objID, _ := primitive.ObjectIDFromHex(conversationId)
@@ -116,7 +134,19 @@ func (c ConversationRepository) GetConversationsCollection(ctx context.Context, 
 		return nil, err
 	}
 	if conversations == nil {
-		return nil, conversation.ErrNoConversations
+		filter := bson.D{{"Members.UserID", userId}}
+		cursor, err := c.db.Find(ctx, filter)
+
+		var conversations []models.Conversation
+
+		if err = cursor.All(ctx, &conversations); err != nil {
+			return nil, err
+		}
+		// fmt.Print(conversations)
+		if conversations == nil {
+			return nil, conversation.ErrNoConversations
+		}
+		return conversations, nil
 	}
 
 	return conversations, nil
