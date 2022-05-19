@@ -15,7 +15,7 @@ import { Cache } from 'cache-manager'
 @WebSocketGateway({
   cors: {
     origin: '*'
-  }
+  },
 })
 export class NotificationHandlerGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private readonly logger = new Logger(NotificationHandlerGateway.name);

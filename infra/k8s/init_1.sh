@@ -16,6 +16,7 @@ kubectl apply -f ./notification_mq/skillsly-notification-mq-statefulset.yaml
 kubectl apply -f ./notification_handler/skillsly-notification-handler-redis-config-map.yaml
 kubectl apply -f ./notification_handler/skillsly-notification-handler-redis-depl.yaml
 kubectl apply -f ./notification_handler/skillsly-notification-handler-ms-env-config-map.yaml
+#kubectl apply -f ./notification_handler/skillsly-notification-handler-backend-config.yaml
 kubectl apply -f ./notification_handler/skillsly-notification-handler-ms-depl.yaml
 
 # Notification MS deployment
