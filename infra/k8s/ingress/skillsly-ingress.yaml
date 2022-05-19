@@ -5,6 +5,8 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/cors-allow-origin: '*'
     nginx.ingress.kubernetes.io/enable-cors: 'true'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   ingressClassName: nginx
   rules:
@@ -18,24 +20,26 @@ spec:
                 name: skillsly-ag-srv
                 port:
                   name: api-gateway
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: skillsly-frontend-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
-    nginx.ingress.kubernetes.io/enable-cors: 'true'
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: "skillsly.dev"
-      http:
-        paths:
-          - pathType: Prefix
-            path: /?(.*)
-            backend:
-              service:
-                name: skillsly-wa-srv
-                port:
-                  name: wa
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: skillsly-frontend-ingress
+#  annotations:
+#    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
+#    nginx.ingress.kubernetes.io/enable-cors: 'true'
+#    nginx.ingress.kubernetes.io/use-regex: 'true'
+#    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+#spec:
+#  ingressClassName: nginx
+#  rules:
+#    - host: "skillsly.dev"
+#      http:
+#        paths:
+#          - pathType: Prefix
+#            path: /?(.*)
+#            backend:
+#              service:
+#                name: skillsly-wa-srv
+#                port:
+#                  name: wa
