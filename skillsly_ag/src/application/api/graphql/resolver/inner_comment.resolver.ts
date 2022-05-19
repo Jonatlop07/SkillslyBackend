@@ -83,8 +83,9 @@ export class InnerCommentResolver {
       page,
       limit,
     });
-    return inner_comments
-      .map(async (inner_comment) => {
+
+    const comments_with_user = Promise.all(
+      inner_comments.map(async (inner_comment) => {
         this.logger.log('Querying owner data in user service');
         const { account_details } = await this.query_user_service.execute({
           id: inner_comment.owner_id,
@@ -95,24 +96,22 @@ export class InnerCommentResolver {
           name: account_details.name,
           email: account_details.email,
         };
-      })
-      .map((data) =>
-        data.then((inner) => {
-          const user_data = {
-            name: inner.name,
-            email: inner.email,
-          };
-          const comment_data = {
-            _id: inner._id,
-            comment_id: inner.comment_id,
-            content: inner.content,
-            created_at: inner.created_at,
-            updated_at: inner.updated_at,
-            owner_id: inner.owner_id,
-          };
-          return InnerCommentMapper.toGraphQLModel(comment_data, user_data);
-        }),
+      }),
+    );
+
+    return (await comments_with_user).map((inner) => {
+      return InnerCommentMapper.toGraphQLModel(
+        {
+          _id: inner._id,
+          comment_id: inner.comment_id,
+          content: inner.content,
+          created_at: inner.created_at,
+          updated_at: inner.updated_at,
+          owner_id: inner.owner_id,
+        },
+        { name: inner.name, email: inner.email },
       );
+    });
   }
 
   @Mutation(() => CommentContent)
