@@ -3,6 +3,7 @@ package com.skillsly.rest.service;
 import com.skillsly.rest.model.PostModel;
 import com.skillsly.rest.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
@@ -61,7 +62,7 @@ public class PostService {
             throw new RuntimeException("Owner not found");
         }catch (Exception e) {
             LOGGER.warn("Posts not found with owner id: " + id);
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok().body(postRepository.findAllByOwnerId(id));
         }
     }
 
