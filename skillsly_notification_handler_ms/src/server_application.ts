@@ -1,11 +1,12 @@
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import * as chalk from 'chalk';
-import { MicroserviceOptions, RmqOptions, Transport } from '@nestjs/microservices'
+import { MicroserviceOptions, Transport } from '@nestjs/microservices'
 import { APIServerConfiguration } from './config/api_server.config'
 import { RootModule } from './module/.root.module'
 
 export class ServerApplication {
+  private readonly ms_host: string = APIServerConfiguration.MS_HOST;
+  private readonly ms_port: number = APIServerConfiguration.MS_PORT;
   private readonly mq_protocol: string = APIServerConfiguration.MQ_PROTOCOL;
   private readonly mq_host: string = APIServerConfiguration.MQ_HOST;
   private readonly mq_port: number = APIServerConfiguration.MQ_PORT;
@@ -20,7 +21,8 @@ export class ServerApplication {
       if (!this.enable_log) {
         options['logger'] = false;
       }
-      const app = await NestFactory.createMicroservice<MicroserviceOptions>(RootModule, {
+      const app = await NestFactory.create(RootModule);
+      app.connectMicroservice<MicroserviceOptions>({
         transport: Transport.RMQ,
         options: {
           urls: [{
@@ -37,13 +39,11 @@ export class ServerApplication {
           }
         }
       });
-      await app.listen();
-      Logger.log(
-        `Environment: ${chalk
-          .hex('#87e8de')
-          .bold(`${process.env.NODE_ENV?.toUpperCase()}`)}`
-      );
-      Logger.log(`✅  Server ready`);
+      await app.startAllMicroservices();
+      await app.listen(process.env.PORT || this.ms_port, process.env.HOST || this.ms_host, () => {
+        Logger.log(`Environment: ${process.env.NODE_ENV?.toUpperCase()}`);
+        Logger.log(`✅  Server ready at ${process.env.HOST || this.ms_host}:${process.env.PORT || this.ms_port}`);
+      });
     } catch (error) {
       Logger.error(`❌  Error starting server, ${error}`);
       process.exit();

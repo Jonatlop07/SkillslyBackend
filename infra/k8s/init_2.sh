@@ -17,3 +17,4 @@ pod_name=$(kubectl get pods --no-headers -o custom-columns=":metadata.name" | gr
 cat ./auth/skillsly-auth-initdb.sql | kubectl exec -i "${pod_name}" -- psql -d skillsly_auth_db -U skillsly
 kubectl apply -f ./auth/skillsly-auth-ms-env-config-map.yaml
 kubectl apply -f ./auth/skillsly-auth-ms-depl.yaml
+

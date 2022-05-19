@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: skillsly-notification-handler-ms-env-config
 data:
+  MS_HOST: 'localhost'
+  MS_PORT: '3000'
   API_ENABLE_LOG: 'true'
   MQ_PROTOCOL: 'amqp'
   MQ_HOST: 'skillsly-notification-mq-0.skillsly-notification-mq-srv.default.svc.cluster.local'
