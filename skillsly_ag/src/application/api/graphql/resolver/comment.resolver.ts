@@ -66,9 +66,10 @@ export class CommentResolver {
       });
     this.logger.log('Comment created with success');
     this.logger.log('Querying owner data in user service');
-    const { account_details } = await this.query_user_service.execute({
+    const input: QueryUserRequestInput = {
       id: owner_id,
-    });
+    };
+    const { account_details } = await this.query_user_service.execute(input);
     this.logger.log('User data queried');
     return CommentMapper.toGraphQLModel(
       { _id, owner_id, content, created_at },
@@ -89,37 +90,38 @@ export class CommentResolver {
       limit,
     });
 
-    return comments
-      .map(async (comment) => {
+    const comments_with_user = Promise.all(
+      comments.map(async (comment) => {
         this.logger.log('Querying owner data in user service');
-        const { account_details } = await this.query_user_service.execute({
+        const input: QueryUserRequestInput = {
           id: comment.owner_id,
-        });
+        };
+        const { account_details } = await this.query_user_service.execute(
+          input,
+        );
         this.logger.log('User data queried');
         return {
           ...comment,
           name: account_details.name,
           email: account_details.email,
         };
-      })
-      .map((data) =>
-        data.then((comment) => {
-          const user_data = {
-            name: comment.name,
-            email: comment.email,
-          };
-          const comment_data = {
-            _id: comment._id,
-            post_id: comment.post_id,
-            content: comment.content,
-            created_at: comment.created_at,
-            updated_at: comment.updated_at,
-            owner_id: comment.owner_id,
-            inner_comment_count: comment.inner_comment_count,
-          };
-          return CommentMapper.toGraphQLModel(comment_data, user_data);
-        }),
+      }),
+    );
+
+    return (await comments_with_user).map((comment) => {
+      return CommentMapper.toGraphQLModel(
+        {
+          _id: comment._id,
+          post_id: comment.post_id,
+          content: comment.content,
+          created_at: comment.created_at,
+          updated_at: comment.updated_at,
+          owner_id: comment.owner_id,
+          inner_comment_count: comment.inner_comment_count,
+        },
+        { name: comment.name, email: comment.email },
       );
+    });
   }
 
   @Mutation(() => CommentContent)

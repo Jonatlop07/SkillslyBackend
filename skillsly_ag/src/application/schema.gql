@@ -78,6 +78,7 @@ type Comment {
 type CommentContent {
   description: String
   media_locator: String
+  media_type: String
 }
 
 """Defines the information of a comment"""
