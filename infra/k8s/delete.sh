@@ -80,4 +80,5 @@ kubectl delete configmap skillsly-ag-redis-config
 
 kubectl delete ingress skillsly-backend-ingress
 kubectl delete ingress skillsly-frontend-ingress
-kubectl delete all  --all -n ingress-nginx
+#kubectl delete ingress-class ngnx
+#kubectl delete all  --all -n ingress-nginx

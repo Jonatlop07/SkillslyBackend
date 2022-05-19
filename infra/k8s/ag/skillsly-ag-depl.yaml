@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: skillsly-ag
-          image: angegonzalez/skillsly-ag
+          image: jonatlop07/skillsly-ag
           envFrom:
             - configMapRef:
                 name: skillsly-ag-env-config
