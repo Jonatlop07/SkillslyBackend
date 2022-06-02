@@ -2,19 +2,14 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: skillsly-backend-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
-    nginx.ingress.kubernetes.io/enable-cors: 'true'
-    nginx.ingress.kubernetes.io/use-regex: 'true'
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   ingressClassName: nginx
   rules:
-    - host: "api.skillsly.dev"
+    - host: api.skillsly.dev
       http:
         paths:
           - pathType: Prefix
-            path: /?(.*)
+            path: /graphql
             backend:
               service:
                 name: skillsly-ag-srv
