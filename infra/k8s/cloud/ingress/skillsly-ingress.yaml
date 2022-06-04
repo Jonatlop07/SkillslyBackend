@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   name: skillsly-backend-ingress
   annotations:
+    kubernetes.io/ingress.global-static-ip-name: skillsly-api
     kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: letsencrypt-production
 spec:
@@ -20,6 +21,7 @@ spec:
   tls:
     - hosts:
       - 34.122.26.102.nip.io
+      secretName : my-certs
 
 
 #---
