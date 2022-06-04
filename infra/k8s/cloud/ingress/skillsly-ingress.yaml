@@ -5,10 +5,10 @@ metadata:
   annotations:
     kubernetes.io/ingress.global-static-ip-name: skillsly-api
     kubernetes.io/ingress.class: "nginx"
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   rules:
-    - host: "34.122.26.102.nip.io"
+    - host: "api.skillsly.app"
       http:
         paths:
           - pathType: Prefix
@@ -20,7 +20,7 @@ spec:
                   name: api-gateway
   tls:
     - hosts:
-      - 34.122.26.102.nip.io
+      - api.skillsly.app
       secretName : skillsly-certificate
 
 
