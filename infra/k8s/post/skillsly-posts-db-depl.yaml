@@ -9,6 +9,7 @@ spec:
   resources:
     requests:
       storage: 50Mi
+  volumeName: skillsly-posts-db-persistent-volume
 ---
 apiVersion: apps/v1
 kind: Deployment

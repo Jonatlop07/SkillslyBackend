@@ -3,7 +3,7 @@ import { Public } from '@application/api/graphql/authentication/decorator/public
 import {
   Inject,
   Logger,
-  UnauthorizedException,
+  UnauthorizedException, UseGuards,
 } from '@nestjs/common';
 import {
   GraphQLLoggedInUser,
@@ -42,8 +42,9 @@ export class AuthResolver {
     private readonly reset_password_service: ResetPasswordService,
   ) {}
 
-  @Public()
+  @DeactivateTwoFactorAuth()
   @Mutation(() => AuthPayload)
+  @Public()
   public async login(
   @Args({ name: 'credentials', type: () => AuthCredentials })
     credentials: AuthCredentials,
@@ -54,7 +55,6 @@ export class AuthResolver {
     return AuthMapper.toGraphQLModel(result);
   }
 
-  @JwtAuth()
   @Mutation(() => Int, { nullable: true })
   public async updateCredentials(
   @Args({ name: 'user_id', type: () => ID }) user_id: Id,

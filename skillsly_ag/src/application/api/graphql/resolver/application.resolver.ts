@@ -1,5 +1,4 @@
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Id } from '@application/common/type/common_types';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Application } from '../model/service/application';
 import { Inject, Logger } from '@nestjs/common';
 import { ServiceDITokens } from '@application/service/service/di/service_di_tokens';

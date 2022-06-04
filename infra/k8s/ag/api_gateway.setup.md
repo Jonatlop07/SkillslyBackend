@@ -27,3 +27,16 @@ kubectl delete service skillsly-ag-redis-srv ;`
 kubectl delete deployment skillsly-ag-redis-depl ;`
 kubectl delete configmap skillsly-ag-redis-config
 ```
+
+
+- Ldap -> Cluster
+- Ldap Admin -> Cluster
+- Ingress + certs -> Cluster
+- Web Frontend + certs -> GCloud Service
+- API Gateway -> Cluster
+- Redis for API Gateway -> Cluster
+- Auth MS -> Cluster
+- Auth DB -> GCloud Service
+- User MS -> Cluster
+- User DB -> GCloud Service
+- Interface Component -> Cluster

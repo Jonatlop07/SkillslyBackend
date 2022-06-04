@@ -5,7 +5,7 @@ import {
   HttpStatus,
   Inject,
   Logger, Param, Patch,
-  Post, Query,
+  Post, Query, UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { UserDITokens } from '@core/domain/di/user_di_tokens';
@@ -39,6 +39,7 @@ import UpdateUserInteractor from '@core/domain/use-case/interactor/update_user.i
 import QueryUserInteractor from '@core/domain/use-case/interactor/query_user.interactor'
 import RequestResetPasswordInteractor from '@core/domain/use-case/interactor/request_reset_password.interactor'
 import ResetPasswordInteractor from '@core/domain/use-case/interactor/reset_password.interactor'
+import { HttpLdapAuthenticationGuard } from '@application/api/http-rest/authentication/guard/http_ldap_authentication.guard'
 
 @Controller('auth')
 @ApiTags('auth')
@@ -95,6 +96,7 @@ export class AuthController {
 
   @Get('validate-credentials')
   @HttpCode(HttpStatus.OK)
+  @UseGuards(HttpLdapAuthenticationGuard)
   public async validateCredentials(
     @Query('email', new ValidationPipe()) email: string,
     @Query('password', new ValidationPipe()) password: string

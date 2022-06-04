@@ -45,7 +45,9 @@ export class TypeOrmUserRepositoryAdapter implements UserRepository {
   }
 
   public async partialUpdate(params: UserQueryModel, updates: PartialUserUpdateDTO): Promise<UserDTO> {
-    const user: UserDTO = await this.repository.findOne(params);
+    const user: UserDTO = await this.repository.findOne({
+      where: params
+    });
     const updated_user: UserDTO = {
       ...user,
       ...updates

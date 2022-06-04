@@ -75,7 +75,6 @@ import { ValidateCredentialsService } from '@application/service/auth/requester/
 import { UpdateUserService } from '@application/service/auth/requester/update_user.service';
 import { GraphQLTwoFactorAuthService } from '@application/api/graphql/authentication/service/graphql_two_factor_auth.service';
 import { GraphQLAuthenticationService } from '@application/api/graphql/authentication/service/graphql_authentication.service';
-import { GraphQLLocalStrategy } from '@application/api/graphql/authentication/passport/graphql_local.strategy';
 import { GraphQLJwtStrategy } from '@application/api/graphql/authentication/passport/graphql_jwt.strategy';
 import { GraphQLJwtTwoFactorAuthStrategy } from '@application/api/graphql/authentication/passport/graphql_jwt_two_factor_auth.strategy';
 import { JwtModule } from '@nestjs/jwt';
@@ -454,7 +453,6 @@ const resolvers: Array<Provider> = [
   providers: [
     GraphQLTwoFactorAuthService,
     GraphQLAuthenticationService,
-    GraphQLLocalStrategy,
     GraphQLJwtStrategy,
     GraphQLJwtTwoFactorAuthStrategy,
     ...request_providers,
