@@ -11,6 +11,10 @@ kubectl apply -f ./ldap/skillsly-ldap-admin-depl.yaml
 
 kubectl apply -f ./service/skillsly-service-ms-depl.yaml
 
+# Chat MS deployment
+
+kubectl apply -f ./chat/skillsly-chat-ms-depl.yaml
+
 # Notification MQ deployment
 
 kubectl apply -f ./notification_mq/skillsly-notification-mq-rbac.yaml

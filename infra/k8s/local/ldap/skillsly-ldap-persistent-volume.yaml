@@ -1,14 +1,14 @@
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: skillsly-chat-db-persistent-volume
+  name: skillsly-ldap-persistent-volume
 spec:
   storageClassName: manual
   capacity:
-    storage: 50Mi
+    storage: 100Mi
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Delete
   hostPath:
-    path: /mnt/data/chat-db
+    path: /mnt/data/ldap
