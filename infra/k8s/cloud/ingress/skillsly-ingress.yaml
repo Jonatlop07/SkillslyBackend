@@ -18,8 +18,29 @@ spec:
                 name: skillsly-ag-srv
                 port:
                   name: api-gateway
+    - host: "34.122.26.102.nip.io"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /graphql
+            backend:
+              service:
+                name: skillsly-ag-srv
+                port:
+                  name: api-gateway
+    - host: "api.skillsly.app"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /api/v1
+            backend:
+              service:
+                name: skillsly-ag-srv
+                port:
+                  name: api-gateway
   tls:
     - hosts:
+      - 34.122.26.102.nip.io
       - api.skillsly.app
       secretName : skillsly-certificate
 
