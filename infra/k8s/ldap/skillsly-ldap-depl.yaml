@@ -1,0 +1,64 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: skillsly-ldap-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+  volumeName: skillsly-ldap-persistent-volume
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: skillsly-ldap-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly-ldap
+  template:
+    metadata:
+      labels:
+        app: skillsly-ldap
+    spec:
+      containers:
+        - name: skillsly-ldap
+          image: osixia/openldap:1.1.8
+          ports:
+            - containerPort: 389
+            - containerPort: 636
+          envFrom:
+            - configMapRef:
+                name: skillsly-ldap-env-config
+          volumeMounts:
+            - mountPath: /var/lib/ldap
+              name: skillsly-ldap-volume
+            - mountPath: /etc/ldap/slapd.d
+              name: skillsly-ldap-volume
+            - mountPath: /container/service/slapd/assets/certs/
+              name: skillsly-ldap-volume
+      volumes:
+        - name: skillsly-ldap-volume
+          persistentVolumeClaim:
+            claimName: skillsly-ldap-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly-ldap-srv
+spec:
+  selector:
+    app: skillsly-ldap
+  ports:
+    - name: ldap1
+      protocol: TCP
+      port: 389
+      targetPort: 389
+    - name: ldap2
+      protocol: TCP
+      port: 636
+      targetPort: 636

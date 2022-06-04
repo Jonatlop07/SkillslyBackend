@@ -17,6 +17,7 @@ import { MailerMailRepositoryAdapter } from '@infrastructure/adapter/mail/mailer
 import { RequestResetPasswordService } from '@core/service/request_reset_password.service'
 import { MailerModule, MailerService } from '@nestjs-modules/mailer'
 import { ResetPasswordService } from '@core/service/reset_password.service'
+import { HttpLdapStrategy } from '@application/api/http-rest/authentication/passport/http_ldap.strategy'
 
 const persistence_providers: Array<Provider> = [
   {
@@ -113,6 +114,7 @@ const use_case_providers: Array<Provider> = [
     })
   ],
   providers: [
+    HttpLdapStrategy,
     ...persistence_providers,
     ...mail_providers,
     ...use_case_providers,

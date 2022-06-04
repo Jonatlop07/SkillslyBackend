@@ -2,6 +2,14 @@
 kubectl delete service skillsly-service-ms-srv ;
 kubectl delete deployment skillsly-service-ms-depl ;
 
+kubectl delete service skillsly-ldap-admin-srv ;
+kubectl delete deployment skillsly-ldap-admin-depl ;
+kubectl delete service skillsly-ldap-srv ;
+kubectl delete deployment skillsly-ldap-depl ;
+kubectl delete persistentvolumeclaims skillsly-ldap-pv-claim ;
+kubectl delete persistentvolume skillsly-ldap-persistent-volume ;
+kubectl delete configmap skillsly-ldap-env-config ;
+
 kubectl delete service skillsly-notification-mq-srv ;
 kubectl delete statefulsets skillsly-notification-mq ;
 kubectl delete persistentvolumeclaims data-skillsly-notification-mq-0 ;
@@ -10,7 +18,6 @@ kubectl delete secret skillsly-notification-mq-secret ;
 kubectl delete rolebinding.rbac.authorization.k8s.io skillsly-notification-rabbitmq-rb ;
 kubectl delete role.rbac.authorization.k8s.io skillsly-notification-rabbitmq-role ;
 kubectl delete serviceaccount skillsly-notification-rabbitmq-sa ;
-
 
 kubectl delete service skillsly-notification-handler-ms-srv ;
 kubectl delete deployment skillsly-notification-handler-ms-depl ;

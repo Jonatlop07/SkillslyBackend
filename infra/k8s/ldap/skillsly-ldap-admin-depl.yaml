@@ -1,0 +1,37 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: skillsly-ldap-admin-depl
+  labels:
+    app:  skillsly-ldap-admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  skillsly-ldap-admin
+  template:
+    metadata:
+      labels:
+        app:  skillsly-ldap-admin
+    spec:
+      containers:
+        - name: phpldapadmin
+          image: osixia/phpldapadmin:0.9.0
+          ports:
+            - containerPort: 443
+          env:
+            - name: PHPLDAPADMIN_LDAP_HOSTS
+              value: skillsly-ldap-srv
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: skillsly-ldap-admin-srv
+spec:
+  type: LoadBalancer
+  selector:
+    app: skillsly-ldap-admin
+  ports:
+    - protocol: TCP
+      port: 9943
+      targetPort: 443

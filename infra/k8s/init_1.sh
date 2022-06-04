@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Ldap deployment
+
+kubectl apply -f ./ldap/skillsly-ldap-env-config-map.yaml
+kubectl apply -f ./ldap/skillsly-ldap-persistent-volume.yaml
+kubectl apply -f ./ldap/skillsly-ldap-depl.yaml
+kubectl apply -f ./ldap/skillsly-ldap-admin-depl.yaml
+
 # Service MS deployment
 
 kubectl apply -f ./service/skillsly-service-ms-depl.yaml
