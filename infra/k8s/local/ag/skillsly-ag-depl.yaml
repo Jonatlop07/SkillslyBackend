@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly-ag-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly-ag
+  template:
+    metadata:
+      labels:
+        app: skillsly-ag
+    spec:
+      containers:
+        - name: skillsly-ag
+          image: jonatlop07/skillsly-ag
+          ports:
+          - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: skillsly-ag-env-config
+          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly-ag-srv
+spec:
+  selector:
+    app: skillsly-ag
+  ports:
+    - name: api-gateway
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly-auth-ms-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly-auth-ms
+  template:
+    metadata:
+      labels:
+        app: skillsly-auth-ms
+    spec:
+      containers:
+        - name: skillsly-auth-ms
+          image: jonatlop07/skillsly-auth-ms:latest
+          envFrom:
+            - configMapRef:
+                name: skillsly-auth-ms-env-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly-auth-ms-srv
+spec:
+  selector:
+    app: skillsly-auth-ms
+  ports:
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: skillsly-user-ms-env-config
+data:
+  API_HOST: '0.0.0.0'
+  API_PORT: '3000'
+  API_ENABLE_LOG: 'true'
+  DATABASE_URL: 'postgres://postgres:user@35.222.216.143/postgres'
+  USER_DB_ENABLE_LOG: 'true'
+  THROTTLE_TTL: '60'
+  THROTTLE_LIMIT: '200'
