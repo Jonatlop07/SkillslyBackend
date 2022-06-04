@@ -20,7 +20,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: skillsly-ag-env-config
-          
+
 ---
 apiVersion: v1
 kind: Service
