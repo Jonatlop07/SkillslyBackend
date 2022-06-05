@@ -1,5 +1,5 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common'
-import { Bucket, Storage } from '@google-cloud/storage'
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { Bucket, Storage } from '@google-cloud/storage';
 import { parse } from 'path';
 
 @Injectable()
@@ -12,14 +12,16 @@ export class CloudStorageService {
   constructor() {
     this.storage = new Storage({
       projectId: 'shining-env-347701',
-      keyFilename: 'shining-env-347701-f91115ed7948.json'
+      keyFilename: 'shining-env-347701-f91115ed7948.json',
     });
     this.bucket = this.storage.bucket('skillsly_st');
   }
 
   private setDestination(destination: string): string {
     let escDestination = '';
-    escDestination += destination.replace(/^\.+/g, '').replace(/^\/+|\/+$/g, '');
+    escDestination += destination
+      .replace(/^\.+/g, '')
+      .replace(/^\/+|\/+$/g, '');
     if (escDestination !== '') escDestination = escDestination + '/';
     return escDestination;
   }
@@ -32,17 +34,26 @@ export class CloudStorageService {
       .replace(/\r|\n/g, '_');
   }
 
-  async uploadFile(uploaded_file: Express.Multer.File, destination: string): Promise<any> {
-    const fileName = this.setDestination(destination) + this.setFilename(uploaded_file);
+  async uploadFile(
+    uploaded_file: Express.Multer.File,
+    destination: string,
+  ): Promise<any> {
+    const fileName =
+      this.setDestination(destination) + this.setFilename(uploaded_file);
     this.logger.log(fileName);
     const file = this.bucket.file(fileName);
     try {
-      await file.save(uploaded_file.buffer, { contentType: uploaded_file.mimetype });
+      await file.save(uploaded_file.buffer, {
+        contentType: uploaded_file.mimetype,
+      });
     } catch (error) {
       this.logger.log(error);
       throw new BadRequestException(error?.message);
     }
-    return { ...file.metadata, media_locator: `https://storage.googleapis.com/${this.bucket.name}/${file.name}` };
+    return {
+      ...file.metadata,
+      media_locator: `https://storage.googleapis.com/${this.bucket.name}/${file.name}`,
+    };
   }
 
   async removeFile(fileName: string): Promise<void> {

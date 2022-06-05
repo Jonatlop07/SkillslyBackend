@@ -1,15 +1,20 @@
-import { Controller, Logger, Post, UploadedFile, UseInterceptors } from '@nestjs/common'
-import { FileInterceptor } from '@nestjs/platform-express'
-import { Express } from 'express'
-import { Public } from '@application/api/graphql/authentication/decorator/public'
-import { CloudStorageService } from '@application/api/http-rest/service/cloud_storage.service'
+import {
+  Controller,
+  Logger,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Express } from 'express';
+import { Public } from '@application/api/graphql/authentication/decorator/public';
+import { CloudStorageService } from '@application/api/http-rest/service/cloud_storage.service';
 
 @Controller('media')
 export class StorageController {
   private readonly logger: Logger = new Logger(StorageController.name);
 
-  constructor(private readonly storage_service: CloudStorageService) {
-  }
+  constructor(private readonly storage_service: CloudStorageService) {}
 
   @Public()
   @Post('image')
@@ -25,7 +30,6 @@ export class StorageController {
     return await this.storage_service.uploadFile(media, 'videos/');
   }
 }
-
 
 /*
 

@@ -16,4 +16,12 @@ public class GraphqlRequestBody {
 
     private String query;
     private Object variables;
+
+    public void setQuery(String query) {
+      this.query = query;
+    }
+
+    public void setVariables(Object variables) {
+      this.variables = variables;
+    }
 }
