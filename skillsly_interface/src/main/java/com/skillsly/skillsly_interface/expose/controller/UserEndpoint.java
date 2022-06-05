@@ -1,4 +1,6 @@
 package com.skillsly.skillsly_interface.expose.controller;
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -27,12 +29,18 @@ public class UserEndpoint {
 	@ResponsePayload
 	public GetUserResponse getUser(@RequestPayload GetUserRequest request) {
 		GetUserResponse response = new GetUserResponse();
-		UserDto user_details = userService.getUserDetails(request.getUserId());
-		User user = new User();
-		user.setId(user_details.getId());
-		user.setEmail(user_details.getEmail());
-		user.setName(user_details.getName());
-		response.setUser(user);
+		UserDto user_details;
+		try {
+			user_details = userService.getUserDetails(request.getUserId());
+			User user = new User();
+			user.setId(user_details.getId());
+			user.setEmail(user_details.getEmail());
+			user.setName(user_details.getName());
+			response.setUser(user);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 		return response;
 	}
 }

@@ -1,8 +1,11 @@
 package com.skillsly.skillsly_interface.expose.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,10 +19,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserController {
 
-  private UserService userService;
+  private final UserService userService = new UserService();
 
-  @GetMapping("user")
+  @GetMapping("user/{userId}")
   public UserDto getUser(@PathVariable("userId") String userId){
-    return userService.getUserDetails(userId);
+    UserDto response = new UserDto();
+    try {
+      response = userService.getUserDetails(userId);
+      // System.out.print(response);
+      return response;
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    response.setEmail("email");
+    return response;
   }
 }

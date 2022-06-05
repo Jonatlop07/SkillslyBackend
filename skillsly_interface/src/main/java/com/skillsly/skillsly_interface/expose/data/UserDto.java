@@ -19,4 +19,17 @@ public class UserDto {
     public String getName() {
       return name;
     }
-}
+
+    public void setEmail(String email) {
+      this.email = email;
+    }
+
+    public void setName(String name) {
+      this.name = name;
+    }
+
+    public void setId(String id) {
+      this.id = id;
+    }
+  }
+
