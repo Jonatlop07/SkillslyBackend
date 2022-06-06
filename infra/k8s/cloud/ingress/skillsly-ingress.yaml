@@ -3,11 +3,12 @@ kind: Ingress
 metadata:
   name: skillsly-backend-ingress
   annotations:
+    kubernetes.io/ingress.global-static-ip-name: skillsly-api
     kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   rules:
-    - host: "api.skillsly.io"
+    - host: "api.skillsly.app"
       http:
         paths:
           - pathType: Prefix
@@ -17,6 +18,32 @@ spec:
                 name: skillsly-ag-srv
                 port:
                   name: api-gateway
+    - host: "34.122.26.102.nip.io"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /graphql
+            backend:
+              service:
+                name: skillsly-ag-srv
+                port:
+                  name: api-gateway
+    - host: "api.skillsly.app"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /api/v1
+            backend:
+              service:
+                name: skillsly-ag-srv
+                port:
+                  name: api-gateway
+  tls:
+    - hosts:
+      - 34.122.26.102.nip.io
+      - api.skillsly.app
+      secretName : skillsly-certificate
+
 
 #---
 #apiVersion: networking.k8s.io/v1
