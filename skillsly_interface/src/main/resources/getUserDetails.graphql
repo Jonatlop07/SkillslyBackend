@@ -1,5 +1,6 @@
 query ($id: String!) {
   user(id: $id) {
+    id
     name
     email
   }

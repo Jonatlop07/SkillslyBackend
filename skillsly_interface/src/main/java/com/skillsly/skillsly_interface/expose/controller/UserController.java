@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.skillsly.skillsly_interface.expose.data.UserDto;
+import com.skillsly.skillsly_interface.expose.data.UserResponseDto;
 import com.skillsly.skillsly_interface.expose.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,9 @@ public class UserController {
 
   private final UserService userService = new UserService();
 
+  // testing controller || need to consume groups 2D web service and expose data
   @GetMapping("user/{userId}")
-  public UserDto getUser(@PathVariable("userId") String userId){
+  public UserDto getUser(@PathVariable("userId") String userId) {
     UserDto response = new UserDto();
     try {
       response = userService.getUserDetails(userId);
@@ -32,7 +34,7 @@ public class UserController {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    response.setEmail("email");
+    // response.setEmail("email");
     return response;
   }
 }

@@ -16,25 +16,26 @@ import org.springframework.xml.xsd.XsdSchema;
 @Configuration
 public class WebServiceConfig extends WsConfigurerAdapter {
 	@Bean
-	public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet(ApplicationContext applicationContext) {
+	public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet(
+			ApplicationContext applicationContext) {
 		MessageDispatcherServlet servlet = new MessageDispatcherServlet();
 		servlet.setApplicationContext(applicationContext);
 		servlet.setTransformWsdlLocations(true);
 		return new ServletRegistrationBean<>(servlet, "/ws/*");
 	}
 
-	@Bean(name = "user")
-	public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema userSchema) {
+	@Bean(name = "users")
+	public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema usersSchema) {
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
-		wsdl11Definition.setPortTypeName("UserPort");
+		wsdl11Definition.setPortTypeName("UsersPort");
 		wsdl11Definition.setLocationUri("/ws");
 		wsdl11Definition.setTargetNamespace("http://spring.io/guides/gs-producing-web-service");
-		wsdl11Definition.setSchema(userSchema);
+		wsdl11Definition.setSchema(usersSchema);
 		return wsdl11Definition;
 	}
 
 	@Bean
-	public XsdSchema userSchema() {
-		return new SimpleXsdSchema(new ClassPathResource("user.xsd"));
+	public XsdSchema usersSchema() {
+		return new SimpleXsdSchema(new ClassPathResource("users.xsd"));
 	}
 }
