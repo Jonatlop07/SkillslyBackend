@@ -22,6 +22,7 @@ import { DeleteCommentsByOwnerService } from '@application/service/comments/comm
 import { DeleteInnerCommentsByOwnerService } from '@application/service/comments/inner_comment/requester/delete_owner_inner_comments.service';
 import { InnerCommentDITokens } from '@application/service/comments/inner_comment/di/inner_comment_di_tokens';
 import { Public } from '@application/api/graphql/authentication/decorator/public';
+import { DeactivateTwoFactorAuth } from '@application/api/graphql/authentication/decorator/deactivate_two_factor_auth'
 
 @Resolver(() => User)
 export class AccountResolver {
@@ -76,6 +77,8 @@ export class AccountResolver {
     return UserMapper.toGraphQLModel(created_account);
   }
 
+  @DeactivateTwoFactorAuth()
+  @Public()
   @Query(() => User)
   public async user(@Args({ name: 'id' }) id: Id) {
     this.logger.log('Querying user in user service...');
