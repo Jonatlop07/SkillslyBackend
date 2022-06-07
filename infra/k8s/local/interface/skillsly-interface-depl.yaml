@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly-interface-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly-interface
+  template:
+    metadata:
+      labels:
+        app: skillsly-interface
+    spec:
+      containers:
+        - name: skillsly-interface
+          image: jonatlop07/skillsly-interface
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly-interface-srv
+spec:
+  selector:
+    app: skillsly-interface
+  ports:
+    - name: interface
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
