@@ -18,7 +18,7 @@ spec:
                 name: skillsly-ag-srv
                 port:
                   name: api-gateway
-    - host: "34.122.26.102.nip.io"
+    - host: "35.223.215.205.nip.io"
       http:
         paths:
           - pathType: Prefix
@@ -40,7 +40,7 @@ spec:
                   name: api-gateway
   tls:
     - hosts:
-      - 34.122.26.102.nip.io
+      - 35.223.215.205.nip.io
       - api.skillsly.app
       secretName : skillsly-certificate
 
