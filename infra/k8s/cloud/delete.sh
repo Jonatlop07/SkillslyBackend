@@ -21,3 +21,6 @@ kubectl delete configmap skillsly-ag-env-config ;
 kubectl delete service skillsly-ag-redis-srv ;
 kubectl delete deployment skillsly-ag-redis-depl ;
 kubectl delete configmap skillsly-ag-redis-config ;
+
+kubectl delete deployment skillsly-interface-depl ;
+kubectl delete service skillsly-interface-srv ;

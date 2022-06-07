@@ -76,3 +76,7 @@ kubectl apply -f ./ag/skillsly-ag-redis-config-map.yaml
 kubectl apply -f ./ag/skillsly-ag-redis-depl.yaml
 kubectl apply -f ./ag/skillsly-ag-env-config-map.yaml
 kubectl apply -f ./ag/skillsly-ag-depl.yaml
+
+# Interface deployment
+
+kubectl apply -f ./interface/skillsly-interface-depl.yaml
