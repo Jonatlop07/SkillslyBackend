@@ -26,7 +26,7 @@ public class UserService {
 
     public UserDto getUserDetails(String userId) throws IOException {
 
-        url = "http://localhost:3000/graphql";
+        url = "https://api.skillsly.app/graphql";
 
         WebClient newWebClient = WebClient.create(url);
         // WebClientGraphQLClient client =
