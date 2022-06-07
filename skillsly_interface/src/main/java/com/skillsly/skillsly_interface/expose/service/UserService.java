@@ -1,8 +1,4 @@
 package com.skillsly.skillsly_interface.expose.service;
-
-import com.netflix.graphql.dgs.client.GraphQLResponse;
-import com.netflix.graphql.dgs.client.MonoGraphQLClient;
-import com.netflix.graphql.dgs.client.WebClientGraphQLClient;
 import com.skillsly.skillsly_interface.expose.data.GraphqlRequestBody;
 import com.skillsly.skillsly_interface.expose.data.UserDto;
 import com.skillsly.skillsly_interface.expose.data.UserResponseDto;
@@ -30,7 +26,7 @@ public class UserService {
 
     public UserDto getUserDetails(String userId) throws IOException {
 
-        url = "http://localhost:3000/graphql";
+        url = "https://api.skillsly.app/graphql";
 
         WebClient newWebClient = WebClient.create(url);
         // WebClientGraphQLClient client =
@@ -73,6 +69,7 @@ public class UserService {
         var res = webClient.post().uri(url).bodyValue(graphQLRequestBody).retrieve().bodyToMono(UserResponseDto.class)
                 .block();
 
+        assert res != null;
         result.setEmail(res.getData().getUser().getEmail());
         result.setName(res.getData().getUser().getName());
         result.setId(res.getData().getUser().getId());
