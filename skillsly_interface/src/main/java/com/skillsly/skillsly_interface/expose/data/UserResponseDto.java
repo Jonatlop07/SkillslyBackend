@@ -1,7 +1,5 @@
 package com.skillsly.skillsly_interface.expose.data;
 
-import lombok.Getter;
-
 public class UserResponseDto {
 
   private Data data;

@@ -1,4 +1,4 @@
-package com.skillsly.skillsly_interface.expose.controller;
+package com.skillsly.skillsly_interface.expose;
 
 import java.io.IOException;
 
@@ -9,8 +9,7 @@ import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import com.skillsly.skillsly_interface.expose.data.UserDto;
-import com.skillsly.skillsly_interface.expose.data.UserResponseDto;
-import com.skillsly.skillsly_interface.expose.service.UserService;
+
 import io.spring.guides.gs_producing_web_service.GetUserRequest;
 import io.spring.guides.gs_producing_web_service.GetUserResponse;
 import io.spring.guides.gs_producing_web_service.User;
@@ -30,7 +29,6 @@ public class UserEndpoint {
 	@ResponsePayload
 	public GetUserResponse getUser(@RequestPayload GetUserRequest request) {
 		GetUserResponse response = new GetUserResponse();
-		System.out.println(request.getUserId());
 		UserDto user_details;
 		try {
 			user_details = userService.getUserDetails(request.getUserId());
