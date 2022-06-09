@@ -38,11 +38,11 @@ spec:
                 name: skillsly-ag-srv
                 port:
                   name: api-gateway
-    - host: "soap.skillsly.app"
+    - host: "api.skillsly.app"
       http:
         paths:
           - pathType: Prefix
-            path: /
+            path: /soap
             backend:
               service:
                 name: skillsly-interface-srv
