@@ -28,7 +28,7 @@ apiVersion: v1
 metadata:
   name: skillsly-ldap-admin-srv
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: skillsly-ldap-admin
   ports:
