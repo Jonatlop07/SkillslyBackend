@@ -28,7 +28,7 @@ spec:
               service:
                 name: skillsly-interface-srv
                 port:
-                  number: 8080
+                  name: interface
     - host: "35.223.215.205.nip.io"
       http:
         paths:
