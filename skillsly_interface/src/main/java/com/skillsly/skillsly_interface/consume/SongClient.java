@@ -16,7 +16,7 @@ public class SongClient extends WebServiceGatewaySupport {
     request.setId(id);
 
     Response response = (Response) getWebServiceTemplate()
-        .marshalSendAndReceive("http://34.123.106.254:3009/wsdl", request);
+        .marshalSendAndReceive("https://lalu-soap.herokuapp.com/wsdl", request);
     return response;
   }
 }

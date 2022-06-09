@@ -17,7 +17,7 @@ public class SongConfiguration {
   @Bean
   public SongClient songClient(Jaxb2Marshaller marshaller) {
     SongClient client = new SongClient();
-    client.setDefaultUri("http://34.123.106.254:3009/wsdl");
+    client.setDefaultUri("https://lalu-soap.herokuapp.com/wsdl");
     client.setMarshaller(marshaller);
     client.setUnmarshaller(marshaller);
     return client;
