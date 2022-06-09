@@ -18,7 +18,6 @@ spec:
                 name: skillsly-ag-srv
                 port:
                   name: api-gateway
-        - host: "api.skillsly.app"
     - host: "api.skillsly.app"
       http:
         paths:
