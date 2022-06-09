@@ -18,6 +18,17 @@ spec:
                 name: skillsly-ag-srv
                 port:
                   name: api-gateway
+        - host: "api.skillsly.app"
+    - host: "api.skillsly.app"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: /soap
+            backend:
+              service:
+                name: skillsly-interface-srv
+                port:
+                  name: interface
     - host: "35.223.215.205.nip.io"
       http:
         paths:
@@ -28,33 +39,21 @@ spec:
                 name: skillsly-ag-srv
                 port:
                   name: api-gateway
-    - host: "api.skillsly.app"
+    - host: "35.223.215.205.nip.io"
       http:
         paths:
-          - pathType: Prefix
-            path: /api/v1
-            backend:
-              service:
-                name: skillsly-ag-srv
-                port:
-                  name: api-gateway
-    - host: "api.skillsly.app"
-      http:
-        paths:
-          - pathType: Prefix
+          - pathType: ImplementationSpecific
             path: /soap
             backend:
               service:
                 name: skillsly-interface-srv
                 port:
-                  number: 8080
+                  name: interface
   tls:
     - hosts:
       - 35.223.215.205.nip.io
       - api.skillsly.app
-      - soap.skillsly.app
       secretName : skillsly-certificate
-
 
 #---
 #apiVersion: networking.k8s.io/v1
