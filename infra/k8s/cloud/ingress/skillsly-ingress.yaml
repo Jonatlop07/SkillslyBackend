@@ -29,16 +29,6 @@ spec:
                 name: skillsly-interface-srv
                 port:
                   name: interface
-    - host: "api.skillsly.app"
-      http:
-        paths:
-          - pathType: Prefix
-            path: /ldap/(.*)
-            backend:
-              service:
-                name: skillsly-ldap-admin-srv
-                port:
-                  number: 9943
     - host: "35.223.215.205.nip.io"
       http:
         paths:
@@ -59,16 +49,6 @@ spec:
                 name: skillsly-interface-srv
                 port:
                   name: interface
-    - host: "35.223.215.205.nip.io"
-      http:
-        paths:
-          - pathType: Prefix
-            path: /ldap/(.*)
-            backend:
-              service:
-                name: skillsly-ldap-admin-srv
-                port:
-                  number: 9943
   tls:
     - hosts:
       - 35.223.215.205.nip.io
