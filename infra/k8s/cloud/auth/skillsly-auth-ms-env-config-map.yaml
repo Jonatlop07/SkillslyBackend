@@ -6,7 +6,7 @@ data:
   API_HOST: '0.0.0.0'
   API_PORT: '3000'
   API_ENABLE_LOG: 'true'
-  DATABASE_URL: 'postgres://postgres:auth@34.122.86.147/postgres'
+  DATABASE_URL: 'postgres://postgres:auth@35.222.252.238/postgres'
   AUTH_DB_ENABLE_LOG: 'false'
   THROTTLE_TTL: '60'
   THROTTLE_LIMIT: '200'
