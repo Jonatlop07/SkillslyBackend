@@ -38,7 +38,7 @@ spec:
               service:
                 name: skillsly-notification-handler-srv
                 port:
-                  name: notification-handler
+                  name: handler
     - host: "35.223.215.205.nip.io"
       http:
         paths:
