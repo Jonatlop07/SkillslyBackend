@@ -1,0 +1,55 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: skillsly-posts-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Mi
+  volumeName: skillsly-posts-db-persistent-volume
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly-posts-db-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly-posts-db
+  template:
+    metadata:
+      labels:
+        app: skillsly-posts-db
+    spec:
+      containers:
+        - name: skillsly-posts-db
+          image: mongo:latest
+          envFrom:
+            - configMapRef:
+                name: skillsly-posts-db-env-config
+          command: ['mongod']
+          args: ['--logpath=/dev/null']
+          volumeMounts:
+            - name: skillsly-posts-db-volume
+              mountPath: '/data/db'
+      volumes:
+        - name: skillsly-posts-db-volume
+          persistentVolumeClaim:
+            claimName: skillsly-posts-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly-posts-db-srv
+spec:
+  selector:
+    app: skillsly-posts-db
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly-posts-ms-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly-posts-ms
+  template:
+    metadata:
+      labels:
+        app: skillsly-posts-ms
+    spec:
+      containers:
+        - name: skillsly-posts-ms
+          image: jonatlop07/skillsly-posts-ms
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly-posts-ms-srv
+spec:
+  selector:
+    app: skillsly-posts-ms
+  ports:
+    - name: posts
+      protocol: TCP
+      port: 8080
+      targetPort: 8080

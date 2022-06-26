@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: skillsly-notification-mq
+spec:
+  serviceName: skillsly-notification-mq-srv
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly-notification-mq
+  template:
+    metadata:
+      labels:
+        app: skillsly-notification-mq
+    spec:
+      serviceAccountName: skillsly-notification-rabbitmq-sa
+      initContainers:
+        - name: config
+          image: busybox
+          command: [ '/bin/sh', '-c', 'cp /tmp/config/rabbitmq.conf /config/rabbitmq.conf && ls -l /config/ && cp /tmp/config/enabled_plugins /etc/rabbitmq/enabled_plugins' ]
+          volumeMounts:
+            - name: config
+              mountPath: /tmp/config/
+              readOnly: false
+            - name: config-file
+              mountPath: /config/
+            - name: plugins-file
+              mountPath: /etc/rabbitmq/
+      containers:
+        - name: skillsly-notification-mq
+          image: rabbitmq:3.8-management
+          ports:
+            - containerPort: 4369
+              name: discovery
+            - containerPort: 5672
+              name: amqp
+            - containerPort: 15672
+              name: http
+          env:
+          - name: RABBIT_POD_NAME
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.name
+          - name: RABBIT_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: RABBITMQ_NODENAME
+            value: rabbit@$(RABBIT_POD_NAME).skillsly-notification-mq-srv.$(RABBIT_POD_NAMESPACE).svc.cluster.local
+          - name: RABBITMQ_USE_LONGNAME
+            value: "true"
+          - name: RABBITMQ_CONFIG_FILE
+            value: "/config/rabbitmq"
+          - name: RABBITMQ_ERLANG_COOKIE
+            valueFrom:
+              secretKeyRef:
+                name: skillsly-notification-mq-secret
+                key: RABBITMQ_ERLANG_COOKIE
+          - name: K8S_HOSTNAME_SUFFIX
+            value: .skillsly-notification-mq-srv.$(RABBIT_POD_NAMESPACE).svc.cluster.local
+          - name: RABBITMQ_DEFAULT_PASS
+            valueFrom:
+              secretKeyRef:
+                name: skillsly-notification-mq-secret
+                key: pass
+          - name: RABBITMQ_DEFAULT_USER
+            valueFrom:
+              secretKeyRef:
+                name: skillsly-notification-mq-secret
+                key: user
+          volumeMounts:
+          - name: data
+            mountPath: /var/lib/rabbitmq
+            readOnly: false
+          - name: config-file
+            mountPath: /config/
+          - name: plugins-file
+            mountPath: /etc/rabbitmq/
+      volumes:
+        - name: config-file
+          emptyDir: { }
+        - name: plugins-file
+          emptyDir: { }
+        - name: config
+          configMap:
+            name: skillsly-notification-mq-config
+            defaultMode: 0755
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 50Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly-notification-mq-srv
+  labels:
+    app: skillsly-notification-mq-srv
+    type: LoadBalancer
+spec:
+  ports:
+    - name: discovery
+      port: 4369
+      targetPort: 4369
+    - name: amqp
+      port: 5672
+      targetPort: 5672
+    - name: http
+      protocol: TCP
+      port: 15672
+      targetPort: 15672
+  selector:
+    app: skillsly-notification-mq

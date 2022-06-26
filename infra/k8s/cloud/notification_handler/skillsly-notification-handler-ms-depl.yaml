@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly-notification-handler-ms-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly-notification-handler_ms
+  template:
+    metadata:
+      labels:
+        app: skillsly-notification-handler_ms
+    spec:
+      containers:
+        - name: skillsly-notification-handler-ms
+          image: jonatlop07/skillsly-notification-handler-ms
+          envFrom:
+          - configMapRef:
+              name: skillsly-notification-handler-ms-env-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly-notification-handler-ms-srv
+  annotations:
+    cloud.google.com/backend-config: '{"default": "skillsly-notification-handler-backend-config"}'
+spec:
+  selector:
+    app: skillsly-notification-handler-ms
+  ports:
+    - name: notification-handler
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

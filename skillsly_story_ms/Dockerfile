@@ -1,11 +1,12 @@
-FROM rust:1.56.1 as builder
+FROM rust:1.57 as builder
 
 WORKDIR /usr/src/skillsly_story_ms
 COPY . .
 
-RUN cargo install sqlx-cli
+RUN cargo install sqlx-cli --locked --no-default-features --features postgres
 
-ARG DATABASE_URL=postgres://skillsly:story@10.100.132.143:5432/skillsly_story_db
+#ARG DATABASE_URL=postgres://skillsly:story@10.100.132.143:5432/skillsly_story_db
+ARG DATABASE_URL=postgres://postgres:story@35.225.171.171:5432/postgres
 RUN sqlx database setup --database-url $DATABASE_URL
 
 ENV ROCKET_ADDRESS=0.0.0.0

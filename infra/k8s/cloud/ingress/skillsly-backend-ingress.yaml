@@ -9,7 +9,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
   rules:
-    - host: "api.skillsly.app"
+    - host: "skillsly.app"
       http:
         paths:
           - pathType: Prefix
@@ -29,6 +29,16 @@ spec:
                 name: skillsly-interface-srv
                 port:
                   name: interface
+    - host: "api.skillsly.app"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /notification/(.*)
+            backend:
+              service:
+                name: skillsly-notification-handler-srv
+                port:
+                  name: notification-handler
     - host: "35.223.215.205.nip.io"
       http:
         paths:
@@ -49,6 +59,16 @@ spec:
                 name: skillsly-interface-srv
                 port:
                   name: interface
+    - host: "35.223.215.205.nip.io"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /notification/(.*)
+            backend:
+              service:
+                name: skillsly-notification-handler-srv
+                port:
+                  name: notification-handler
   tls:
     - hosts:
       - 35.223.215.205.nip.io
@@ -56,25 +76,3 @@ spec:
       secretName : skillsly-certificate
 
 #---
-#apiVersion: networking.k8s.io/v1
-#kind: Ingress
-#metadata:
-#  name: skillsly-frontend-ingress
-#  annotations:
-#    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
-#    nginx.ingress.kubernetes.io/enable-cors: 'true'
-#    nginx.ingress.kubernetes.io/use-regex: 'true'
-#    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-#spec:
-#  ingressClassName: nginx
-#  rules:
-#    - host: "skillsly.dev"
-#      http:
-#        paths:
-#          - pathType: Prefix
-#            path: /?(.*)
-#            backend:
-#              service:
-#                name: skillsly-wa-srv
-#                port:
-#                  name: wa
