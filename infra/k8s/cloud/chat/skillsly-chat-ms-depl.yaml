@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillsly-chat-ms-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillsly-chat-ms
+  template:
+    metadata:
+      labels:
+        app: skillsly-chat-ms
+    spec:
+      containers:
+        - name: skillsly-chat-ms
+          image: angegonzalez/skillsly-chat-ms
+          command: ['./app']
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillsly-chat-ms-srv
+spec:
+  selector:
+    app: skillsly-chat-ms
+  ports:
+    - name: chat-ms
+      protocol: TCP
+      port: 8002
+      targetPort: 8002
