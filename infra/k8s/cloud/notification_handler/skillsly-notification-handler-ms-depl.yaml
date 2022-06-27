@@ -24,8 +24,10 @@ kind: Service
 metadata:
   name: skillsly-notification-handler-ms-srv
   annotations:
+    networking.gke.io/load-balancer-type: "Internal"
     cloud.google.com/backend-config: '{"default": "skillsly-notification-handler-backend-config"}'
 spec:
+  type: LoadBalancer
   selector:
     app: skillsly-notification-handler-ms
   ports:

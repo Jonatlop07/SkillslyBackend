@@ -27,8 +27,10 @@ kind: Service
 apiVersion: v1
 metadata:
   name: skillsly-ldap-admin-srv
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: skillsly-ldap-admin
   ports:
