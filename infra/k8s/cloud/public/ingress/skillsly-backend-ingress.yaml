@@ -16,45 +16,45 @@ spec:
 
   rules:
     - host: "api.skillsly.app"
-        http:
-          paths:
-            - pathType: Exact
-              path: /graphql
-              backend:
-                service:
-                  name: skillsly-ag-srv
-                  port:
-                    name: api-gateway
+      http:
+        paths:
+          - pathType: Exact
+            path: /graphql
+            backend:
+              service:
+                name: skillsly-ag-srv
+                port:
+                  name: api-gateway
     - host: "api.skillsly.app"
-        http:
-          paths:
-            - pathType: Exact
-              path: /soap
-              backend:
-                service:
-                  name: skillsly-interface-srv
-                  port:
-                    name: interface
+      http:
+        paths:
+          - pathType: Exact
+            path: /soap
+            backend:
+              service:
+                name: skillsly-interface-srv
+                port:
+                  name: interface
     - host: "api.skillsly.app"
-        http:
-          paths:
-            - pathType: Exact
-              path: /ldap
-              backend:
-                service:
-                  name: skillsly-ldap-srv
-                  port:
-                    name: ldap
+      http:
+        paths:
+          - pathType: Exact
+            path: /ldap
+            backend:
+              service:
+                name: skillsly-ldap-srv
+                port:
+                  name: ldap
     - host: "api.skillsly.app"
-        http:
-          paths:
-            - pathType: Exact
-              path: /notification
-              backend:
-                service:
-                  name: skillsly-notification-handler-ms-srv
-                  port:
-                    name: notification
+      http:
+        paths:
+          - pathType: Exact
+            path: /notification
+            backend:
+              service:
+                name: skillsly-notification-handler-ms-srv
+                port:
+                  name: notification
     - host: "104.197.96.215.nip.io"
       http:
         paths:
@@ -65,4 +65,3 @@ spec:
                 name: skillsly-ag-srv
                 port:
                   name: api-gateway
-#---
