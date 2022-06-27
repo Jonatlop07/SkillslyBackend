@@ -19,8 +19,8 @@ derive_more = "0.99"
 rocket = { version = "0.5.0-rc.1", features = ["json"] }
 
 [dependencies.sqlx]
-version = "0.5.1"
+version = "0.5.0"
 features = [
-    "runtime-tokio-rustls", "macros", "postgres", "migrate",
+    "runtime-tokio-native-tls", "macros", "postgres", "migrate",
     "chrono", "uuid"
 ]
