@@ -12,7 +12,7 @@ spec:
   - hosts:
     - api.skillsly.app
     - 104.197.96.215.nip.io
-  secretName: skillsly-certificate
+    secretName: skillsly-certificate
 
   rules:
     - host: "api.skillsly.app"
