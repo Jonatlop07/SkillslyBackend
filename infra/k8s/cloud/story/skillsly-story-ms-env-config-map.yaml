@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: skillsly-story-ms-env-config
 data:
-  DATABASE_URL: 'postgres://postgres:story@35.225.171.171:5432/postgres'
+  DATABASE_URL: 'postgres://postgres:story@35.225.171.171/postgres'
