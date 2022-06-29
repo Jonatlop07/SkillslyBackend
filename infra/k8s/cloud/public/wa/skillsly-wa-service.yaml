@@ -17,7 +17,7 @@ metadata:
   name: skillsly-wa-srv
 subsets:
   - addresses:
-      - ip: 192.168.15.220
+      - ip: 192.168.0.19
     ports:
       - name: wa
         port: 4200

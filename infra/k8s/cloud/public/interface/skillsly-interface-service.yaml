@@ -17,7 +17,7 @@ metadata:
   name: skillsly-interface-srv
 subsets:
   - addresses:
-      - ip: 192.168.15.221
+      - ip: 192.168.0.18
     ports:
       - name: interface
         port: 8080

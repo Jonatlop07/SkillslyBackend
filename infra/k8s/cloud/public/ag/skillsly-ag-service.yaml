@@ -17,7 +17,7 @@ metadata:
   name: skillsly-ag-srv
 subsets:
   - addresses:
-      - ip: 192.168.15.217
+      - ip: 192.168.0.17
     ports:
       - name: api-gateway
         port: 3000
