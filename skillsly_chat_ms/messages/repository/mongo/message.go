@@ -15,6 +15,12 @@ type MessageRepository struct {
 	db *mongo.Collection
 }
 
+func (c MessageRepository) HandleConversationWebSocket() {
+}
+
+func (c MessageRepository) HandleMessageWebSocket() {
+}
+
 func NewMessageRepository(db *mongo.Database, collection string) *MessageRepository {
 	return &MessageRepository{
 		db: db.Collection(collection),
@@ -24,7 +30,7 @@ func NewMessageRepository(db *mongo.Database, collection string) *MessageReposit
 type Message struct {
 	ConversationID string             `bson:"ConversationID"`
 	Content        string             `bson:"Content"`
-	Path           string             `bson:"Path"`
+	ContentPath    string             `bson:"ContentPath"`
 	OwnerUserID    string             `bson:"OwnerUserID"`
 	CreatedAt      primitive.DateTime `bson:"CreatedAt"`
 	UpdatedAt      primitive.DateTime `bson:"UpdatedAt"`
@@ -33,10 +39,10 @@ type Message struct {
 func (c MessageRepository) SendMessage(ctx context.Context, message models.Message) error {
 	model := toMessage(message)
 	_, err := c.db.InsertOne(ctx, model)
-	// if err != nil {
-	// 	fmt.Print(err)
-	// 	return err
-	// }
+	if err != nil {
+		fmt.Print(err)
+		return err
+	}
 	return err
 }
 
@@ -62,7 +68,7 @@ func toMessage(message models.Message) Message {
 	return Message{
 		ConversationID: message.ConversationID,
 		Content:        message.Content,
-		Path:           message.Path,
+		ContentPath:    message.ContentPath,
 		OwnerUserID:    message.OwnerUserID,
 		CreatedAt:      primitive.NewDateTimeFromTime(message.CreatedAt),
 		UpdatedAt:      primitive.NewDateTimeFromTime(message.UpdatedAt),

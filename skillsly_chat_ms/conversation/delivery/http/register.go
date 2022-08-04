@@ -7,7 +7,6 @@ import (
 
 func RegisterHTTPEndpoints(router *gin.RouterGroup, uc conversation.UseCase) {
 	h := NewHandler(uc)
-
 	conversation := router.Group("/conversation")
 	{
 		conversation.GET("/:userID", h.GetConversationsCollection)
@@ -19,4 +18,5 @@ func RegisterHTTPEndpoints(router *gin.RouterGroup, uc conversation.UseCase) {
 		//conversation.DELETE("/group", h.DeleteGroupConversation)
 		conversation.DELETE("", h.DeletePrivateConversation)
 	}
+
 }

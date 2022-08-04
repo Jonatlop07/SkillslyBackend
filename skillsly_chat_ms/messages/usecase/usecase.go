@@ -24,3 +24,8 @@ func (c MessageUseCase) SendMessage(ctx context.Context, message models.Message)
 func (c MessageUseCase) GetConversationMessages(ctx context.Context, conversationId string) ([]models.Message, error) {
 	return c.messageRepo.GetConversationMessages(ctx, conversationId)
 }
+
+func (c MessageUseCase) HandleConversationWebSocket() {
+}
+func (c MessageUseCase) HandleMessagesWebSocket() {
+}

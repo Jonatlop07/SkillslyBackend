@@ -11,7 +11,6 @@ func RegisterHTTPEndpoints(router *gin.RouterGroup, uc messages.UseCase) {
 	messages := router.Group("/messages")
 	{
 		messages.GET("/:conversationID", h.GetConversationMessages)
-		messages.GET("/stream/:conversationID", Stream)
-		messages.POST("/:conversationID", h.SendMessage)
+		messages.GET("/ws/:conversationID", h.HandleConversationWebSocket)
 	}
 }

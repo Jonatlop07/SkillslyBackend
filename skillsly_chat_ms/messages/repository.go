@@ -9,4 +9,6 @@ import (
 type Repository interface {
 	SendMessage(ctx context.Context, message models.Message) error
 	GetConversationMessages(ctx context.Context, conversationId string) ([]models.Message, error)
+	HandleConversationWebSocket()
+	HandleMessageWebSocket()
 }
